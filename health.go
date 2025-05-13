@@ -6,10 +6,10 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/stainless-sdks/arcade-engine-go/internal/apijson"
-	"github.com/stainless-sdks/arcade-engine-go/internal/requestconfig"
-	"github.com/stainless-sdks/arcade-engine-go/option"
-	"github.com/stainless-sdks/arcade-engine-go/packages/respjson"
+	"github.com/ArcadeAI/arcade-go/internal/apijson"
+	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
+	"github.com/ArcadeAI/arcade-go/option"
+	"github.com/ArcadeAI/arcade-go/packages/respjson"
 )
 
 // HealthService contains methods and other services that help with interacting

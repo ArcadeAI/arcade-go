@@ -7,8 +7,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/stainless-sdks/arcade-engine-go/internal/requestconfig"
-	"github.com/stainless-sdks/arcade-engine-go/option"
+	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
+	"github.com/ArcadeAI/arcade-go/option"
 )
 
 // ChatCompletionService contains methods and other services that help with

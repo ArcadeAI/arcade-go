@@ -1,7 +1,7 @@
 package sentinel_test
 
 import (
-	"github.com/stainless-sdks/arcade-engine-go/internal/encoding/json/sentinel"
+	"github.com/ArcadeAI/arcade-go/internal/encoding/json/sentinel"
 	"reflect"
 	"slices"
 	"testing"

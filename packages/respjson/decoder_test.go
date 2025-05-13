@@ -3,8 +3,8 @@ package respjson_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/stainless-sdks/arcade-engine-go/internal/apijson"
-	rj "github.com/stainless-sdks/arcade-engine-go/packages/respjson"
+	"github.com/ArcadeAI/arcade-go/internal/apijson"
+	rj "github.com/ArcadeAI/arcade-go/packages/respjson"
 	"reflect"
 	"testing"
 )

@@ -18,10 +18,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/stainless-sdks/arcade-engine-go/internal"
-	"github.com/stainless-sdks/arcade-engine-go/internal/apierror"
-	"github.com/stainless-sdks/arcade-engine-go/internal/apiform"
-	"github.com/stainless-sdks/arcade-engine-go/internal/apiquery"
+	"github.com/ArcadeAI/arcade-go/internal"
+	"github.com/ArcadeAI/arcade-go/internal/apierror"
+	"github.com/ArcadeAI/arcade-go/internal/apiform"
+	"github.com/ArcadeAI/arcade-go/internal/apiquery"
 )
 
 func getDefaultHeaders() map[string]string {

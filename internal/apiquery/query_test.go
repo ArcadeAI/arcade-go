@@ -1,7 +1,7 @@
 package apiquery
 
 import (
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
+	"github.com/ArcadeAI/arcade-go/packages/param"
 	"net/url"
 	"testing"
 	"time"

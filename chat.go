@@ -3,11 +3,11 @@
 package arcadeengine
 
 import (
-	"github.com/stainless-sdks/arcade-engine-go/internal/apijson"
-	"github.com/stainless-sdks/arcade-engine-go/option"
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
-	"github.com/stainless-sdks/arcade-engine-go/packages/respjson"
-	"github.com/stainless-sdks/arcade-engine-go/shared"
+	"github.com/ArcadeAI/arcade-go/internal/apijson"
+	"github.com/ArcadeAI/arcade-go/option"
+	"github.com/ArcadeAI/arcade-go/packages/param"
+	"github.com/ArcadeAI/arcade-go/packages/respjson"
+	"github.com/ArcadeAI/arcade-go/shared"
 )
 
 // ChatService contains methods and other services that help with interacting with

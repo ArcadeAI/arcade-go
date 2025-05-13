@@ -2,7 +2,7 @@ package apijson
 
 import (
 	"errors"
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
+	"github.com/ArcadeAI/arcade-go/packages/param"
 	"reflect"
 
 	"github.com/tidwall/gjson"

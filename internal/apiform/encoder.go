@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
+	"github.com/ArcadeAI/arcade-go/packages/param"
 )
 
 var encoders sync.Map // map[encoderEntry]encoderFunc

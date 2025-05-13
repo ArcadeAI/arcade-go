@@ -2,7 +2,7 @@ package apiform
 
 import (
 	"bytes"
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
+	"github.com/ArcadeAI/arcade-go/packages/param"
 	"io"
 	"mime/multipart"
 	"strings"
