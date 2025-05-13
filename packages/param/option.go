@@ -3,7 +3,7 @@ package param
 import (
 	"encoding/json"
 	"fmt"
-	shimjson "github.com/stainless-sdks/arcade-engine-go/internal/encoding/json"
+	shimjson "github.com/ArcadeAI/arcade-go/internal/encoding/json"
 	"time"
 )
 

@@ -1,7 +1,7 @@
 package apijson
 
 import (
-	"github.com/stainless-sdks/arcade-engine-go/packages/respjson"
+	"github.com/ArcadeAI/arcade-go/packages/respjson"
 	"reflect"
 )
 

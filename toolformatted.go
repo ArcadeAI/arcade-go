@@ -9,11 +9,11 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/stainless-sdks/arcade-engine-go/internal/apiquery"
-	"github.com/stainless-sdks/arcade-engine-go/internal/requestconfig"
-	"github.com/stainless-sdks/arcade-engine-go/option"
-	"github.com/stainless-sdks/arcade-engine-go/packages/pagination"
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
+	"github.com/ArcadeAI/arcade-go/internal/apiquery"
+	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
+	"github.com/ArcadeAI/arcade-go/option"
+	"github.com/ArcadeAI/arcade-go/packages/pagination"
+	"github.com/ArcadeAI/arcade-go/packages/param"
 )
 
 // ToolFormattedService contains methods and other services that help with

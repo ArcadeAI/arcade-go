@@ -3,9 +3,9 @@
 package shared
 
 import (
-	"github.com/stainless-sdks/arcade-engine-go/internal/apijson"
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
-	"github.com/stainless-sdks/arcade-engine-go/packages/respjson"
+	"github.com/ArcadeAI/arcade-go/internal/apijson"
+	"github.com/ArcadeAI/arcade-go/packages/param"
+	"github.com/ArcadeAI/arcade-go/packages/respjson"
 )
 
 // aliased to make [param.APIUnion] private when embedding

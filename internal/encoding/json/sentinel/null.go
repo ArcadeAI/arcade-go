@@ -1,7 +1,7 @@
 package sentinel
 
 import (
-	"github.com/stainless-sdks/arcade-engine-go/internal/encoding/json/shims"
+	"github.com/ArcadeAI/arcade-go/internal/encoding/json/shims"
 	"reflect"
 	"sync"
 )

@@ -3,9 +3,9 @@
 package arcadeengine
 
 import (
-	"github.com/stainless-sdks/arcade-engine-go/internal/apierror"
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
-	"github.com/stainless-sdks/arcade-engine-go/shared"
+	"github.com/ArcadeAI/arcade-go/internal/apierror"
+	"github.com/ArcadeAI/arcade-go/packages/param"
+	"github.com/ArcadeAI/arcade-go/shared"
 )
 
 // aliased to make [param.APIUnion] private when embedding

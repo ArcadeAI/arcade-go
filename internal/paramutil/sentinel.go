@@ -1,7 +1,7 @@
 package paramutil
 
 import (
-	"github.com/stainless-sdks/arcade-engine-go/internal/encoding/json/sentinel"
+	"github.com/ArcadeAI/arcade-go/internal/encoding/json/sentinel"
 )
 
 // NullPtr returns a pointer to the zero value of the type T.
