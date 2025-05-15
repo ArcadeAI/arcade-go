@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine
+package arcadego
 
 import (
 	"context"
@@ -10,10 +10,10 @@ import (
 	"net/url"
 
 	"github.com/ArcadeAI/arcade-go/internal/apiquery"
+	"github.com/ArcadeAI/arcade-go/internal/param"
 	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
 	"github.com/ArcadeAI/arcade-go/option"
 	"github.com/ArcadeAI/arcade-go/packages/pagination"
-	"github.com/ArcadeAI/arcade-go/packages/param"
 )
 
 // ToolFormattedService contains methods and other services that help with
@@ -29,8 +29,8 @@ type ToolFormattedService struct {
 // NewToolFormattedService generates a new service that applies the given options
 // to each request. These options are applied after the parent client's options (if
 // there is one), and before any request-specific options.
-func NewToolFormattedService(opts ...option.RequestOption) (r ToolFormattedService) {
-	r = ToolFormattedService{}
+func NewToolFormattedService(opts ...option.RequestOption) (r *ToolFormattedService) {
+	r = &ToolFormattedService{}
 	r.Options = opts
 	return
 }
@@ -72,25 +72,24 @@ func (r *ToolFormattedService) Get(ctx context.Context, name string, query ToolF
 	return
 }
 
-type ToolFormattedListResponse = any
+type ToolFormattedListResponse = interface{}
 
-type ToolFormattedGetResponse = any
+type ToolFormattedGetResponse = interface{}
 
 type ToolFormattedListParams struct {
 	// Provider format
-	Format param.Opt[string] `query:"format,omitzero" json:"-"`
+	Format param.Field[string] `query:"format"`
 	// Number of items to return (default: 25, max: 100)
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	Limit param.Field[int64] `query:"limit"`
 	// Offset from the start of the list (default: 0)
-	Offset param.Opt[int64] `query:"offset,omitzero" json:"-"`
+	Offset param.Field[int64] `query:"offset"`
 	// Toolkit name
-	Toolkit param.Opt[string] `query:"toolkit,omitzero" json:"-"`
-	paramObj
+	Toolkit param.Field[string] `query:"toolkit"`
 }
 
 // URLQuery serializes [ToolFormattedListParams]'s query parameters as
 // `url.Values`.
-func (r ToolFormattedListParams) URLQuery() (v url.Values, err error) {
+func (r ToolFormattedListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
@@ -99,12 +98,11 @@ func (r ToolFormattedListParams) URLQuery() (v url.Values, err error) {
 
 type ToolFormattedGetParams struct {
 	// Provider format
-	Format param.Opt[string] `query:"format,omitzero" json:"-"`
-	paramObj
+	Format param.Field[string] `query:"format"`
 }
 
 // URLQuery serializes [ToolFormattedGetParams]'s query parameters as `url.Values`.
-func (r ToolFormattedGetParams) URLQuery() (v url.Values, err error) {
+func (r ToolFormattedGetParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,

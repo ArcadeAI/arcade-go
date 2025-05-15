@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine_test
+package arcadego_test
 
 import (
 	"context"
@@ -20,17 +20,18 @@ func TestUsage(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	executeToolResponse, err := client.Tools.Execute(context.TODO(), arcadeengine.ToolExecuteParams{
-		ExecuteToolRequest: arcadeengine.ExecuteToolRequestParam{
-			ToolName: "tool_name",
+	executeToolResponse, err := client.Tools.Execute(context.TODO(), arcadego.ToolExecuteParams{
+		ExecuteToolRequest: arcadego.ExecuteToolRequestParam{
+			ToolName: arcadego.F("tool_name"),
 		},
 	})
 	if err != nil {
-		t.Fatalf("err should be nil: %s", err.Error())
+		t.Error(err)
+		return
 	}
 	t.Logf("%+v\n", executeToolResponse.ID)
 }

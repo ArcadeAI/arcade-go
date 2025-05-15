@@ -9,36 +9,32 @@ import (
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
 	"github.com/ArcadeAI/arcade-go/option"
-	"github.com/ArcadeAI/arcade-go/packages/param"
-	"github.com/ArcadeAI/arcade-go/packages/respjson"
 )
 
-// aliased to make [param.APIUnion] private when embedding
-type paramUnion = param.APIUnion
-
-// aliased to make [param.APIObject] private when embedding
-type paramObj = param.APIObject
-
 type OffsetPage[T any] struct {
-	Items      []T   `json:"items"`
-	TotalCount int64 `json:"total_count"`
-	Offset     int64 `json:"offset"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Items       respjson.Field
-		TotalCount  respjson.Field
-		Offset      respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-	cfg *requestconfig.RequestConfig
-	res *http.Response
+	Items      []T            `json:"items"`
+	TotalCount int64          `json:"total_count"`
+	Offset     int64          `json:"offset"`
+	JSON       offsetPageJSON `json:"-"`
+	cfg        *requestconfig.RequestConfig
+	res        *http.Response
 }
 
-// Returns the unmodified JSON received from the API
-func (r OffsetPage[T]) RawJSON() string { return r.JSON.raw }
-func (r *OffsetPage[T]) UnmarshalJSON(data []byte) error {
+// offsetPageJSON contains the JSON metadata for the struct [OffsetPage[T]]
+type offsetPageJSON struct {
+	Items       apijson.Field
+	TotalCount  apijson.Field
+	Offset      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *OffsetPage[T]) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r offsetPageJSON) RawJSON() string {
+	return r.raw
 }
 
 // GetNextPage returns the next page as defined by this pagination style. When
@@ -82,7 +78,6 @@ type OffsetPageAutoPager[T any] struct {
 	idx  int
 	run  int
 	err  error
-	paramObj
 }
 
 func NewOffsetPageAutoPager[T any](page *OffsetPage[T], err error) *OffsetPageAutoPager[T] {

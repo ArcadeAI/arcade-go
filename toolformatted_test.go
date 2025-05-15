@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine_test
+package arcadego_test
 
 import (
 	"context"
@@ -21,18 +21,18 @@ func TestToolFormattedListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Tools.Formatted.List(context.TODO(), arcadeengine.ToolFormattedListParams{
-		Format:  arcadeengine.String("format"),
-		Limit:   arcadeengine.Int(0),
-		Offset:  arcadeengine.Int(0),
-		Toolkit: arcadeengine.String("toolkit"),
+	_, err := client.Tools.Formatted.List(context.TODO(), arcadego.ToolFormattedListParams{
+		Format:  arcadego.F("format"),
+		Limit:   arcadego.F(int64(0)),
+		Offset:  arcadego.F(int64(0)),
+		Toolkit: arcadego.F("toolkit"),
 	})
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -48,19 +48,19 @@ func TestToolFormattedGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Tools.Formatted.Get(
 		context.TODO(),
 		"name",
-		arcadeengine.ToolFormattedGetParams{
-			Format: arcadeengine.String("format"),
+		arcadego.ToolFormattedGetParams{
+			Format: arcadego.F("format"),
 		},
 	)
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

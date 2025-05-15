@@ -1,18 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine
+package arcadego
 
 import (
 	"github.com/ArcadeAI/arcade-go/internal/apierror"
-	"github.com/ArcadeAI/arcade-go/packages/param"
 	"github.com/ArcadeAI/arcade-go/shared"
 )
-
-// aliased to make [param.APIUnion] private when embedding
-type paramUnion = param.APIUnion
-
-// aliased to make [param.APIObject] private when embedding
-type paramObj = param.APIObject
 
 type Error = apierror.Error
 
@@ -25,11 +18,11 @@ type AuthorizationResponse = shared.AuthorizationResponse
 // This is an alias to an internal type.
 type AuthorizationResponseStatus = shared.AuthorizationResponseStatus
 
-// Equals "pending"
+// This is an alias to an internal value.
 const AuthorizationResponseStatusPending = shared.AuthorizationResponseStatusPending
 
-// Equals "completed"
+// This is an alias to an internal value.
 const AuthorizationResponseStatusCompleted = shared.AuthorizationResponseStatusCompleted
 
-// Equals "failed"
+// This is an alias to an internal value.
 const AuthorizationResponseStatusFailed = shared.AuthorizationResponseStatusFailed

@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine_test
+package arcadego_test
 
 import (
 	"context"
@@ -21,18 +21,18 @@ func TestToolListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Tools.List(context.TODO(), arcadeengine.ToolListParams{
-		IncludeFormat: []string{"arcade"},
-		Limit:         arcadeengine.Int(0),
-		Offset:        arcadeengine.Int(0),
-		Toolkit:       arcadeengine.String("toolkit"),
+	_, err := client.Tools.List(context.TODO(), arcadego.ToolListParams{
+		IncludeFormat: arcadego.F([]arcadego.ToolListParamsIncludeFormat{arcadego.ToolListParamsIncludeFormatArcade}),
+		Limit:         arcadego.F(int64(0)),
+		Offset:        arcadego.F(int64(0)),
+		Toolkit:       arcadego.F("toolkit"),
 	})
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -48,19 +48,19 @@ func TestToolAuthorizeWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Tools.Authorize(context.TODO(), arcadeengine.ToolAuthorizeParams{
-		AuthorizeToolRequest: arcadeengine.AuthorizeToolRequestParam{
-			ToolName:    "tool_name",
-			ToolVersion: arcadeengine.String("tool_version"),
-			UserID:      arcadeengine.String("user_id"),
+	_, err := client.Tools.Authorize(context.TODO(), arcadego.ToolAuthorizeParams{
+		AuthorizeToolRequest: arcadego.AuthorizeToolRequestParam{
+			ToolName:    arcadego.F("tool_name"),
+			ToolVersion: arcadego.F("tool_version"),
+			UserID:      arcadego.F("user_id"),
 		},
 	})
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -76,23 +76,23 @@ func TestToolExecuteWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Tools.Execute(context.TODO(), arcadeengine.ToolExecuteParams{
-		ExecuteToolRequest: arcadeengine.ExecuteToolRequestParam{
-			ToolName: "tool_name",
-			Input: map[string]any{
+	_, err := client.Tools.Execute(context.TODO(), arcadego.ToolExecuteParams{
+		ExecuteToolRequest: arcadego.ExecuteToolRequestParam{
+			ToolName: arcadego.F("tool_name"),
+			Input: arcadego.F(map[string]interface{}{
 				"foo": "bar",
-			},
-			RunAt:       arcadeengine.String("run_at"),
-			ToolVersion: arcadeengine.String("tool_version"),
-			UserID:      arcadeengine.String("user_id"),
+			}),
+			RunAt:       arcadego.F("run_at"),
+			ToolVersion: arcadego.F("tool_version"),
+			UserID:      arcadego.F("user_id"),
 		},
 	})
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -108,19 +108,19 @@ func TestToolGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Tools.Get(
 		context.TODO(),
 		"name",
-		arcadeengine.ToolGetParams{
-			IncludeFormat: []string{"arcade"},
+		arcadego.ToolGetParams{
+			IncludeFormat: arcadego.F([]arcadego.ToolGetParamsIncludeFormat{arcadego.ToolGetParamsIncludeFormatArcade}),
 		},
 	)
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

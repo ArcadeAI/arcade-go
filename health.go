@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine
+package arcadego
 
 import (
 	"context"
@@ -9,7 +9,6 @@ import (
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
 	"github.com/ArcadeAI/arcade-go/option"
-	"github.com/ArcadeAI/arcade-go/packages/respjson"
 )
 
 // HealthService contains methods and other services that help with interacting
@@ -25,8 +24,8 @@ type HealthService struct {
 // NewHealthService generates a new service that applies the given options to each
 // request. These options are applied after the parent client's options (if there
 // is one), and before any request-specific options.
-func NewHealthService(opts ...option.RequestOption) (r HealthService) {
-	r = HealthService{}
+func NewHealthService(opts ...option.RequestOption) (r *HealthService) {
+	r = &HealthService{}
 	r.Options = opts
 	return
 }
@@ -40,17 +39,21 @@ func (r *HealthService) Check(ctx context.Context, opts ...option.RequestOption)
 }
 
 type HealthSchema struct {
-	Healthy bool `json:"healthy"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Healthy     respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Healthy bool             `json:"healthy"`
+	JSON    healthSchemaJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r HealthSchema) RawJSON() string { return r.JSON.raw }
-func (r *HealthSchema) UnmarshalJSON(data []byte) error {
+// healthSchemaJSON contains the JSON metadata for the struct [HealthSchema]
+type healthSchemaJSON struct {
+	Healthy     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *HealthSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r healthSchemaJSON) RawJSON() string {
+	return r.raw
 }
