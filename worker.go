@@ -1,22 +1,20 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine
+package arcadego
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
 
-	"github.com/stainless-sdks/arcade-engine-go/internal/apijson"
-	"github.com/stainless-sdks/arcade-engine-go/internal/apiquery"
-	"github.com/stainless-sdks/arcade-engine-go/internal/requestconfig"
-	"github.com/stainless-sdks/arcade-engine-go/option"
-	"github.com/stainless-sdks/arcade-engine-go/packages/pagination"
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
-	"github.com/stainless-sdks/arcade-engine-go/packages/respjson"
+	"github.com/ArcadeAI/arcade-go/internal/apijson"
+	"github.com/ArcadeAI/arcade-go/internal/apiquery"
+	"github.com/ArcadeAI/arcade-go/internal/param"
+	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
+	"github.com/ArcadeAI/arcade-go/option"
+	"github.com/ArcadeAI/arcade-go/packages/pagination"
 )
 
 // WorkerService contains methods and other services that help with interacting
@@ -32,8 +30,8 @@ type WorkerService struct {
 // NewWorkerService generates a new service that applies the given options to each
 // request. These options are applied after the parent client's options (if there
 // is one), and before any request-specific options.
-func NewWorkerService(opts ...option.RequestOption) (r WorkerService) {
-	r = WorkerService{}
+func NewWorkerService(opts ...option.RequestOption) (r *WorkerService) {
+	r = &WorkerService{}
 	r.Options = opts
 	return
 }
@@ -145,123 +143,95 @@ func (r *WorkerService) ToolsAutoPaging(ctx context.Context, id string, query Wo
 	return pagination.NewOffsetPageAutoPager(r.Tools(ctx, id, query, opts...))
 }
 
-// The property ID is required.
 type CreateWorkerRequestParam struct {
-	ID      string                       `json:"id,required"`
-	Enabled param.Opt[bool]              `json:"enabled,omitzero"`
-	Type    param.Opt[string]            `json:"type,omitzero"`
-	HTTP    CreateWorkerRequestHTTPParam `json:"http,omitzero"`
-	Mcp     CreateWorkerRequestMcpParam  `json:"mcp,omitzero"`
-	paramObj
+	ID      param.Field[string]                       `json:"id,required"`
+	Enabled param.Field[bool]                         `json:"enabled"`
+	HTTP    param.Field[CreateWorkerRequestHTTPParam] `json:"http"`
+	Mcp     param.Field[CreateWorkerRequestMcpParam]  `json:"mcp"`
+	Type    param.Field[string]                       `json:"type"`
 }
 
 func (r CreateWorkerRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow CreateWorkerRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *CreateWorkerRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
-// The properties Retry, Secret, Timeout, Uri are required.
 type CreateWorkerRequestHTTPParam struct {
-	Retry   int64  `json:"retry,required"`
-	Secret  string `json:"secret,required"`
-	Timeout int64  `json:"timeout,required"`
-	Uri     string `json:"uri,required"`
-	paramObj
+	Retry   param.Field[int64]  `json:"retry,required"`
+	Secret  param.Field[string] `json:"secret,required"`
+	Timeout param.Field[int64]  `json:"timeout,required"`
+	Uri     param.Field[string] `json:"uri,required"`
 }
 
 func (r CreateWorkerRequestHTTPParam) MarshalJSON() (data []byte, err error) {
-	type shadow CreateWorkerRequestHTTPParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *CreateWorkerRequestHTTPParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
-// The properties Retry, Timeout, Uri are required.
 type CreateWorkerRequestMcpParam struct {
-	Retry   int64  `json:"retry,required"`
-	Timeout int64  `json:"timeout,required"`
-	Uri     string `json:"uri,required"`
-	paramObj
+	Retry   param.Field[int64]  `json:"retry,required"`
+	Timeout param.Field[int64]  `json:"timeout,required"`
+	Uri     param.Field[string] `json:"uri,required"`
 }
 
 func (r CreateWorkerRequestMcpParam) MarshalJSON() (data []byte, err error) {
-	type shadow CreateWorkerRequestMcpParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *CreateWorkerRequestMcpParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
 type UpdateWorkerRequestParam struct {
-	Enabled param.Opt[bool]              `json:"enabled,omitzero"`
-	HTTP    UpdateWorkerRequestHTTPParam `json:"http,omitzero"`
-	Mcp     UpdateWorkerRequestMcpParam  `json:"mcp,omitzero"`
-	paramObj
+	Enabled param.Field[bool]                         `json:"enabled"`
+	HTTP    param.Field[UpdateWorkerRequestHTTPParam] `json:"http"`
+	Mcp     param.Field[UpdateWorkerRequestMcpParam]  `json:"mcp"`
 }
 
 func (r UpdateWorkerRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow UpdateWorkerRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *UpdateWorkerRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
 type UpdateWorkerRequestHTTPParam struct {
-	Retry   param.Opt[int64]  `json:"retry,omitzero"`
-	Secret  param.Opt[string] `json:"secret,omitzero"`
-	Timeout param.Opt[int64]  `json:"timeout,omitzero"`
-	Uri     param.Opt[string] `json:"uri,omitzero"`
-	paramObj
+	Retry   param.Field[int64]  `json:"retry"`
+	Secret  param.Field[string] `json:"secret"`
+	Timeout param.Field[int64]  `json:"timeout"`
+	Uri     param.Field[string] `json:"uri"`
 }
 
 func (r UpdateWorkerRequestHTTPParam) MarshalJSON() (data []byte, err error) {
-	type shadow UpdateWorkerRequestHTTPParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *UpdateWorkerRequestHTTPParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
 type UpdateWorkerRequestMcpParam struct {
-	Retry   param.Opt[int64]  `json:"retry,omitzero"`
-	Timeout param.Opt[int64]  `json:"timeout,omitzero"`
-	Uri     param.Opt[string] `json:"uri,omitzero"`
-	paramObj
+	Retry   param.Field[int64]  `json:"retry"`
+	Timeout param.Field[int64]  `json:"timeout"`
+	Uri     param.Field[string] `json:"uri"`
 }
 
 func (r UpdateWorkerRequestMcpParam) MarshalJSON() (data []byte, err error) {
-	type shadow UpdateWorkerRequestMcpParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *UpdateWorkerRequestMcpParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
 type WorkerHealthResponse struct {
-	ID      string `json:"id"`
-	Enabled bool   `json:"enabled"`
-	Healthy bool   `json:"healthy"`
-	Message string `json:"message"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Enabled     respjson.Field
-		Healthy     respjson.Field
-		Message     respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	ID      string                   `json:"id"`
+	Enabled bool                     `json:"enabled"`
+	Healthy bool                     `json:"healthy"`
+	Message string                   `json:"message"`
+	JSON    workerHealthResponseJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r WorkerHealthResponse) RawJSON() string { return r.JSON.raw }
-func (r *WorkerHealthResponse) UnmarshalJSON(data []byte) error {
+// workerHealthResponseJSON contains the JSON metadata for the struct
+// [WorkerHealthResponse]
+type workerHealthResponseJSON struct {
+	ID          apijson.Field
+	Enabled     apijson.Field
+	Healthy     apijson.Field
+	Message     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerHealthResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerHealthResponseJSON) RawJSON() string {
+	return r.raw
 }
 
 type WorkerResponse struct {
@@ -271,45 +241,69 @@ type WorkerResponse struct {
 	HTTP    WorkerResponseHTTP    `json:"http"`
 	Mcp     WorkerResponseMcp     `json:"mcp"`
 	Oxp     WorkerResponseOxp     `json:"oxp"`
-	// Any of "http", "mcp", "unknown".
-	Type WorkerResponseType `json:"type"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Binding     respjson.Field
-		Enabled     respjson.Field
-		HTTP        respjson.Field
-		Mcp         respjson.Field
-		Oxp         respjson.Field
-		Type        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Type    WorkerResponseType    `json:"type"`
+	JSON    workerResponseJSON    `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r WorkerResponse) RawJSON() string { return r.JSON.raw }
-func (r *WorkerResponse) UnmarshalJSON(data []byte) error {
+// workerResponseJSON contains the JSON metadata for the struct [WorkerResponse]
+type workerResponseJSON struct {
+	ID          apijson.Field
+	Binding     apijson.Field
+	Enabled     apijson.Field
+	HTTP        apijson.Field
+	Mcp         apijson.Field
+	Oxp         apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseJSON) RawJSON() string {
+	return r.raw
 }
 
 type WorkerResponseBinding struct {
-	ID string `json:"id"`
-	// Any of "static", "tenant", "project", "account".
-	Type string `json:"type"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Type        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	ID   string                    `json:"id"`
+	Type WorkerResponseBindingType `json:"type"`
+	JSON workerResponseBindingJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r WorkerResponseBinding) RawJSON() string { return r.JSON.raw }
-func (r *WorkerResponseBinding) UnmarshalJSON(data []byte) error {
+// workerResponseBindingJSON contains the JSON metadata for the struct
+// [WorkerResponseBinding]
+type workerResponseBindingJSON struct {
+	ID          apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerResponseBinding) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseBindingJSON) RawJSON() string {
+	return r.raw
+}
+
+type WorkerResponseBindingType string
+
+const (
+	WorkerResponseBindingTypeStatic  WorkerResponseBindingType = "static"
+	WorkerResponseBindingTypeTenant  WorkerResponseBindingType = "tenant"
+	WorkerResponseBindingTypeProject WorkerResponseBindingType = "project"
+	WorkerResponseBindingTypeAccount WorkerResponseBindingType = "account"
+)
+
+func (r WorkerResponseBindingType) IsKnown() bool {
+	switch r {
+	case WorkerResponseBindingTypeStatic, WorkerResponseBindingTypeTenant, WorkerResponseBindingTypeProject, WorkerResponseBindingTypeAccount:
+		return true
+	}
+	return false
 }
 
 type WorkerResponseHTTP struct {
@@ -317,66 +311,97 @@ type WorkerResponseHTTP struct {
 	Secret  WorkerResponseHTTPSecret `json:"secret"`
 	Timeout int64                    `json:"timeout"`
 	Uri     string                   `json:"uri"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Retry       respjson.Field
-		Secret      respjson.Field
-		Timeout     respjson.Field
-		Uri         respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	JSON    workerResponseHTTPJSON   `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r WorkerResponseHTTP) RawJSON() string { return r.JSON.raw }
-func (r *WorkerResponseHTTP) UnmarshalJSON(data []byte) error {
+// workerResponseHTTPJSON contains the JSON metadata for the struct
+// [WorkerResponseHTTP]
+type workerResponseHTTPJSON struct {
+	Retry       apijson.Field
+	Secret      apijson.Field
+	Timeout     apijson.Field
+	Uri         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerResponseHTTP) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseHTTPJSON) RawJSON() string {
+	return r.raw
 }
 
 type WorkerResponseHTTPSecret struct {
-	// Any of "static", "tenant", "project", "account".
-	Binding  string `json:"binding"`
-	Editable bool   `json:"editable"`
-	Exists   bool   `json:"exists"`
-	Hint     string `json:"hint"`
-	Value    string `json:"value"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Binding     respjson.Field
-		Editable    respjson.Field
-		Exists      respjson.Field
-		Hint        respjson.Field
-		Value       respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Binding  WorkerResponseHTTPSecretBinding `json:"binding"`
+	Editable bool                            `json:"editable"`
+	Exists   bool                            `json:"exists"`
+	Hint     string                          `json:"hint"`
+	Value    string                          `json:"value"`
+	JSON     workerResponseHTTPSecretJSON    `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r WorkerResponseHTTPSecret) RawJSON() string { return r.JSON.raw }
-func (r *WorkerResponseHTTPSecret) UnmarshalJSON(data []byte) error {
+// workerResponseHTTPSecretJSON contains the JSON metadata for the struct
+// [WorkerResponseHTTPSecret]
+type workerResponseHTTPSecretJSON struct {
+	Binding     apijson.Field
+	Editable    apijson.Field
+	Exists      apijson.Field
+	Hint        apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerResponseHTTPSecret) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseHTTPSecretJSON) RawJSON() string {
+	return r.raw
+}
+
+type WorkerResponseHTTPSecretBinding string
+
+const (
+	WorkerResponseHTTPSecretBindingStatic  WorkerResponseHTTPSecretBinding = "static"
+	WorkerResponseHTTPSecretBindingTenant  WorkerResponseHTTPSecretBinding = "tenant"
+	WorkerResponseHTTPSecretBindingProject WorkerResponseHTTPSecretBinding = "project"
+	WorkerResponseHTTPSecretBindingAccount WorkerResponseHTTPSecretBinding = "account"
+)
+
+func (r WorkerResponseHTTPSecretBinding) IsKnown() bool {
+	switch r {
+	case WorkerResponseHTTPSecretBindingStatic, WorkerResponseHTTPSecretBindingTenant, WorkerResponseHTTPSecretBindingProject, WorkerResponseHTTPSecretBindingAccount:
+		return true
+	}
+	return false
 }
 
 type WorkerResponseMcp struct {
-	Retry   int64  `json:"retry"`
-	Timeout int64  `json:"timeout"`
-	Uri     string `json:"uri"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Retry       respjson.Field
-		Timeout     respjson.Field
-		Uri         respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Retry   int64                 `json:"retry"`
+	Timeout int64                 `json:"timeout"`
+	Uri     string                `json:"uri"`
+	JSON    workerResponseMcpJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r WorkerResponseMcp) RawJSON() string { return r.JSON.raw }
-func (r *WorkerResponseMcp) UnmarshalJSON(data []byte) error {
+// workerResponseMcpJSON contains the JSON metadata for the struct
+// [WorkerResponseMcp]
+type workerResponseMcpJSON struct {
+	Retry       apijson.Field
+	Timeout     apijson.Field
+	Uri         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerResponseMcp) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseMcpJSON) RawJSON() string {
+	return r.raw
 }
 
 type WorkerResponseOxp struct {
@@ -384,46 +409,72 @@ type WorkerResponseOxp struct {
 	Secret  WorkerResponseOxpSecret `json:"secret"`
 	Timeout int64                   `json:"timeout"`
 	Uri     string                  `json:"uri"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Retry       respjson.Field
-		Secret      respjson.Field
-		Timeout     respjson.Field
-		Uri         respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	JSON    workerResponseOxpJSON   `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r WorkerResponseOxp) RawJSON() string { return r.JSON.raw }
-func (r *WorkerResponseOxp) UnmarshalJSON(data []byte) error {
+// workerResponseOxpJSON contains the JSON metadata for the struct
+// [WorkerResponseOxp]
+type workerResponseOxpJSON struct {
+	Retry       apijson.Field
+	Secret      apijson.Field
+	Timeout     apijson.Field
+	Uri         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerResponseOxp) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseOxpJSON) RawJSON() string {
+	return r.raw
 }
 
 type WorkerResponseOxpSecret struct {
-	// Any of "static", "tenant", "project", "account".
-	Binding  string `json:"binding"`
-	Editable bool   `json:"editable"`
-	Exists   bool   `json:"exists"`
-	Hint     string `json:"hint"`
-	Value    string `json:"value"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Binding     respjson.Field
-		Editable    respjson.Field
-		Exists      respjson.Field
-		Hint        respjson.Field
-		Value       respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Binding  WorkerResponseOxpSecretBinding `json:"binding"`
+	Editable bool                           `json:"editable"`
+	Exists   bool                           `json:"exists"`
+	Hint     string                         `json:"hint"`
+	Value    string                         `json:"value"`
+	JSON     workerResponseOxpSecretJSON    `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r WorkerResponseOxpSecret) RawJSON() string { return r.JSON.raw }
-func (r *WorkerResponseOxpSecret) UnmarshalJSON(data []byte) error {
+// workerResponseOxpSecretJSON contains the JSON metadata for the struct
+// [WorkerResponseOxpSecret]
+type workerResponseOxpSecretJSON struct {
+	Binding     apijson.Field
+	Editable    apijson.Field
+	Exists      apijson.Field
+	Hint        apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerResponseOxpSecret) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseOxpSecretJSON) RawJSON() string {
+	return r.raw
+}
+
+type WorkerResponseOxpSecretBinding string
+
+const (
+	WorkerResponseOxpSecretBindingStatic  WorkerResponseOxpSecretBinding = "static"
+	WorkerResponseOxpSecretBindingTenant  WorkerResponseOxpSecretBinding = "tenant"
+	WorkerResponseOxpSecretBindingProject WorkerResponseOxpSecretBinding = "project"
+	WorkerResponseOxpSecretBindingAccount WorkerResponseOxpSecretBinding = "account"
+)
+
+func (r WorkerResponseOxpSecretBinding) IsKnown() bool {
+	switch r {
+	case WorkerResponseOxpSecretBindingStatic, WorkerResponseOxpSecretBindingTenant, WorkerResponseOxpSecretBindingProject, WorkerResponseOxpSecretBindingAccount:
+		return true
+	}
+	return false
 }
 
 type WorkerResponseType string
@@ -434,40 +485,39 @@ const (
 	WorkerResponseTypeUnknown WorkerResponseType = "unknown"
 )
 
+func (r WorkerResponseType) IsKnown() bool {
+	switch r {
+	case WorkerResponseTypeHTTP, WorkerResponseTypeMcp, WorkerResponseTypeUnknown:
+		return true
+	}
+	return false
+}
+
 type WorkerNewParams struct {
-	CreateWorkerRequest CreateWorkerRequestParam
-	paramObj
+	CreateWorkerRequest CreateWorkerRequestParam `json:"create_worker_request,required"`
 }
 
 func (r WorkerNewParams) MarshalJSON() (data []byte, err error) {
-	return json.Marshal(r.CreateWorkerRequest)
-}
-func (r *WorkerNewParams) UnmarshalJSON(data []byte) error {
-	return r.CreateWorkerRequest.UnmarshalJSON(data)
+	return apijson.MarshalRoot(r.CreateWorkerRequest)
 }
 
 type WorkerUpdateParams struct {
-	UpdateWorkerRequest UpdateWorkerRequestParam
-	paramObj
+	UpdateWorkerRequest UpdateWorkerRequestParam `json:"update_worker_request,required"`
 }
 
 func (r WorkerUpdateParams) MarshalJSON() (data []byte, err error) {
-	return json.Marshal(r.UpdateWorkerRequest)
-}
-func (r *WorkerUpdateParams) UnmarshalJSON(data []byte) error {
-	return r.UpdateWorkerRequest.UnmarshalJSON(data)
+	return apijson.MarshalRoot(r.UpdateWorkerRequest)
 }
 
 type WorkerListParams struct {
 	// Number of items to return (default: 25, max: 100)
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	Limit param.Field[int64] `query:"limit"`
 	// Offset from the start of the list (default: 0)
-	Offset param.Opt[int64] `query:"offset,omitzero" json:"-"`
-	paramObj
+	Offset param.Field[int64] `query:"offset"`
 }
 
 // URLQuery serializes [WorkerListParams]'s query parameters as `url.Values`.
-func (r WorkerListParams) URLQuery() (v url.Values, err error) {
+func (r WorkerListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
@@ -476,14 +526,13 @@ func (r WorkerListParams) URLQuery() (v url.Values, err error) {
 
 type WorkerToolsParams struct {
 	// Number of items to return (default: 25, max: 100)
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	Limit param.Field[int64] `query:"limit"`
 	// Offset from the start of the list (default: 0)
-	Offset param.Opt[int64] `query:"offset,omitzero" json:"-"`
-	paramObj
+	Offset param.Field[int64] `query:"offset"`
 }
 
 // URLQuery serializes [WorkerToolsParams]'s query parameters as `url.Values`.
-func (r WorkerToolsParams) URLQuery() (v url.Values, err error) {
+func (r WorkerToolsParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,

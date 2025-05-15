@@ -3,62 +3,63 @@
 package shared
 
 import (
-	"github.com/stainless-sdks/arcade-engine-go/internal/apijson"
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
-	"github.com/stainless-sdks/arcade-engine-go/packages/respjson"
+	"github.com/ArcadeAI/arcade-go/internal/apijson"
 )
 
-// aliased to make [param.APIUnion] private when embedding
-type paramUnion = param.APIUnion
-
-// aliased to make [param.APIObject] private when embedding
-type paramObj = param.APIObject
-
 type AuthorizationContext struct {
-	Token    string         `json:"token"`
-	UserInfo map[string]any `json:"user_info"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Token       respjson.Field
-		UserInfo    respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Token    string                   `json:"token"`
+	UserInfo map[string]interface{}   `json:"user_info"`
+	JSON     authorizationContextJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r AuthorizationContext) RawJSON() string { return r.JSON.raw }
-func (r *AuthorizationContext) UnmarshalJSON(data []byte) error {
+// authorizationContextJSON contains the JSON metadata for the struct
+// [AuthorizationContext]
+type authorizationContextJSON struct {
+	Token       apijson.Field
+	UserInfo    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AuthorizationContext) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r authorizationContextJSON) RawJSON() string {
+	return r.raw
 }
 
 type AuthorizationResponse struct {
-	ID         string               `json:"id"`
-	Context    AuthorizationContext `json:"context"`
-	ProviderID string               `json:"provider_id"`
-	Scopes     []string             `json:"scopes"`
-	// Any of "pending", "completed", "failed".
-	Status AuthorizationResponseStatus `json:"status"`
-	URL    string                      `json:"url"`
-	UserID string                      `json:"user_id"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Context     respjson.Field
-		ProviderID  respjson.Field
-		Scopes      respjson.Field
-		Status      respjson.Field
-		URL         respjson.Field
-		UserID      respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	ID         string                      `json:"id"`
+	Context    AuthorizationContext        `json:"context"`
+	ProviderID string                      `json:"provider_id"`
+	Scopes     []string                    `json:"scopes"`
+	Status     AuthorizationResponseStatus `json:"status"`
+	URL        string                      `json:"url"`
+	UserID     string                      `json:"user_id"`
+	JSON       authorizationResponseJSON   `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r AuthorizationResponse) RawJSON() string { return r.JSON.raw }
-func (r *AuthorizationResponse) UnmarshalJSON(data []byte) error {
+// authorizationResponseJSON contains the JSON metadata for the struct
+// [AuthorizationResponse]
+type authorizationResponseJSON struct {
+	ID          apijson.Field
+	Context     apijson.Field
+	ProviderID  apijson.Field
+	Scopes      apijson.Field
+	Status      apijson.Field
+	URL         apijson.Field
+	UserID      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *AuthorizationResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r authorizationResponseJSON) RawJSON() string {
+	return r.raw
 }
 
 type AuthorizationResponseStatus string
@@ -68,3 +69,11 @@ const (
 	AuthorizationResponseStatusCompleted AuthorizationResponseStatus = "completed"
 	AuthorizationResponseStatusFailed    AuthorizationResponseStatus = "failed"
 )
+
+func (r AuthorizationResponseStatus) IsKnown() bool {
+	switch r {
+	case AuthorizationResponseStatusPending, AuthorizationResponseStatusCompleted, AuthorizationResponseStatusFailed:
+		return true
+	}
+	return false
+}

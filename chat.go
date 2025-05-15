@@ -1,13 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine
+package arcadego
 
 import (
-	"github.com/stainless-sdks/arcade-engine-go/internal/apijson"
-	"github.com/stainless-sdks/arcade-engine-go/option"
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
-	"github.com/stainless-sdks/arcade-engine-go/packages/respjson"
-	"github.com/stainless-sdks/arcade-engine-go/shared"
+	"github.com/ArcadeAI/arcade-go/internal/apijson"
+	"github.com/ArcadeAI/arcade-go/internal/param"
+	"github.com/ArcadeAI/arcade-go/option"
+	"github.com/ArcadeAI/arcade-go/shared"
 )
 
 // ChatService contains methods and other services that help with interacting with
@@ -18,14 +17,14 @@ import (
 // the [NewChatService] method instead.
 type ChatService struct {
 	Options     []option.RequestOption
-	Completions ChatCompletionService
+	Completions *ChatCompletionService
 }
 
 // NewChatService generates a new service that applies the given options to each
 // request. These options are applied after the parent client's options (if there
 // is one), and before any request-specific options.
-func NewChatService(opts ...option.RequestOption) (r ChatService) {
-	r = ChatService{}
+func NewChatService(opts ...option.RequestOption) (r *ChatService) {
+	r = &ChatService{}
 	r.Options = opts
 	r.Completions = NewChatCompletionService(opts...)
 	return
@@ -42,195 +41,188 @@ type ChatMessage struct {
 	ToolCallID string `json:"tool_call_id"`
 	// tool calls if any
 	ToolCalls []ChatMessageToolCall `json:"tool_calls"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Content     respjson.Field
-		Role        respjson.Field
-		Name        respjson.Field
-		ToolCallID  respjson.Field
-		ToolCalls   respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	JSON      chatMessageJSON       `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ChatMessage) RawJSON() string { return r.JSON.raw }
-func (r *ChatMessage) UnmarshalJSON(data []byte) error {
+// chatMessageJSON contains the JSON metadata for the struct [ChatMessage]
+type chatMessageJSON struct {
+	Content     apijson.Field
+	Role        apijson.Field
+	Name        apijson.Field
+	ToolCallID  apijson.Field
+	ToolCalls   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ChatMessage) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// ToParam converts this ChatMessage to a ChatMessageParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// ChatMessageParam.Overrides()
-func (r ChatMessage) ToParam() ChatMessageParam {
-	return param.Override[ChatMessageParam](r.RawJSON())
+func (r chatMessageJSON) RawJSON() string {
+	return r.raw
 }
 
 type ChatMessageToolCall struct {
-	ID       string                      `json:"id"`
-	Function ChatMessageToolCallFunction `json:"function"`
-	// Any of "function".
-	Type string `json:"type"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Function    respjson.Field
-		Type        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	ID       string                       `json:"id"`
+	Function ChatMessageToolCallsFunction `json:"function"`
+	Type     ChatMessageToolCallsType     `json:"type"`
+	JSON     chatMessageToolCallJSON      `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ChatMessageToolCall) RawJSON() string { return r.JSON.raw }
-func (r *ChatMessageToolCall) UnmarshalJSON(data []byte) error {
+// chatMessageToolCallJSON contains the JSON metadata for the struct
+// [ChatMessageToolCall]
+type chatMessageToolCallJSON struct {
+	ID          apijson.Field
+	Function    apijson.Field
+	Type        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ChatMessageToolCall) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type ChatMessageToolCallFunction struct {
-	Arguments string `json:"arguments"`
-	Name      string `json:"name"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Arguments   respjson.Field
-		Name        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+func (r chatMessageToolCallJSON) RawJSON() string {
+	return r.raw
 }
 
-// Returns the unmodified JSON received from the API
-func (r ChatMessageToolCallFunction) RawJSON() string { return r.JSON.raw }
-func (r *ChatMessageToolCallFunction) UnmarshalJSON(data []byte) error {
+type ChatMessageToolCallsFunction struct {
+	Arguments string                           `json:"arguments"`
+	Name      string                           `json:"name"`
+	JSON      chatMessageToolCallsFunctionJSON `json:"-"`
+}
+
+// chatMessageToolCallsFunctionJSON contains the JSON metadata for the struct
+// [ChatMessageToolCallsFunction]
+type chatMessageToolCallsFunctionJSON struct {
+	Arguments   apijson.Field
+	Name        apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ChatMessageToolCallsFunction) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The properties Content, Role are required.
+func (r chatMessageToolCallsFunctionJSON) RawJSON() string {
+	return r.raw
+}
+
+type ChatMessageToolCallsType string
+
+const (
+	ChatMessageToolCallsTypeFunction ChatMessageToolCallsType = "function"
+)
+
+func (r ChatMessageToolCallsType) IsKnown() bool {
+	switch r {
+	case ChatMessageToolCallsTypeFunction:
+		return true
+	}
+	return false
+}
+
 type ChatMessageParam struct {
 	// The content of the message.
-	Content string `json:"content,required"`
+	Content param.Field[string] `json:"content,required"`
 	// The role of the author of this message. One of system, user, tool, or assistant.
-	Role string `json:"role,required"`
+	Role param.Field[string] `json:"role,required"`
 	// tool Name
-	Name param.Opt[string] `json:"name,omitzero"`
+	Name param.Field[string] `json:"name"`
 	// tool_call_id
-	ToolCallID param.Opt[string] `json:"tool_call_id,omitzero"`
+	ToolCallID param.Field[string] `json:"tool_call_id"`
 	// tool calls if any
-	ToolCalls []ChatMessageToolCallParam `json:"tool_calls,omitzero"`
-	paramObj
+	ToolCalls param.Field[[]ChatMessageToolCallParam] `json:"tool_calls"`
 }
 
 func (r ChatMessageParam) MarshalJSON() (data []byte, err error) {
-	type shadow ChatMessageParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ChatMessageParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
 type ChatMessageToolCallParam struct {
-	ID       param.Opt[string]                `json:"id,omitzero"`
-	Function ChatMessageToolCallFunctionParam `json:"function,omitzero"`
-	// Any of "function".
-	Type string `json:"type,omitzero"`
-	paramObj
+	ID       param.Field[string]                            `json:"id"`
+	Function param.Field[ChatMessageToolCallsFunctionParam] `json:"function"`
+	Type     param.Field[ChatMessageToolCallsType]          `json:"type"`
 }
 
 func (r ChatMessageToolCallParam) MarshalJSON() (data []byte, err error) {
-	type shadow ChatMessageToolCallParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ChatMessageToolCallParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
-func init() {
-	apijson.RegisterFieldValidator[ChatMessageToolCallParam](
-		"type", "function",
-	)
+type ChatMessageToolCallsFunctionParam struct {
+	Arguments param.Field[string] `json:"arguments"`
+	Name      param.Field[string] `json:"name"`
 }
 
-type ChatMessageToolCallFunctionParam struct {
-	Arguments param.Opt[string] `json:"arguments,omitzero"`
-	Name      param.Opt[string] `json:"name,omitzero"`
-	paramObj
-}
-
-func (r ChatMessageToolCallFunctionParam) MarshalJSON() (data []byte, err error) {
-	type shadow ChatMessageToolCallFunctionParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ChatMessageToolCallFunctionParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+func (r ChatMessageToolCallsFunctionParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type ChatRequestParam struct {
-	FrequencyPenalty param.Opt[float64] `json:"frequency_penalty,omitzero"`
-	// LogProbs indicates whether to return log probabilities of the output tokens or
-	// not. If true, returns the log probabilities of each output token returned in the
-	// content of message. This option is currently not available on the
-	// gpt-4-vision-preview model.
-	Logprobs  param.Opt[bool]   `json:"logprobs,omitzero"`
-	MaxTokens param.Opt[int64]  `json:"max_tokens,omitzero"`
-	Model     param.Opt[string] `json:"model,omitzero"`
-	N         param.Opt[int64]  `json:"n,omitzero"`
-	// Disable the default behavior of parallel tool calls by setting it: false.
-	ParallelToolCalls param.Opt[bool]    `json:"parallel_tool_calls,omitzero"`
-	PresencePenalty   param.Opt[float64] `json:"presence_penalty,omitzero"`
-	Seed              param.Opt[int64]   `json:"seed,omitzero"`
-	Stream            param.Opt[bool]    `json:"stream,omitzero"`
-	Temperature       param.Opt[float64] `json:"temperature,omitzero"`
-	// TopLogProbs is an integer between 0 and 5 specifying the number of most likely
-	// tokens to return at each token position, each with an associated log
-	// probability. logprobs must be set to true if this parameter is used.
-	TopLogprobs param.Opt[int64]   `json:"top_logprobs,omitzero"`
-	TopP        param.Opt[float64] `json:"top_p,omitzero"`
-	User        param.Opt[string]  `json:"user,omitzero"`
+	FrequencyPenalty param.Field[float64] `json:"frequency_penalty"`
 	// LogitBias is must be a token id string (specified by their token ID in the
 	// tokenizer), not a word string. incorrect: `"logit_bias":{"You": 6}`, correct:
 	// `"logit_bias":{"1639": 6}` refs:
 	// https://platform.openai.com/docs/api-reference/chat/create#chat/create-logit_bias
-	LogitBias      map[string]int64               `json:"logit_bias,omitzero"`
-	Messages       []ChatMessageParam             `json:"messages,omitzero"`
-	ResponseFormat ChatRequestResponseFormatParam `json:"response_format,omitzero"`
-	Stop           []string                       `json:"stop,omitzero"`
+	LogitBias param.Field[map[string]int64] `json:"logit_bias"`
+	// LogProbs indicates whether to return log probabilities of the output tokens or
+	// not. If true, returns the log probabilities of each output token returned in the
+	// content of message. This option is currently not available on the
+	// gpt-4-vision-preview model.
+	Logprobs  param.Field[bool]               `json:"logprobs"`
+	MaxTokens param.Field[int64]              `json:"max_tokens"`
+	Messages  param.Field[[]ChatMessageParam] `json:"messages"`
+	Model     param.Field[string]             `json:"model"`
+	N         param.Field[int64]              `json:"n"`
+	// Disable the default behavior of parallel tool calls by setting it: false.
+	ParallelToolCalls param.Field[bool]                           `json:"parallel_tool_calls"`
+	PresencePenalty   param.Field[float64]                        `json:"presence_penalty"`
+	ResponseFormat    param.Field[ChatRequestResponseFormatParam] `json:"response_format"`
+	Seed              param.Field[int64]                          `json:"seed"`
+	Stop              param.Field[[]string]                       `json:"stop"`
+	Stream            param.Field[bool]                           `json:"stream"`
 	// Options for streaming response. Only set this when you set stream: true.
-	StreamOptions ChatRequestStreamOptionsParam `json:"stream_options,omitzero"`
+	StreamOptions param.Field[ChatRequestStreamOptionsParam] `json:"stream_options"`
+	Temperature   param.Field[float64]                       `json:"temperature"`
 	// This can be either a string or an ToolChoice object.
-	ToolChoice any `json:"tool_choice,omitzero"`
-	Tools      any `json:"tools,omitzero"`
-	paramObj
+	ToolChoice param.Field[interface{}] `json:"tool_choice"`
+	Tools      param.Field[interface{}] `json:"tools"`
+	// TopLogProbs is an integer between 0 and 5 specifying the number of most likely
+	// tokens to return at each token position, each with an associated log
+	// probability. logprobs must be set to true if this parameter is used.
+	TopLogprobs param.Field[int64]   `json:"top_logprobs"`
+	TopP        param.Field[float64] `json:"top_p"`
+	User        param.Field[string]  `json:"user"`
 }
 
 func (r ChatRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow ChatRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ChatRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
 type ChatRequestResponseFormatParam struct {
-	// Any of "json_object", "text".
-	Type string `json:"type,omitzero"`
-	paramObj
+	Type param.Field[ChatRequestResponseFormatType] `json:"type"`
 }
 
 func (r ChatRequestResponseFormatParam) MarshalJSON() (data []byte, err error) {
-	type shadow ChatRequestResponseFormatParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ChatRequestResponseFormatParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
-func init() {
-	apijson.RegisterFieldValidator[ChatRequestResponseFormatParam](
-		"type", "json_object", "text",
-	)
+type ChatRequestResponseFormatType string
+
+const (
+	ChatRequestResponseFormatTypeJsonObject ChatRequestResponseFormatType = "json_object"
+	ChatRequestResponseFormatTypeText       ChatRequestResponseFormatType = "text"
+)
+
+func (r ChatRequestResponseFormatType) IsKnown() bool {
+	switch r {
+	case ChatRequestResponseFormatTypeJsonObject, ChatRequestResponseFormatTypeText:
+		return true
+	}
+	return false
 }
 
 // Options for streaming response. Only set this when you set stream: true.
@@ -239,88 +231,95 @@ type ChatRequestStreamOptionsParam struct {
 	// The usage field on this chunk shows the token usage statistics for the entire
 	// request, and the choices field will always be an empty array. All other chunks
 	// will also include a usage field, but with a null value.
-	IncludeUsage param.Opt[bool] `json:"include_usage,omitzero"`
-	paramObj
+	IncludeUsage param.Field[bool] `json:"include_usage"`
 }
 
 func (r ChatRequestStreamOptionsParam) MarshalJSON() (data []byte, err error) {
-	type shadow ChatRequestStreamOptionsParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ChatRequestStreamOptionsParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
 type ChatResponse struct {
-	ID                string   `json:"id"`
-	Choices           []Choice `json:"choices"`
-	Created           int64    `json:"created"`
-	Model             string   `json:"model"`
-	Object            string   `json:"object"`
-	SystemFingerprint string   `json:"system_fingerprint"`
-	Usage             Usage    `json:"usage"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                respjson.Field
-		Choices           respjson.Field
-		Created           respjson.Field
-		Model             respjson.Field
-		Object            respjson.Field
-		SystemFingerprint respjson.Field
-		Usage             respjson.Field
-		ExtraFields       map[string]respjson.Field
-		raw               string
-	} `json:"-"`
+	ID                string           `json:"id"`
+	Choices           []Choice         `json:"choices"`
+	Created           int64            `json:"created"`
+	Model             string           `json:"model"`
+	Object            string           `json:"object"`
+	SystemFingerprint string           `json:"system_fingerprint"`
+	Usage             Usage            `json:"usage"`
+	JSON              chatResponseJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ChatResponse) RawJSON() string { return r.JSON.raw }
-func (r *ChatResponse) UnmarshalJSON(data []byte) error {
+// chatResponseJSON contains the JSON metadata for the struct [ChatResponse]
+type chatResponseJSON struct {
+	ID                apijson.Field
+	Choices           apijson.Field
+	Created           apijson.Field
+	Model             apijson.Field
+	Object            apijson.Field
+	SystemFingerprint apijson.Field
+	Usage             apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
+}
+
+func (r *ChatResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r chatResponseJSON) RawJSON() string {
+	return r.raw
 }
 
 type Choice struct {
 	FinishReason       string                         `json:"finish_reason"`
 	Index              int64                          `json:"index"`
-	Logprobs           any                            `json:"logprobs"`
+	Logprobs           interface{}                    `json:"logprobs"`
 	Message            ChatMessage                    `json:"message"`
 	ToolAuthorizations []shared.AuthorizationResponse `json:"tool_authorizations"`
 	ToolMessages       []ChatMessage                  `json:"tool_messages"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		FinishReason       respjson.Field
-		Index              respjson.Field
-		Logprobs           respjson.Field
-		Message            respjson.Field
-		ToolAuthorizations respjson.Field
-		ToolMessages       respjson.Field
-		ExtraFields        map[string]respjson.Field
-		raw                string
-	} `json:"-"`
+	JSON               choiceJSON                     `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r Choice) RawJSON() string { return r.JSON.raw }
-func (r *Choice) UnmarshalJSON(data []byte) error {
+// choiceJSON contains the JSON metadata for the struct [Choice]
+type choiceJSON struct {
+	FinishReason       apijson.Field
+	Index              apijson.Field
+	Logprobs           apijson.Field
+	Message            apijson.Field
+	ToolAuthorizations apijson.Field
+	ToolMessages       apijson.Field
+	raw                string
+	ExtraFields        map[string]apijson.Field
+}
+
+func (r *Choice) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r choiceJSON) RawJSON() string {
+	return r.raw
 }
 
 type Usage struct {
-	CompletionTokens int64 `json:"completion_tokens"`
-	PromptTokens     int64 `json:"prompt_tokens"`
-	TotalTokens      int64 `json:"total_tokens"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		CompletionTokens respjson.Field
-		PromptTokens     respjson.Field
-		TotalTokens      respjson.Field
-		ExtraFields      map[string]respjson.Field
-		raw              string
-	} `json:"-"`
+	CompletionTokens int64     `json:"completion_tokens"`
+	PromptTokens     int64     `json:"prompt_tokens"`
+	TotalTokens      int64     `json:"total_tokens"`
+	JSON             usageJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r Usage) RawJSON() string { return r.JSON.raw }
-func (r *Usage) UnmarshalJSON(data []byte) error {
+// usageJSON contains the JSON metadata for the struct [Usage]
+type usageJSON struct {
+	CompletionTokens apijson.Field
+	PromptTokens     apijson.Field
+	TotalTokens      apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r *Usage) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r usageJSON) RawJSON() string {
+	return r.raw
 }

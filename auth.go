@@ -1,19 +1,18 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine
+package arcadego
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"net/url"
 
-	"github.com/stainless-sdks/arcade-engine-go/internal/apijson"
-	"github.com/stainless-sdks/arcade-engine-go/internal/apiquery"
-	"github.com/stainless-sdks/arcade-engine-go/internal/requestconfig"
-	"github.com/stainless-sdks/arcade-engine-go/option"
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
-	"github.com/stainless-sdks/arcade-engine-go/shared"
+	"github.com/ArcadeAI/arcade-go/internal/apijson"
+	"github.com/ArcadeAI/arcade-go/internal/apiquery"
+	"github.com/ArcadeAI/arcade-go/internal/param"
+	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
+	"github.com/ArcadeAI/arcade-go/option"
+	"github.com/ArcadeAI/arcade-go/shared"
 )
 
 // AuthService contains methods and other services that help with interacting with
@@ -29,8 +28,8 @@ type AuthService struct {
 // NewAuthService generates a new service that applies the given options to each
 // request. These options are applied after the parent client's options (if there
 // is one), and before any request-specific options.
-func NewAuthService(opts ...option.RequestOption) (r AuthService) {
-	r = AuthService{}
+func NewAuthService(opts ...option.RequestOption) (r *AuthService) {
+	r = &AuthService{}
 	r.Options = opts
 	return
 }
@@ -53,74 +52,53 @@ func (r *AuthService) Status(ctx context.Context, query AuthStatusParams, opts .
 	return
 }
 
-// The properties AuthRequirement, UserID are required.
 type AuthRequestParam struct {
-	AuthRequirement AuthRequestAuthRequirementParam `json:"auth_requirement,omitzero,required"`
-	UserID          string                          `json:"user_id,required"`
-	paramObj
+	AuthRequirement param.Field[AuthRequestAuthRequirementParam] `json:"auth_requirement,required"`
+	UserID          param.Field[string]                          `json:"user_id,required"`
 }
 
 func (r AuthRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow AuthRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AuthRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
 type AuthRequestAuthRequirementParam struct {
 	// one of ID or ProviderID must be set
-	ID param.Opt[string] `json:"id,omitzero"`
+	ID     param.Field[string]                                `json:"id"`
+	Oauth2 param.Field[AuthRequestAuthRequirementOauth2Param] `json:"oauth2"`
 	// one of ID or ProviderID must be set
-	ProviderID   param.Opt[string]                     `json:"provider_id,omitzero"`
-	ProviderType param.Opt[string]                     `json:"provider_type,omitzero"`
-	Oauth2       AuthRequestAuthRequirementOauth2Param `json:"oauth2,omitzero"`
-	paramObj
+	ProviderID   param.Field[string] `json:"provider_id"`
+	ProviderType param.Field[string] `json:"provider_type"`
 }
 
 func (r AuthRequestAuthRequirementParam) MarshalJSON() (data []byte, err error) {
-	type shadow AuthRequestAuthRequirementParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AuthRequestAuthRequirementParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
 type AuthRequestAuthRequirementOauth2Param struct {
-	Scopes []string `json:"scopes,omitzero"`
-	paramObj
+	Scopes param.Field[[]string] `json:"scopes"`
 }
 
 func (r AuthRequestAuthRequirementOauth2Param) MarshalJSON() (data []byte, err error) {
-	type shadow AuthRequestAuthRequirementOauth2Param
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AuthRequestAuthRequirementOauth2Param) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
 type AuthAuthorizeParams struct {
-	AuthRequest AuthRequestParam
-	paramObj
+	AuthRequest AuthRequestParam `json:"auth_request,required"`
 }
 
 func (r AuthAuthorizeParams) MarshalJSON() (data []byte, err error) {
-	return json.Marshal(r.AuthRequest)
-}
-func (r *AuthAuthorizeParams) UnmarshalJSON(data []byte) error {
-	return r.AuthRequest.UnmarshalJSON(data)
+	return apijson.MarshalRoot(r.AuthRequest)
 }
 
 type AuthStatusParams struct {
 	// Authorization ID
-	ID string `query:"id,required" json:"-"`
+	ID param.Field[string] `query:"id,required"`
 	// Timeout in seconds (max 59)
-	Wait param.Opt[int64] `query:"wait,omitzero" json:"-"`
-	paramObj
+	Wait param.Field[int64] `query:"wait"`
 }
 
 // URLQuery serializes [AuthStatusParams]'s query parameters as `url.Values`.
-func (r AuthStatusParams) URLQuery() (v url.Values, err error) {
+func (r AuthStatusParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,

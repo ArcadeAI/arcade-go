@@ -1,4 +1,4 @@
-module github.com/stainless-sdks/arcade-engine-go
+module github.com/ArcadeAI/arcade-go
 
 go 1.21
 

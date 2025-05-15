@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine_test
+package arcadego_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stainless-sdks/arcade-engine-go"
-	"github.com/stainless-sdks/arcade-engine-go/internal/testutil"
-	"github.com/stainless-sdks/arcade-engine-go/option"
+	"github.com/ArcadeAI/arcade-go"
+	"github.com/ArcadeAI/arcade-go/internal/testutil"
+	"github.com/ArcadeAI/arcade-go/option"
 )
 
 func TestHealthCheck(t *testing.T) {
@@ -21,13 +21,13 @@ func TestHealthCheck(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Health.Check(context.TODO())
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

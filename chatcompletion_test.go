@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine_test
+package arcadego_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stainless-sdks/arcade-engine-go"
-	"github.com/stainless-sdks/arcade-engine-go/internal/testutil"
-	"github.com/stainless-sdks/arcade-engine-go/option"
+	"github.com/ArcadeAI/arcade-go"
+	"github.com/ArcadeAI/arcade-go/internal/testutil"
+	"github.com/ArcadeAI/arcade-go/option"
 )
 
 func TestChatCompletionNewWithOptionalParams(t *testing.T) {
@@ -21,55 +21,55 @@ func TestChatCompletionNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Chat.Completions.New(context.TODO(), arcadeengine.ChatCompletionNewParams{
-		ChatRequest: arcadeengine.ChatRequestParam{
-			FrequencyPenalty: arcadeengine.Float(0),
-			LogitBias: map[string]int64{
-				"foo": 0,
-			},
-			Logprobs:  arcadeengine.Bool(true),
-			MaxTokens: arcadeengine.Int(0),
-			Messages: []arcadeengine.ChatMessageParam{{
-				Content:    "content",
-				Role:       "role",
-				Name:       arcadeengine.String("name"),
-				ToolCallID: arcadeengine.String("tool_call_id"),
-				ToolCalls: []arcadeengine.ChatMessageToolCallParam{{
-					ID: arcadeengine.String("id"),
-					Function: arcadeengine.ChatMessageToolCallFunctionParam{
-						Arguments: arcadeengine.String("arguments"),
-						Name:      arcadeengine.String("name"),
-					},
-					Type: "function",
-				}},
-			}},
-			Model:             arcadeengine.String("model"),
-			N:                 arcadeengine.Int(0),
-			ParallelToolCalls: arcadeengine.Bool(true),
-			PresencePenalty:   arcadeengine.Float(0),
-			ResponseFormat: arcadeengine.ChatRequestResponseFormatParam{
-				Type: "json_object",
-			},
-			Seed:   arcadeengine.Int(0),
-			Stop:   []string{"string"},
-			Stream: arcadeengine.Bool(true),
-			StreamOptions: arcadeengine.ChatRequestStreamOptionsParam{
-				IncludeUsage: arcadeengine.Bool(true),
-			},
-			Temperature: arcadeengine.Float(0),
-			ToolChoice:  map[string]interface{}{},
-			Tools:       map[string]interface{}{},
-			TopLogprobs: arcadeengine.Int(0),
-			TopP:        arcadeengine.Float(0),
-			User:        arcadeengine.String("user"),
+	_, err := client.Chat.Completions.New(context.TODO(), arcadego.ChatCompletionNewParams{
+		ChatRequest: arcadego.ChatRequestParam{
+			FrequencyPenalty: arcadego.F(0.000000),
+			LogitBias: arcadego.F(map[string]int64{
+				"foo": int64(0),
+			}),
+			Logprobs:  arcadego.F(true),
+			MaxTokens: arcadego.F(int64(0)),
+			Messages: arcadego.F([]arcadego.ChatMessageParam{{
+				Content:    arcadego.F("content"),
+				Role:       arcadego.F("role"),
+				Name:       arcadego.F("name"),
+				ToolCallID: arcadego.F("tool_call_id"),
+				ToolCalls: arcadego.F([]arcadego.ChatMessageToolCallParam{{
+					ID: arcadego.F("id"),
+					Function: arcadego.F(arcadego.ChatMessageToolCallsFunctionParam{
+						Arguments: arcadego.F("arguments"),
+						Name:      arcadego.F("name"),
+					}),
+					Type: arcadego.F(arcadego.ChatMessageToolCallsTypeFunction),
+				}}),
+			}}),
+			Model:             arcadego.F("model"),
+			N:                 arcadego.F(int64(0)),
+			ParallelToolCalls: arcadego.F(true),
+			PresencePenalty:   arcadego.F(0.000000),
+			ResponseFormat: arcadego.F(arcadego.ChatRequestResponseFormatParam{
+				Type: arcadego.F(arcadego.ChatRequestResponseFormatTypeJsonObject),
+			}),
+			Seed:   arcadego.F(int64(0)),
+			Stop:   arcadego.F([]string{"string"}),
+			Stream: arcadego.F(true),
+			StreamOptions: arcadego.F(arcadego.ChatRequestStreamOptionsParam{
+				IncludeUsage: arcadego.F(true),
+			}),
+			Temperature: arcadego.F(0.000000),
+			ToolChoice:  arcadego.F[any](map[string]interface{}{}),
+			Tools:       arcadego.F[any](map[string]interface{}{}),
+			TopLogprobs: arcadego.F(int64(0)),
+			TopP:        arcadego.F(0.000000),
+			User:        arcadego.F("user"),
 		},
 	})
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

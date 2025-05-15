@@ -4,7 +4,7 @@ To set up the repository, run:
 
 ```sh
 $ ./scripts/bootstrap
-$ ./scripts/lint
+$ ./scripts/build
 ```
 
 This will install all the required dependencies and build the SDK.
@@ -41,7 +41,7 @@ To use a local version of this library from source in another project, edit the 
 directive. This can be done through the CLI with the following:
 
 ```sh
-$ go mod edit -replace github.com/stainless-sdks/arcade-engine-go=/path/to/arcade-engine-go
+$ go mod edit -replace github.com/ArcadeAI/arcade-go=/path/to/arcade-go
 ```
 
 ## Running tests

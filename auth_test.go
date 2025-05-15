@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine_test
+package arcadego_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stainless-sdks/arcade-engine-go"
-	"github.com/stainless-sdks/arcade-engine-go/internal/testutil"
-	"github.com/stainless-sdks/arcade-engine-go/option"
+	"github.com/ArcadeAI/arcade-go"
+	"github.com/ArcadeAI/arcade-go/internal/testutil"
+	"github.com/ArcadeAI/arcade-go/option"
 )
 
 func TestAuthAuthorize(t *testing.T) {
@@ -21,25 +21,25 @@ func TestAuthAuthorize(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Auth.Authorize(context.TODO(), arcadeengine.AuthAuthorizeParams{
-		AuthRequest: arcadeengine.AuthRequestParam{
-			AuthRequirement: arcadeengine.AuthRequestAuthRequirementParam{
-				ID: arcadeengine.String("id"),
-				Oauth2: arcadeengine.AuthRequestAuthRequirementOauth2Param{
-					Scopes: []string{"string"},
-				},
-				ProviderID:   arcadeengine.String("provider_id"),
-				ProviderType: arcadeengine.String("provider_type"),
-			},
-			UserID: "user_id",
+	_, err := client.Auth.Authorize(context.TODO(), arcadego.AuthAuthorizeParams{
+		AuthRequest: arcadego.AuthRequestParam{
+			AuthRequirement: arcadego.F(arcadego.AuthRequestAuthRequirementParam{
+				ID: arcadego.F("id"),
+				Oauth2: arcadego.F(arcadego.AuthRequestAuthRequirementOauth2Param{
+					Scopes: arcadego.F([]string{"string"}),
+				}),
+				ProviderID:   arcadego.F("provider_id"),
+				ProviderType: arcadego.F("provider_type"),
+			}),
+			UserID: arcadego.F("user_id"),
 		},
 	})
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -55,16 +55,16 @@ func TestAuthStatusWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Auth.Status(context.TODO(), arcadeengine.AuthStatusParams{
-		ID:   "id",
-		Wait: arcadeengine.Int(0),
+	_, err := client.Auth.Status(context.TODO(), arcadego.AuthStatusParams{
+		ID:   arcadego.F("id"),
+		Wait: arcadego.F(int64(0)),
 	})
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

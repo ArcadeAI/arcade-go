@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine_test
+package arcadego_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stainless-sdks/arcade-engine-go"
-	"github.com/stainless-sdks/arcade-engine-go/internal/testutil"
-	"github.com/stainless-sdks/arcade-engine-go/option"
+	"github.com/ArcadeAI/arcade-go"
+	"github.com/ArcadeAI/arcade-go/internal/testutil"
+	"github.com/ArcadeAI/arcade-go/option"
 )
 
 func TestWorkerNewWithOptionalParams(t *testing.T) {
@@ -21,30 +21,30 @@ func TestWorkerNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Workers.New(context.TODO(), arcadeengine.WorkerNewParams{
-		CreateWorkerRequest: arcadeengine.CreateWorkerRequestParam{
-			ID:      "id",
-			Enabled: arcadeengine.Bool(true),
-			HTTP: arcadeengine.CreateWorkerRequestHTTPParam{
-				Retry:   0,
-				Secret:  "secret",
-				Timeout: 1,
-				Uri:     "uri",
-			},
-			Mcp: arcadeengine.CreateWorkerRequestMcpParam{
-				Retry:   0,
-				Timeout: 1,
-				Uri:     "uri",
-			},
-			Type: arcadeengine.String("type"),
+	_, err := client.Workers.New(context.TODO(), arcadego.WorkerNewParams{
+		CreateWorkerRequest: arcadego.CreateWorkerRequestParam{
+			ID:      arcadego.F("id"),
+			Enabled: arcadego.F(true),
+			HTTP: arcadego.F(arcadego.CreateWorkerRequestHTTPParam{
+				Retry:   arcadego.F(int64(0)),
+				Secret:  arcadego.F("secret"),
+				Timeout: arcadego.F(int64(1)),
+				Uri:     arcadego.F("uri"),
+			}),
+			Mcp: arcadego.F(arcadego.CreateWorkerRequestMcpParam{
+				Retry:   arcadego.F(int64(0)),
+				Timeout: arcadego.F(int64(1)),
+				Uri:     arcadego.F("uri"),
+			}),
+			Type: arcadego.F("type"),
 		},
 	})
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -60,32 +60,32 @@ func TestWorkerUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Workers.Update(
 		context.TODO(),
 		"id",
-		arcadeengine.WorkerUpdateParams{
-			UpdateWorkerRequest: arcadeengine.UpdateWorkerRequestParam{
-				Enabled: arcadeengine.Bool(true),
-				HTTP: arcadeengine.UpdateWorkerRequestHTTPParam{
-					Retry:   arcadeengine.Int(0),
-					Secret:  arcadeengine.String("secret"),
-					Timeout: arcadeengine.Int(1),
-					Uri:     arcadeengine.String("uri"),
-				},
-				Mcp: arcadeengine.UpdateWorkerRequestMcpParam{
-					Retry:   arcadeengine.Int(0),
-					Timeout: arcadeengine.Int(1),
-					Uri:     arcadeengine.String("uri"),
-				},
+		arcadego.WorkerUpdateParams{
+			UpdateWorkerRequest: arcadego.UpdateWorkerRequestParam{
+				Enabled: arcadego.F(true),
+				HTTP: arcadego.F(arcadego.UpdateWorkerRequestHTTPParam{
+					Retry:   arcadego.F(int64(0)),
+					Secret:  arcadego.F("secret"),
+					Timeout: arcadego.F(int64(1)),
+					Uri:     arcadego.F("uri"),
+				}),
+				Mcp: arcadego.F(arcadego.UpdateWorkerRequestMcpParam{
+					Retry:   arcadego.F(int64(0)),
+					Timeout: arcadego.F(int64(1)),
+					Uri:     arcadego.F("uri"),
+				}),
 			},
 		},
 	)
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -101,16 +101,16 @@ func TestWorkerListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Workers.List(context.TODO(), arcadeengine.WorkerListParams{
-		Limit:  arcadeengine.Int(0),
-		Offset: arcadeengine.Int(0),
+	_, err := client.Workers.List(context.TODO(), arcadego.WorkerListParams{
+		Limit:  arcadego.F(int64(0)),
+		Offset: arcadego.F(int64(0)),
 	})
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -126,13 +126,13 @@ func TestWorkerDelete(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
 	err := client.Workers.Delete(context.TODO(), "id")
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -148,13 +148,13 @@ func TestWorkerGet(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Workers.Get(context.TODO(), "id")
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -170,13 +170,13 @@ func TestWorkerHealth(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Workers.Health(context.TODO(), "id")
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -192,20 +192,20 @@ func TestWorkerToolsWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := arcadeengine.NewClient(
+	client := arcadego.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Workers.Tools(
 		context.TODO(),
 		"id",
-		arcadeengine.WorkerToolsParams{
-			Limit:  arcadeengine.Int(0),
-			Offset: arcadeengine.Int(0),
+		arcadego.WorkerToolsParams{
+			Limit:  arcadego.F(int64(0)),
+			Offset: arcadego.F(int64(0)),
 		},
 	)
 	if err != nil {
-		var apierr *arcadeengine.Error
+		var apierr *arcadego.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

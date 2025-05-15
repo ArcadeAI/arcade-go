@@ -1,23 +1,21 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine
+package arcadego
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
 
-	"github.com/stainless-sdks/arcade-engine-go/internal/apijson"
-	"github.com/stainless-sdks/arcade-engine-go/internal/apiquery"
-	"github.com/stainless-sdks/arcade-engine-go/internal/requestconfig"
-	"github.com/stainless-sdks/arcade-engine-go/option"
-	"github.com/stainless-sdks/arcade-engine-go/packages/pagination"
-	"github.com/stainless-sdks/arcade-engine-go/packages/param"
-	"github.com/stainless-sdks/arcade-engine-go/packages/respjson"
-	"github.com/stainless-sdks/arcade-engine-go/shared"
+	"github.com/ArcadeAI/arcade-go/internal/apijson"
+	"github.com/ArcadeAI/arcade-go/internal/apiquery"
+	"github.com/ArcadeAI/arcade-go/internal/param"
+	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
+	"github.com/ArcadeAI/arcade-go/option"
+	"github.com/ArcadeAI/arcade-go/packages/pagination"
+	"github.com/ArcadeAI/arcade-go/shared"
 )
 
 // ToolService contains methods and other services that help with interacting with
@@ -28,15 +26,15 @@ import (
 // the [NewToolService] method instead.
 type ToolService struct {
 	Options   []option.RequestOption
-	Scheduled ToolScheduledService
-	Formatted ToolFormattedService
+	Scheduled *ToolScheduledService
+	Formatted *ToolFormattedService
 }
 
 // NewToolService generates a new service that applies the given options to each
 // request. These options are applied after the parent client's options (if there
 // is one), and before any request-specific options.
-func NewToolService(opts ...option.RequestOption) (r ToolService) {
-	r = ToolService{}
+func NewToolService(opts ...option.RequestOption) (r *ToolService) {
+	r = &ToolService{}
 	r.Options = opts
 	r.Scheduled = NewToolScheduledService(opts...)
 	r.Formatted = NewToolFormattedService(opts...)
@@ -96,44 +94,32 @@ func (r *ToolService) Get(ctx context.Context, name string, query ToolGetParams,
 	return
 }
 
-// The property ToolName is required.
 type AuthorizeToolRequestParam struct {
-	ToolName string `json:"tool_name,required"`
+	ToolName param.Field[string] `json:"tool_name,required"`
 	// Optional: if not provided, any version is used
-	ToolVersion param.Opt[string] `json:"tool_version,omitzero"`
+	ToolVersion param.Field[string] `json:"tool_version"`
 	// Required only when calling with an API key
-	UserID param.Opt[string] `json:"user_id,omitzero"`
-	paramObj
+	UserID param.Field[string] `json:"user_id"`
 }
 
 func (r AuthorizeToolRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow AuthorizeToolRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AuthorizeToolRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
-// The property ToolName is required.
 type ExecuteToolRequestParam struct {
-	ToolName string `json:"tool_name,required"`
+	ToolName param.Field[string] `json:"tool_name,required"`
+	// JSON input to the tool, if any
+	Input param.Field[map[string]interface{}] `json:"input"`
 	// The time at which the tool should be run (optional). If not provided, the tool
 	// is run immediately. Format ISO 8601: YYYY-MM-DDTHH:MM:SS
-	RunAt param.Opt[string] `json:"run_at,omitzero"`
+	RunAt param.Field[string] `json:"run_at"`
 	// The tool version to use (optional). If not provided, any version is used
-	ToolVersion param.Opt[string] `json:"tool_version,omitzero"`
-	UserID      param.Opt[string] `json:"user_id,omitzero"`
-	// JSON input to the tool, if any
-	Input map[string]any `json:"input,omitzero"`
-	paramObj
+	ToolVersion param.Field[string] `json:"tool_version"`
+	UserID      param.Field[string] `json:"user_id"`
 }
 
 func (r ExecuteToolRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow ExecuteToolRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ExecuteToolRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return apijson.MarshalRoot(r)
 }
 
 type ExecuteToolResponse struct {
@@ -148,93 +134,113 @@ type ExecuteToolResponse struct {
 	// Whether the request was successful. For immediately-executed requests, this will
 	// be true if the tool call succeeded. For scheduled requests, this will be true if
 	// the request was scheduled successfully.
-	Success bool `json:"success"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID            respjson.Field
-		Duration      respjson.Field
-		ExecutionID   respjson.Field
-		ExecutionType respjson.Field
-		FinishedAt    respjson.Field
-		Output        respjson.Field
-		RunAt         respjson.Field
-		Status        respjson.Field
-		Success       respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
+	Success bool                    `json:"success"`
+	JSON    executeToolResponseJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ExecuteToolResponse) RawJSON() string { return r.JSON.raw }
-func (r *ExecuteToolResponse) UnmarshalJSON(data []byte) error {
+// executeToolResponseJSON contains the JSON metadata for the struct
+// [ExecuteToolResponse]
+type executeToolResponseJSON struct {
+	ID            apijson.Field
+	Duration      apijson.Field
+	ExecutionID   apijson.Field
+	ExecutionType apijson.Field
+	FinishedAt    apijson.Field
+	Output        apijson.Field
+	RunAt         apijson.Field
+	Status        apijson.Field
+	Success       apijson.Field
+	raw           string
+	ExtraFields   map[string]apijson.Field
+}
+
+func (r *ExecuteToolResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r executeToolResponseJSON) RawJSON() string {
+	return r.raw
 }
 
 type ExecuteToolResponseOutput struct {
 	Authorization shared.AuthorizationResponse   `json:"authorization"`
 	Error         ExecuteToolResponseOutputError `json:"error"`
 	Logs          []ExecuteToolResponseOutputLog `json:"logs"`
-	Value         any                            `json:"value"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Authorization respjson.Field
-		Error         respjson.Field
-		Logs          respjson.Field
-		Value         respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
+	Value         interface{}                    `json:"value"`
+	JSON          executeToolResponseOutputJSON  `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ExecuteToolResponseOutput) RawJSON() string { return r.JSON.raw }
-func (r *ExecuteToolResponseOutput) UnmarshalJSON(data []byte) error {
+// executeToolResponseOutputJSON contains the JSON metadata for the struct
+// [ExecuteToolResponseOutput]
+type executeToolResponseOutputJSON struct {
+	Authorization apijson.Field
+	Error         apijson.Field
+	Logs          apijson.Field
+	Value         apijson.Field
+	raw           string
+	ExtraFields   map[string]apijson.Field
+}
+
+func (r *ExecuteToolResponseOutput) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r executeToolResponseOutputJSON) RawJSON() string {
+	return r.raw
 }
 
 type ExecuteToolResponseOutputError struct {
-	Message                 string `json:"message,required"`
-	AdditionalPromptContent string `json:"additional_prompt_content"`
-	CanRetry                bool   `json:"can_retry"`
-	DeveloperMessage        string `json:"developer_message"`
-	RetryAfterMs            int64  `json:"retry_after_ms"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Message                 respjson.Field
-		AdditionalPromptContent respjson.Field
-		CanRetry                respjson.Field
-		DeveloperMessage        respjson.Field
-		RetryAfterMs            respjson.Field
-		ExtraFields             map[string]respjson.Field
-		raw                     string
-	} `json:"-"`
+	Message                 string                             `json:"message,required"`
+	AdditionalPromptContent string                             `json:"additional_prompt_content"`
+	CanRetry                bool                               `json:"can_retry"`
+	DeveloperMessage        string                             `json:"developer_message"`
+	RetryAfterMs            int64                              `json:"retry_after_ms"`
+	JSON                    executeToolResponseOutputErrorJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ExecuteToolResponseOutputError) RawJSON() string { return r.JSON.raw }
-func (r *ExecuteToolResponseOutputError) UnmarshalJSON(data []byte) error {
+// executeToolResponseOutputErrorJSON contains the JSON metadata for the struct
+// [ExecuteToolResponseOutputError]
+type executeToolResponseOutputErrorJSON struct {
+	Message                 apijson.Field
+	AdditionalPromptContent apijson.Field
+	CanRetry                apijson.Field
+	DeveloperMessage        apijson.Field
+	RetryAfterMs            apijson.Field
+	raw                     string
+	ExtraFields             map[string]apijson.Field
+}
+
+func (r *ExecuteToolResponseOutputError) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r executeToolResponseOutputErrorJSON) RawJSON() string {
+	return r.raw
 }
 
 type ExecuteToolResponseOutputLog struct {
-	Level   string `json:"level,required"`
-	Message string `json:"message,required"`
-	Subtype string `json:"subtype"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Level       respjson.Field
-		Message     respjson.Field
-		Subtype     respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Level   string                           `json:"level,required"`
+	Message string                           `json:"message,required"`
+	Subtype string                           `json:"subtype"`
+	JSON    executeToolResponseOutputLogJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ExecuteToolResponseOutputLog) RawJSON() string { return r.JSON.raw }
-func (r *ExecuteToolResponseOutputLog) UnmarshalJSON(data []byte) error {
+// executeToolResponseOutputLogJSON contains the JSON metadata for the struct
+// [ExecuteToolResponseOutputLog]
+type executeToolResponseOutputLogJSON struct {
+	Level       apijson.Field
+	Message     apijson.Field
+	Subtype     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ExecuteToolResponseOutputLog) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r executeToolResponseOutputLogJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolDefinition struct {
@@ -244,127 +250,156 @@ type ToolDefinition struct {
 	QualifiedName      string                     `json:"qualified_name,required"`
 	Toolkit            ToolDefinitionToolkit      `json:"toolkit,required"`
 	Description        string                     `json:"description"`
-	FormattedSchema    map[string]any             `json:"formatted_schema"`
+	FormattedSchema    map[string]interface{}     `json:"formatted_schema"`
 	Output             ToolDefinitionOutput       `json:"output"`
 	Requirements       ToolDefinitionRequirements `json:"requirements"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		FullyQualifiedName respjson.Field
-		Input              respjson.Field
-		Name               respjson.Field
-		QualifiedName      respjson.Field
-		Toolkit            respjson.Field
-		Description        respjson.Field
-		FormattedSchema    respjson.Field
-		Output             respjson.Field
-		Requirements       respjson.Field
-		ExtraFields        map[string]respjson.Field
-		raw                string
-	} `json:"-"`
+	JSON               toolDefinitionJSON         `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolDefinition) RawJSON() string { return r.JSON.raw }
-func (r *ToolDefinition) UnmarshalJSON(data []byte) error {
+// toolDefinitionJSON contains the JSON metadata for the struct [ToolDefinition]
+type toolDefinitionJSON struct {
+	FullyQualifiedName apijson.Field
+	Input              apijson.Field
+	Name               apijson.Field
+	QualifiedName      apijson.Field
+	Toolkit            apijson.Field
+	Description        apijson.Field
+	FormattedSchema    apijson.Field
+	Output             apijson.Field
+	Requirements       apijson.Field
+	raw                string
+	ExtraFields        map[string]apijson.Field
+}
+
+func (r *ToolDefinition) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolDefinitionInput struct {
 	Parameters []ToolDefinitionInputParameter `json:"parameters"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Parameters  respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	JSON       toolDefinitionInputJSON        `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolDefinitionInput) RawJSON() string { return r.JSON.raw }
-func (r *ToolDefinitionInput) UnmarshalJSON(data []byte) error {
+// toolDefinitionInputJSON contains the JSON metadata for the struct
+// [ToolDefinitionInput]
+type toolDefinitionInputJSON struct {
+	Parameters  apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ToolDefinitionInput) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionInputJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolDefinitionInputParameter struct {
-	Name        string      `json:"name,required"`
-	ValueSchema ValueSchema `json:"value_schema,required"`
-	Description string      `json:"description"`
-	Inferrable  bool        `json:"inferrable"`
-	Required    bool        `json:"required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Name        respjson.Field
-		ValueSchema respjson.Field
-		Description respjson.Field
-		Inferrable  respjson.Field
-		Required    respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Name        string                           `json:"name,required"`
+	ValueSchema ValueSchema                      `json:"value_schema,required"`
+	Description string                           `json:"description"`
+	Inferrable  bool                             `json:"inferrable"`
+	Required    bool                             `json:"required"`
+	JSON        toolDefinitionInputParameterJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolDefinitionInputParameter) RawJSON() string { return r.JSON.raw }
-func (r *ToolDefinitionInputParameter) UnmarshalJSON(data []byte) error {
+// toolDefinitionInputParameterJSON contains the JSON metadata for the struct
+// [ToolDefinitionInputParameter]
+type toolDefinitionInputParameterJSON struct {
+	Name        apijson.Field
+	ValueSchema apijson.Field
+	Description apijson.Field
+	Inferrable  apijson.Field
+	Required    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ToolDefinitionInputParameter) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionInputParameterJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolDefinitionToolkit struct {
-	Name        string `json:"name,required"`
-	Description string `json:"description"`
-	Version     string `json:"version"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Name        respjson.Field
-		Description respjson.Field
-		Version     respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Name        string                    `json:"name,required"`
+	Description string                    `json:"description"`
+	Version     string                    `json:"version"`
+	JSON        toolDefinitionToolkitJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolDefinitionToolkit) RawJSON() string { return r.JSON.raw }
-func (r *ToolDefinitionToolkit) UnmarshalJSON(data []byte) error {
+// toolDefinitionToolkitJSON contains the JSON metadata for the struct
+// [ToolDefinitionToolkit]
+type toolDefinitionToolkitJSON struct {
+	Name        apijson.Field
+	Description apijson.Field
+	Version     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ToolDefinitionToolkit) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionToolkitJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolDefinitionOutput struct {
-	AvailableModes []string    `json:"available_modes"`
-	Description    string      `json:"description"`
-	ValueSchema    ValueSchema `json:"value_schema"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		AvailableModes respjson.Field
-		Description    respjson.Field
-		ValueSchema    respjson.Field
-		ExtraFields    map[string]respjson.Field
-		raw            string
-	} `json:"-"`
+	AvailableModes []string                 `json:"available_modes"`
+	Description    string                   `json:"description"`
+	ValueSchema    ValueSchema              `json:"value_schema"`
+	JSON           toolDefinitionOutputJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolDefinitionOutput) RawJSON() string { return r.JSON.raw }
-func (r *ToolDefinitionOutput) UnmarshalJSON(data []byte) error {
+// toolDefinitionOutputJSON contains the JSON metadata for the struct
+// [ToolDefinitionOutput]
+type toolDefinitionOutputJSON struct {
+	AvailableModes apijson.Field
+	Description    apijson.Field
+	ValueSchema    apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *ToolDefinitionOutput) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionOutputJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolDefinitionRequirements struct {
 	Authorization ToolDefinitionRequirementsAuthorization `json:"authorization"`
 	Secrets       []ToolDefinitionRequirementsSecret      `json:"secrets"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Authorization respjson.Field
-		Secrets       respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
+	JSON          toolDefinitionRequirementsJSON          `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolDefinitionRequirements) RawJSON() string { return r.JSON.raw }
-func (r *ToolDefinitionRequirements) UnmarshalJSON(data []byte) error {
+// toolDefinitionRequirementsJSON contains the JSON metadata for the struct
+// [ToolDefinitionRequirements]
+type toolDefinitionRequirementsJSON struct {
+	Authorization apijson.Field
+	Secrets       apijson.Field
+	raw           string
+	ExtraFields   map[string]apijson.Field
+}
+
+func (r *ToolDefinitionRequirements) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionRequirementsJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolDefinitionRequirementsAuthorization struct {
@@ -372,91 +407,110 @@ type ToolDefinitionRequirementsAuthorization struct {
 	Oauth2       ToolDefinitionRequirementsAuthorizationOauth2 `json:"oauth2"`
 	ProviderID   string                                        `json:"provider_id"`
 	ProviderType string                                        `json:"provider_type"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID           respjson.Field
-		Oauth2       respjson.Field
-		ProviderID   respjson.Field
-		ProviderType respjson.Field
-		ExtraFields  map[string]respjson.Field
-		raw          string
-	} `json:"-"`
+	JSON         toolDefinitionRequirementsAuthorizationJSON   `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolDefinitionRequirementsAuthorization) RawJSON() string { return r.JSON.raw }
-func (r *ToolDefinitionRequirementsAuthorization) UnmarshalJSON(data []byte) error {
+// toolDefinitionRequirementsAuthorizationJSON contains the JSON metadata for the
+// struct [ToolDefinitionRequirementsAuthorization]
+type toolDefinitionRequirementsAuthorizationJSON struct {
+	ID           apijson.Field
+	Oauth2       apijson.Field
+	ProviderID   apijson.Field
+	ProviderType apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
+}
+
+func (r *ToolDefinitionRequirementsAuthorization) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionRequirementsAuthorizationJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolDefinitionRequirementsAuthorizationOauth2 struct {
-	Scopes []string `json:"scopes"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Scopes      respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Scopes []string                                          `json:"scopes"`
+	JSON   toolDefinitionRequirementsAuthorizationOauth2JSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolDefinitionRequirementsAuthorizationOauth2) RawJSON() string { return r.JSON.raw }
-func (r *ToolDefinitionRequirementsAuthorizationOauth2) UnmarshalJSON(data []byte) error {
+// toolDefinitionRequirementsAuthorizationOauth2JSON contains the JSON metadata for
+// the struct [ToolDefinitionRequirementsAuthorizationOauth2]
+type toolDefinitionRequirementsAuthorizationOauth2JSON struct {
+	Scopes      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ToolDefinitionRequirementsAuthorizationOauth2) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionRequirementsAuthorizationOauth2JSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolDefinitionRequirementsSecret struct {
-	Key string `json:"key,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Key         respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Key  string                               `json:"key,required"`
+	JSON toolDefinitionRequirementsSecretJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolDefinitionRequirementsSecret) RawJSON() string { return r.JSON.raw }
-func (r *ToolDefinitionRequirementsSecret) UnmarshalJSON(data []byte) error {
+// toolDefinitionRequirementsSecretJSON contains the JSON metadata for the struct
+// [ToolDefinitionRequirementsSecret]
+type toolDefinitionRequirementsSecretJSON struct {
+	Key         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ToolDefinitionRequirementsSecret) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionRequirementsSecretJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolExecution struct {
-	ID              string `json:"id"`
-	CreatedAt       string `json:"created_at"`
-	ExecutionStatus string `json:"execution_status"`
-	ExecutionType   string `json:"execution_type"`
-	FinishedAt      string `json:"finished_at"`
-	RunAt           string `json:"run_at"`
-	StartedAt       string `json:"started_at"`
-	ToolName        string `json:"tool_name"`
-	ToolkitName     string `json:"toolkit_name"`
-	ToolkitVersion  string `json:"toolkit_version"`
-	UpdatedAt       string `json:"updated_at"`
-	UserID          string `json:"user_id"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID              respjson.Field
-		CreatedAt       respjson.Field
-		ExecutionStatus respjson.Field
-		ExecutionType   respjson.Field
-		FinishedAt      respjson.Field
-		RunAt           respjson.Field
-		StartedAt       respjson.Field
-		ToolName        respjson.Field
-		ToolkitName     respjson.Field
-		ToolkitVersion  respjson.Field
-		UpdatedAt       respjson.Field
-		UserID          respjson.Field
-		ExtraFields     map[string]respjson.Field
-		raw             string
-	} `json:"-"`
+	ID              string            `json:"id"`
+	CreatedAt       string            `json:"created_at"`
+	ExecutionStatus string            `json:"execution_status"`
+	ExecutionType   string            `json:"execution_type"`
+	FinishedAt      string            `json:"finished_at"`
+	RunAt           string            `json:"run_at"`
+	StartedAt       string            `json:"started_at"`
+	ToolName        string            `json:"tool_name"`
+	ToolkitName     string            `json:"toolkit_name"`
+	ToolkitVersion  string            `json:"toolkit_version"`
+	UpdatedAt       string            `json:"updated_at"`
+	UserID          string            `json:"user_id"`
+	JSON            toolExecutionJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolExecution) RawJSON() string { return r.JSON.raw }
-func (r *ToolExecution) UnmarshalJSON(data []byte) error {
+// toolExecutionJSON contains the JSON metadata for the struct [ToolExecution]
+type toolExecutionJSON struct {
+	ID              apijson.Field
+	CreatedAt       apijson.Field
+	ExecutionStatus apijson.Field
+	ExecutionType   apijson.Field
+	FinishedAt      apijson.Field
+	RunAt           apijson.Field
+	StartedAt       apijson.Field
+	ToolName        apijson.Field
+	ToolkitName     apijson.Field
+	ToolkitVersion  apijson.Field
+	UpdatedAt       apijson.Field
+	UserID          apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
+}
+
+func (r *ToolExecution) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolExecutionJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolExecutionAttempt struct {
@@ -466,169 +520,211 @@ type ToolExecutionAttempt struct {
 	StartedAt          string                     `json:"started_at"`
 	Success            bool                       `json:"success"`
 	SystemErrorMessage string                     `json:"system_error_message"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                 respjson.Field
-		FinishedAt         respjson.Field
-		Output             respjson.Field
-		StartedAt          respjson.Field
-		Success            respjson.Field
-		SystemErrorMessage respjson.Field
-		ExtraFields        map[string]respjson.Field
-		raw                string
-	} `json:"-"`
+	JSON               toolExecutionAttemptJSON   `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolExecutionAttempt) RawJSON() string { return r.JSON.raw }
-func (r *ToolExecutionAttempt) UnmarshalJSON(data []byte) error {
+// toolExecutionAttemptJSON contains the JSON metadata for the struct
+// [ToolExecutionAttempt]
+type toolExecutionAttemptJSON struct {
+	ID                 apijson.Field
+	FinishedAt         apijson.Field
+	Output             apijson.Field
+	StartedAt          apijson.Field
+	Success            apijson.Field
+	SystemErrorMessage apijson.Field
+	raw                string
+	ExtraFields        map[string]apijson.Field
+}
+
+func (r *ToolExecutionAttempt) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolExecutionAttemptJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolExecutionAttemptOutput struct {
 	Authorization shared.AuthorizationResponse    `json:"authorization"`
 	Error         ToolExecutionAttemptOutputError `json:"error"`
 	Logs          []ToolExecutionAttemptOutputLog `json:"logs"`
-	Value         any                             `json:"value"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Authorization respjson.Field
-		Error         respjson.Field
-		Logs          respjson.Field
-		Value         respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
+	Value         interface{}                     `json:"value"`
+	JSON          toolExecutionAttemptOutputJSON  `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolExecutionAttemptOutput) RawJSON() string { return r.JSON.raw }
-func (r *ToolExecutionAttemptOutput) UnmarshalJSON(data []byte) error {
+// toolExecutionAttemptOutputJSON contains the JSON metadata for the struct
+// [ToolExecutionAttemptOutput]
+type toolExecutionAttemptOutputJSON struct {
+	Authorization apijson.Field
+	Error         apijson.Field
+	Logs          apijson.Field
+	Value         apijson.Field
+	raw           string
+	ExtraFields   map[string]apijson.Field
+}
+
+func (r *ToolExecutionAttemptOutput) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolExecutionAttemptOutputJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolExecutionAttemptOutputError struct {
-	Message                 string `json:"message,required"`
-	AdditionalPromptContent string `json:"additional_prompt_content"`
-	CanRetry                bool   `json:"can_retry"`
-	DeveloperMessage        string `json:"developer_message"`
-	RetryAfterMs            int64  `json:"retry_after_ms"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Message                 respjson.Field
-		AdditionalPromptContent respjson.Field
-		CanRetry                respjson.Field
-		DeveloperMessage        respjson.Field
-		RetryAfterMs            respjson.Field
-		ExtraFields             map[string]respjson.Field
-		raw                     string
-	} `json:"-"`
+	Message                 string                              `json:"message,required"`
+	AdditionalPromptContent string                              `json:"additional_prompt_content"`
+	CanRetry                bool                                `json:"can_retry"`
+	DeveloperMessage        string                              `json:"developer_message"`
+	RetryAfterMs            int64                               `json:"retry_after_ms"`
+	JSON                    toolExecutionAttemptOutputErrorJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolExecutionAttemptOutputError) RawJSON() string { return r.JSON.raw }
-func (r *ToolExecutionAttemptOutputError) UnmarshalJSON(data []byte) error {
+// toolExecutionAttemptOutputErrorJSON contains the JSON metadata for the struct
+// [ToolExecutionAttemptOutputError]
+type toolExecutionAttemptOutputErrorJSON struct {
+	Message                 apijson.Field
+	AdditionalPromptContent apijson.Field
+	CanRetry                apijson.Field
+	DeveloperMessage        apijson.Field
+	RetryAfterMs            apijson.Field
+	raw                     string
+	ExtraFields             map[string]apijson.Field
+}
+
+func (r *ToolExecutionAttemptOutputError) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolExecutionAttemptOutputErrorJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolExecutionAttemptOutputLog struct {
-	Level   string `json:"level,required"`
-	Message string `json:"message,required"`
-	Subtype string `json:"subtype"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Level       respjson.Field
-		Message     respjson.Field
-		Subtype     respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+	Level   string                            `json:"level,required"`
+	Message string                            `json:"message,required"`
+	Subtype string                            `json:"subtype"`
+	JSON    toolExecutionAttemptOutputLogJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolExecutionAttemptOutputLog) RawJSON() string { return r.JSON.raw }
-func (r *ToolExecutionAttemptOutputLog) UnmarshalJSON(data []byte) error {
+// toolExecutionAttemptOutputLogJSON contains the JSON metadata for the struct
+// [ToolExecutionAttemptOutputLog]
+type toolExecutionAttemptOutputLogJSON struct {
+	Level       apijson.Field
+	Message     apijson.Field
+	Subtype     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ToolExecutionAttemptOutputLog) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolExecutionAttemptOutputLogJSON) RawJSON() string {
+	return r.raw
 }
 
 type ValueSchema struct {
-	ValType      string   `json:"val_type,required"`
-	Enum         []string `json:"enum"`
-	InnerValType string   `json:"inner_val_type"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ValType      respjson.Field
-		Enum         respjson.Field
-		InnerValType respjson.Field
-		ExtraFields  map[string]respjson.Field
-		raw          string
-	} `json:"-"`
+	ValType      string          `json:"val_type,required"`
+	Enum         []string        `json:"enum"`
+	InnerValType string          `json:"inner_val_type"`
+	JSON         valueSchemaJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ValueSchema) RawJSON() string { return r.JSON.raw }
-func (r *ValueSchema) UnmarshalJSON(data []byte) error {
+// valueSchemaJSON contains the JSON metadata for the struct [ValueSchema]
+type valueSchemaJSON struct {
+	ValType      apijson.Field
+	Enum         apijson.Field
+	InnerValType apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
+}
+
+func (r *ValueSchema) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r valueSchemaJSON) RawJSON() string {
+	return r.raw
+}
+
 type ToolListParams struct {
-	// Number of items to return (default: 25, max: 100)
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
-	// Offset from the start of the list (default: 0)
-	Offset param.Opt[int64] `query:"offset,omitzero" json:"-"`
-	// Toolkit name
-	Toolkit param.Opt[string] `query:"toolkit,omitzero" json:"-"`
 	// Comma separated tool formats that will be included in the response.
-	//
-	// Any of "arcade", "openai", "anthropic".
-	IncludeFormat []string `query:"include_format,omitzero" json:"-"`
-	paramObj
+	IncludeFormat param.Field[[]ToolListParamsIncludeFormat] `query:"include_format"`
+	// Number of items to return (default: 25, max: 100)
+	Limit param.Field[int64] `query:"limit"`
+	// Offset from the start of the list (default: 0)
+	Offset param.Field[int64] `query:"offset"`
+	// Toolkit name
+	Toolkit param.Field[string] `query:"toolkit"`
 }
 
 // URLQuery serializes [ToolListParams]'s query parameters as `url.Values`.
-func (r ToolListParams) URLQuery() (v url.Values, err error) {
+func (r ToolListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
+type ToolListParamsIncludeFormat string
+
+const (
+	ToolListParamsIncludeFormatArcade    ToolListParamsIncludeFormat = "arcade"
+	ToolListParamsIncludeFormatOpenAI    ToolListParamsIncludeFormat = "openai"
+	ToolListParamsIncludeFormatAnthropic ToolListParamsIncludeFormat = "anthropic"
+)
+
+func (r ToolListParamsIncludeFormat) IsKnown() bool {
+	switch r {
+	case ToolListParamsIncludeFormatArcade, ToolListParamsIncludeFormatOpenAI, ToolListParamsIncludeFormatAnthropic:
+		return true
+	}
+	return false
+}
+
 type ToolAuthorizeParams struct {
-	AuthorizeToolRequest AuthorizeToolRequestParam
-	paramObj
+	AuthorizeToolRequest AuthorizeToolRequestParam `json:"authorize_tool_request,required"`
 }
 
 func (r ToolAuthorizeParams) MarshalJSON() (data []byte, err error) {
-	return json.Marshal(r.AuthorizeToolRequest)
-}
-func (r *ToolAuthorizeParams) UnmarshalJSON(data []byte) error {
-	return r.AuthorizeToolRequest.UnmarshalJSON(data)
+	return apijson.MarshalRoot(r.AuthorizeToolRequest)
 }
 
 type ToolExecuteParams struct {
-	ExecuteToolRequest ExecuteToolRequestParam
-	paramObj
+	ExecuteToolRequest ExecuteToolRequestParam `json:"execute_tool_request,required"`
 }
 
 func (r ToolExecuteParams) MarshalJSON() (data []byte, err error) {
-	return json.Marshal(r.ExecuteToolRequest)
-}
-func (r *ToolExecuteParams) UnmarshalJSON(data []byte) error {
-	return r.ExecuteToolRequest.UnmarshalJSON(data)
+	return apijson.MarshalRoot(r.ExecuteToolRequest)
 }
 
 type ToolGetParams struct {
 	// Comma separated tool formats that will be included in the response.
-	//
-	// Any of "arcade", "openai", "anthropic".
-	IncludeFormat []string `query:"include_format,omitzero" json:"-"`
-	paramObj
+	IncludeFormat param.Field[[]ToolGetParamsIncludeFormat] `query:"include_format"`
 }
 
 // URLQuery serializes [ToolGetParams]'s query parameters as `url.Values`.
-func (r ToolGetParams) URLQuery() (v url.Values, err error) {
+func (r ToolGetParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
+}
+
+type ToolGetParamsIncludeFormat string
+
+const (
+	ToolGetParamsIncludeFormatArcade    ToolGetParamsIncludeFormat = "arcade"
+	ToolGetParamsIncludeFormatOpenAI    ToolGetParamsIncludeFormat = "openai"
+	ToolGetParamsIncludeFormatAnthropic ToolGetParamsIncludeFormat = "anthropic"
+)
+
+func (r ToolGetParamsIncludeFormat) IsKnown() bool {
+	switch r {
+	case ToolGetParamsIncludeFormatArcade, ToolGetParamsIncludeFormatOpenAI, ToolGetParamsIncludeFormatAnthropic:
+		return true
+	}
+	return false
 }
