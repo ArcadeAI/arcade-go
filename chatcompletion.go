@@ -1,12 +1,12 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine
+package arcadego
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 
+	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
 	"github.com/ArcadeAI/arcade-go/option"
 )
@@ -24,8 +24,8 @@ type ChatCompletionService struct {
 // NewChatCompletionService generates a new service that applies the given options
 // to each request. These options are applied after the parent client's options (if
 // there is one), and before any request-specific options.
-func NewChatCompletionService(opts ...option.RequestOption) (r ChatCompletionService) {
-	r = ChatCompletionService{}
+func NewChatCompletionService(opts ...option.RequestOption) (r *ChatCompletionService) {
+	r = &ChatCompletionService{}
 	r.Options = opts
 	return
 }
@@ -39,13 +39,9 @@ func (r *ChatCompletionService) New(ctx context.Context, body ChatCompletionNewP
 }
 
 type ChatCompletionNewParams struct {
-	ChatRequest ChatRequestParam
-	paramObj
+	ChatRequest ChatRequestParam `json:"chat_request,required"`
 }
 
 func (r ChatCompletionNewParams) MarshalJSON() (data []byte, err error) {
-	return json.Marshal(r.ChatRequest)
-}
-func (r *ChatCompletionNewParams) UnmarshalJSON(data []byte) error {
-	return r.ChatRequest.UnmarshalJSON(data)
+	return apijson.MarshalRoot(r.ChatRequest)
 }

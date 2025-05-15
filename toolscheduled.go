@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package arcadeengine
+package arcadego
 
 import (
 	"context"
@@ -11,11 +11,10 @@ import (
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/apiquery"
+	"github.com/ArcadeAI/arcade-go/internal/param"
 	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
 	"github.com/ArcadeAI/arcade-go/option"
 	"github.com/ArcadeAI/arcade-go/packages/pagination"
-	"github.com/ArcadeAI/arcade-go/packages/param"
-	"github.com/ArcadeAI/arcade-go/packages/respjson"
 )
 
 // ToolScheduledService contains methods and other services that help with
@@ -31,8 +30,8 @@ type ToolScheduledService struct {
 // NewToolScheduledService generates a new service that applies the given options
 // to each request. These options are applied after the parent client's options (if
 // there is one), and before any request-specific options.
-func NewToolScheduledService(opts ...option.RequestOption) (r ToolScheduledService) {
-	r = ToolScheduledService{}
+func NewToolScheduledService(opts ...option.RequestOption) (r *ToolScheduledService) {
+	r = &ToolScheduledService{}
 	r.Options = opts
 	return
 }
@@ -73,58 +72,62 @@ func (r *ToolScheduledService) Get(ctx context.Context, id string, opts ...optio
 }
 
 type ToolScheduledGetResponse struct {
-	ID              string                 `json:"id"`
-	Attempts        []ToolExecutionAttempt `json:"attempts"`
-	CreatedAt       string                 `json:"created_at"`
-	ExecutionStatus string                 `json:"execution_status"`
-	ExecutionType   string                 `json:"execution_type"`
-	FinishedAt      string                 `json:"finished_at"`
-	Input           map[string]any         `json:"input"`
-	RunAt           string                 `json:"run_at"`
-	StartedAt       string                 `json:"started_at"`
-	ToolName        string                 `json:"tool_name"`
-	ToolkitName     string                 `json:"toolkit_name"`
-	ToolkitVersion  string                 `json:"toolkit_version"`
-	UpdatedAt       string                 `json:"updated_at"`
-	UserID          string                 `json:"user_id"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID              respjson.Field
-		Attempts        respjson.Field
-		CreatedAt       respjson.Field
-		ExecutionStatus respjson.Field
-		ExecutionType   respjson.Field
-		FinishedAt      respjson.Field
-		Input           respjson.Field
-		RunAt           respjson.Field
-		StartedAt       respjson.Field
-		ToolName        respjson.Field
-		ToolkitName     respjson.Field
-		ToolkitVersion  respjson.Field
-		UpdatedAt       respjson.Field
-		UserID          respjson.Field
-		ExtraFields     map[string]respjson.Field
-		raw             string
-	} `json:"-"`
+	ID              string                       `json:"id"`
+	Attempts        []ToolExecutionAttempt       `json:"attempts"`
+	CreatedAt       string                       `json:"created_at"`
+	ExecutionStatus string                       `json:"execution_status"`
+	ExecutionType   string                       `json:"execution_type"`
+	FinishedAt      string                       `json:"finished_at"`
+	Input           map[string]interface{}       `json:"input"`
+	RunAt           string                       `json:"run_at"`
+	StartedAt       string                       `json:"started_at"`
+	ToolName        string                       `json:"tool_name"`
+	ToolkitName     string                       `json:"toolkit_name"`
+	ToolkitVersion  string                       `json:"toolkit_version"`
+	UpdatedAt       string                       `json:"updated_at"`
+	UserID          string                       `json:"user_id"`
+	JSON            toolScheduledGetResponseJSON `json:"-"`
 }
 
-// Returns the unmodified JSON received from the API
-func (r ToolScheduledGetResponse) RawJSON() string { return r.JSON.raw }
-func (r *ToolScheduledGetResponse) UnmarshalJSON(data []byte) error {
+// toolScheduledGetResponseJSON contains the JSON metadata for the struct
+// [ToolScheduledGetResponse]
+type toolScheduledGetResponseJSON struct {
+	ID              apijson.Field
+	Attempts        apijson.Field
+	CreatedAt       apijson.Field
+	ExecutionStatus apijson.Field
+	ExecutionType   apijson.Field
+	FinishedAt      apijson.Field
+	Input           apijson.Field
+	RunAt           apijson.Field
+	StartedAt       apijson.Field
+	ToolName        apijson.Field
+	ToolkitName     apijson.Field
+	ToolkitVersion  apijson.Field
+	UpdatedAt       apijson.Field
+	UserID          apijson.Field
+	raw             string
+	ExtraFields     map[string]apijson.Field
+}
+
+func (r *ToolScheduledGetResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolScheduledGetResponseJSON) RawJSON() string {
+	return r.raw
 }
 
 type ToolScheduledListParams struct {
 	// Number of items to return (default: 25, max: 100)
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	Limit param.Field[int64] `query:"limit"`
 	// Offset from the start of the list (default: 0)
-	Offset param.Opt[int64] `query:"offset,omitzero" json:"-"`
-	paramObj
+	Offset param.Field[int64] `query:"offset"`
 }
 
 // URLQuery serializes [ToolScheduledListParams]'s query parameters as
 // `url.Values`.
-func (r ToolScheduledListParams) URLQuery() (v url.Values, err error) {
+func (r ToolScheduledListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
