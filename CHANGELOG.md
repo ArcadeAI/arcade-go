@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2025-05-16)
+
+Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
+
+### Chores
+
+* **internal:** codegen related update ([a140cf7](https://github.com/ArcadeAI/arcade-go/commit/a140cf733cfd686b47d7312419aa800a33d7db5c))
+
 ## 0.1.0-alpha.1 (2025-05-15)
 
 Full Changelog: [v0.0.1-alpha.0...v0.1.0-alpha.1](https://github.com/ArcadeAI/arcade-go/compare/v0.0.1-alpha.0...v0.1.0-alpha.1)
