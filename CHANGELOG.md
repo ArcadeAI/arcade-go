@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2025-05-22)
+
+Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
+
+### Chores
+
+* **docs:** grammar improvements ([23555d5](https://github.com/ArcadeAI/arcade-go/commit/23555d5f4124638a7899e2c633072174effd80c9))
+* improve devcontainer setup ([590f78f](https://github.com/ArcadeAI/arcade-go/commit/590f78fb7f1187c622d8145783f84f09d2e737dd))
+* **internal:** codegen related update ([a140cf7](https://github.com/ArcadeAI/arcade-go/commit/a140cf733cfd686b47d7312419aa800a33d7db5c))
+
 ## 0.1.0-alpha.1 (2025-05-15)
 
 Full Changelog: [v0.0.1-alpha.0...v0.1.0-alpha.1](https://github.com/ArcadeAI/arcade-go/compare/v0.0.1-alpha.0...v0.1.0-alpha.1)
