@@ -55,6 +55,9 @@ func (r *AuthService) Status(ctx context.Context, query AuthStatusParams, opts .
 type AuthRequestParam struct {
 	AuthRequirement param.Field[AuthRequestAuthRequirementParam] `json:"auth_requirement,required"`
 	UserID          param.Field[string]                          `json:"user_id,required"`
+	// Optional: if provided, the user will be redirected to this URI after
+	// authorization
+	NextUri param.Field[string] `json:"next_uri"`
 }
 
 func (r AuthRequestParam) MarshalJSON() (data []byte, err error) {
