@@ -13,7 +13,7 @@ import (
 	"github.com/ArcadeAI/arcade-go/option"
 )
 
-func TestAuthAuthorize(t *testing.T) {
+func TestAuthAuthorizeWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -35,7 +35,8 @@ func TestAuthAuthorize(t *testing.T) {
 				ProviderID:   arcadego.F("provider_id"),
 				ProviderType: arcadego.F("provider_type"),
 			}),
-			UserID: arcadego.F("user_id"),
+			UserID:  arcadego.F("user_id"),
+			NextUri: arcadego.F("next_uri"),
 		},
 	})
 	if err != nil {

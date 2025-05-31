@@ -96,6 +96,9 @@ func (r *ToolService) Get(ctx context.Context, name string, query ToolGetParams,
 
 type AuthorizeToolRequestParam struct {
 	ToolName param.Field[string] `json:"tool_name,required"`
+	// Optional: if provided, the user will be redirected to this URI after
+	// authorization
+	NextUri param.Field[string] `json:"next_uri"`
 	// Optional: if not provided, any version is used
 	ToolVersion param.Field[string] `json:"tool_version"`
 	// Required only when calling with an API key

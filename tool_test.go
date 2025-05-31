@@ -55,6 +55,7 @@ func TestToolAuthorizeWithOptionalParams(t *testing.T) {
 	_, err := client.Tools.Authorize(context.TODO(), arcadego.ToolAuthorizeParams{
 		AuthorizeToolRequest: arcadego.AuthorizeToolRequestParam{
 			ToolName:    arcadego.F("tool_name"),
+			NextUri:     arcadego.F("next_uri"),
 			ToolVersion: arcadego.F("tool_version"),
 			UserID:      arcadego.F("user_id"),
 		},
