@@ -384,6 +384,7 @@ func (r toolDefinitionOutputJSON) RawJSON() string {
 
 type ToolDefinitionRequirements struct {
 	Authorization ToolDefinitionRequirementsAuthorization `json:"authorization"`
+	Met           bool                                    `json:"met"`
 	Secrets       []ToolDefinitionRequirementsSecret      `json:"secrets"`
 	JSON          toolDefinitionRequirementsJSON          `json:"-"`
 }
@@ -392,6 +393,7 @@ type ToolDefinitionRequirements struct {
 // [ToolDefinitionRequirements]
 type toolDefinitionRequirementsJSON struct {
 	Authorization apijson.Field
+	Met           apijson.Field
 	Secrets       apijson.Field
 	raw           string
 	ExtraFields   map[string]apijson.Field
@@ -406,11 +408,14 @@ func (r toolDefinitionRequirementsJSON) RawJSON() string {
 }
 
 type ToolDefinitionRequirementsAuthorization struct {
-	ID           string                                        `json:"id"`
-	Oauth2       ToolDefinitionRequirementsAuthorizationOauth2 `json:"oauth2"`
-	ProviderID   string                                        `json:"provider_id"`
-	ProviderType string                                        `json:"provider_type"`
-	JSON         toolDefinitionRequirementsAuthorizationJSON   `json:"-"`
+	ID           string                                             `json:"id"`
+	Oauth2       ToolDefinitionRequirementsAuthorizationOauth2      `json:"oauth2"`
+	ProviderID   string                                             `json:"provider_id"`
+	ProviderType string                                             `json:"provider_type"`
+	Status       ToolDefinitionRequirementsAuthorizationStatus      `json:"status"`
+	StatusReason string                                             `json:"status_reason"`
+	TokenStatus  ToolDefinitionRequirementsAuthorizationTokenStatus `json:"token_status"`
+	JSON         toolDefinitionRequirementsAuthorizationJSON        `json:"-"`
 }
 
 // toolDefinitionRequirementsAuthorizationJSON contains the JSON metadata for the
@@ -420,6 +425,9 @@ type toolDefinitionRequirementsAuthorizationJSON struct {
 	Oauth2       apijson.Field
 	ProviderID   apijson.Field
 	ProviderType apijson.Field
+	Status       apijson.Field
+	StatusReason apijson.Field
+	TokenStatus  apijson.Field
 	raw          string
 	ExtraFields  map[string]apijson.Field
 }
@@ -453,17 +461,53 @@ func (r toolDefinitionRequirementsAuthorizationOauth2JSON) RawJSON() string {
 	return r.raw
 }
 
+type ToolDefinitionRequirementsAuthorizationStatus string
+
+const (
+	ToolDefinitionRequirementsAuthorizationStatusActive   ToolDefinitionRequirementsAuthorizationStatus = "active"
+	ToolDefinitionRequirementsAuthorizationStatusInactive ToolDefinitionRequirementsAuthorizationStatus = "inactive"
+)
+
+func (r ToolDefinitionRequirementsAuthorizationStatus) IsKnown() bool {
+	switch r {
+	case ToolDefinitionRequirementsAuthorizationStatusActive, ToolDefinitionRequirementsAuthorizationStatusInactive:
+		return true
+	}
+	return false
+}
+
+type ToolDefinitionRequirementsAuthorizationTokenStatus string
+
+const (
+	ToolDefinitionRequirementsAuthorizationTokenStatusNotStarted ToolDefinitionRequirementsAuthorizationTokenStatus = "not_started"
+	ToolDefinitionRequirementsAuthorizationTokenStatusPending    ToolDefinitionRequirementsAuthorizationTokenStatus = "pending"
+	ToolDefinitionRequirementsAuthorizationTokenStatusCompleted  ToolDefinitionRequirementsAuthorizationTokenStatus = "completed"
+	ToolDefinitionRequirementsAuthorizationTokenStatusFailed     ToolDefinitionRequirementsAuthorizationTokenStatus = "failed"
+)
+
+func (r ToolDefinitionRequirementsAuthorizationTokenStatus) IsKnown() bool {
+	switch r {
+	case ToolDefinitionRequirementsAuthorizationTokenStatusNotStarted, ToolDefinitionRequirementsAuthorizationTokenStatusPending, ToolDefinitionRequirementsAuthorizationTokenStatusCompleted, ToolDefinitionRequirementsAuthorizationTokenStatusFailed:
+		return true
+	}
+	return false
+}
+
 type ToolDefinitionRequirementsSecret struct {
-	Key  string                               `json:"key,required"`
-	JSON toolDefinitionRequirementsSecretJSON `json:"-"`
+	Key          string                               `json:"key,required"`
+	Met          bool                                 `json:"met"`
+	StatusReason string                               `json:"status_reason"`
+	JSON         toolDefinitionRequirementsSecretJSON `json:"-"`
 }
 
 // toolDefinitionRequirementsSecretJSON contains the JSON metadata for the struct
 // [ToolDefinitionRequirementsSecret]
 type toolDefinitionRequirementsSecretJSON struct {
-	Key         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	Key          apijson.Field
+	Met          apijson.Field
+	StatusReason apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
 }
 
 func (r *ToolDefinitionRequirementsSecret) UnmarshalJSON(data []byte) (err error) {
@@ -661,6 +705,8 @@ type ToolListParams struct {
 	Offset param.Field[int64] `query:"offset"`
 	// Toolkit name
 	Toolkit param.Field[string] `query:"toolkit"`
+	// User ID
+	UserID param.Field[string] `query:"user_id"`
 }
 
 // URLQuery serializes [ToolListParams]'s query parameters as `url.Values`.
@@ -706,6 +752,8 @@ func (r ToolExecuteParams) MarshalJSON() (data []byte, err error) {
 type ToolGetParams struct {
 	// Comma separated tool formats that will be included in the response.
 	IncludeFormat param.Field[[]ToolGetParamsIncludeFormat] `query:"include_format"`
+	// User ID
+	UserID param.Field[string] `query:"user_id"`
 }
 
 // URLQuery serializes [ToolGetParams]'s query parameters as `url.Values`.

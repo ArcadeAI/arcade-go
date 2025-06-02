@@ -19,6 +19,9 @@ type AuthorizationResponse = shared.AuthorizationResponse
 type AuthorizationResponseStatus = shared.AuthorizationResponseStatus
 
 // This is an alias to an internal value.
+const AuthorizationResponseStatusNotStarted = shared.AuthorizationResponseStatusNotStarted
+
+// This is an alias to an internal value.
 const AuthorizationResponseStatusPending = shared.AuthorizationResponseStatusPending
 
 // This is an alias to an internal value.
