@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2025-06-02)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
+
+### Features
+
+* **api:** api update ([2fa3956](https://github.com/ArcadeAI/arcade-go/commit/2fa395681a437f4383d51caf3f62bed61ccd8637))
+* **api:** api update ([c9fbba8](https://github.com/ArcadeAI/arcade-go/commit/c9fbba8e1b2030d6ab6cf360084d3f3ba19db664))
+* **api:** api update ([82664be](https://github.com/ArcadeAI/arcade-go/commit/82664be71e4c8eeaf8a1b436fe5c9e9bd905a888))
+* **api:** api update ([017f6c9](https://github.com/ArcadeAI/arcade-go/commit/017f6c919b1e6067bffe8ade3e528a7f24e91df3))
+
+
+### Chores
+
+* make go mod tidy continue on error ([cff5b5a](https://github.com/ArcadeAI/arcade-go/commit/cff5b5a97e7fa025c0d75aaa1840ea5c67035d4a))
+
 ## 0.1.0-alpha.2 (2025-05-22)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
