@@ -30,7 +30,6 @@ func TestToolListWithOptionalParams(t *testing.T) {
 		Limit:         arcadego.F(int64(0)),
 		Offset:        arcadego.F(int64(0)),
 		Toolkit:       arcadego.F("toolkit"),
-		UserID:        arcadego.F("user_id"),
 	})
 	if err != nil {
 		var apierr *arcadego.Error
@@ -119,7 +118,6 @@ func TestToolGetWithOptionalParams(t *testing.T) {
 		"name",
 		arcadego.ToolGetParams{
 			IncludeFormat: arcadego.F([]arcadego.ToolGetParamsIncludeFormat{arcadego.ToolGetParamsIncludeFormatArcade}),
-			UserID:        arcadego.F("user_id"),
 		},
 	)
 	if err != nil {

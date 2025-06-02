@@ -65,15 +65,14 @@ func (r authorizationResponseJSON) RawJSON() string {
 type AuthorizationResponseStatus string
 
 const (
-	AuthorizationResponseStatusNotStarted AuthorizationResponseStatus = "not_started"
-	AuthorizationResponseStatusPending    AuthorizationResponseStatus = "pending"
-	AuthorizationResponseStatusCompleted  AuthorizationResponseStatus = "completed"
-	AuthorizationResponseStatusFailed     AuthorizationResponseStatus = "failed"
+	AuthorizationResponseStatusPending   AuthorizationResponseStatus = "pending"
+	AuthorizationResponseStatusCompleted AuthorizationResponseStatus = "completed"
+	AuthorizationResponseStatusFailed    AuthorizationResponseStatus = "failed"
 )
 
 func (r AuthorizationResponseStatus) IsKnown() bool {
 	switch r {
-	case AuthorizationResponseStatusNotStarted, AuthorizationResponseStatusPending, AuthorizationResponseStatusCompleted, AuthorizationResponseStatusFailed:
+	case AuthorizationResponseStatusPending, AuthorizationResponseStatusCompleted, AuthorizationResponseStatusFailed:
 		return true
 	}
 	return false
