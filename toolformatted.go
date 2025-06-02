@@ -85,6 +85,8 @@ type ToolFormattedListParams struct {
 	Offset param.Field[int64] `query:"offset"`
 	// Toolkit name
 	Toolkit param.Field[string] `query:"toolkit"`
+	// User ID
+	UserID param.Field[string] `query:"user_id"`
 }
 
 // URLQuery serializes [ToolFormattedListParams]'s query parameters as
@@ -99,6 +101,8 @@ func (r ToolFormattedListParams) URLQuery() (v url.Values) {
 type ToolFormattedGetParams struct {
 	// Provider format
 	Format param.Field[string] `query:"format"`
+	// User ID
+	UserID param.Field[string] `query:"user_id"`
 }
 
 // URLQuery serializes [ToolFormattedGetParams]'s query parameters as `url.Values`.
