@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.0-alpha.4 (2025-06-17)
+
+Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
+
+### Features
+
+* **api:** api update ([bba7103](https://github.com/ArcadeAI/arcade-go/commit/bba71031deb77de2ea933bbab4aee56ac17cffbf))
+* **client:** add debug log helper ([8deaa37](https://github.com/ArcadeAI/arcade-go/commit/8deaa37a7d4d29ad1ed9b279e21243c65d915a54))
+
+
+### Chores
+
+* **ci:** enable for pull requests ([0f849ce](https://github.com/ArcadeAI/arcade-go/commit/0f849cecbe50fa2f8d564b63e6d3c26e9365cbb1))
+
 ## 0.1.0-alpha.3 (2025-06-02)
 
 Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
