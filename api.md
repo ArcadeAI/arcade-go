@@ -3,6 +3,51 @@
 - <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/shared#AuthorizationContext">AuthorizationContext</a>
 - <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/shared#AuthorizationResponse">AuthorizationResponse</a>
 
+# Admin
+
+## UserConnections
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#UserConnectionResponse">UserConnectionResponse</a>
+
+Methods:
+
+- <code title="get /v1/admin/user_connections">client.Admin.UserConnections.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminUserConnectionService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminUserConnectionListParams">AdminUserConnectionListParams</a>) (<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/packages/pagination#OffsetPage">OffsetPage</a>[<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#UserConnectionResponse">UserConnectionResponse</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="delete /v1/admin/user_connections/{id}">client.Admin.UserConnections.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminUserConnectionService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) <a href="https://pkg.go.dev/builtin#error">error</a></code>
+
+## AuthProviders
+
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthProviderCreateRequestParam">AuthProviderCreateRequestParam</a>
+- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthProviderUpdateRequestParam">AuthProviderUpdateRequestParam</a>
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthProviderResponse">AuthProviderResponse</a>
+- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminAuthProviderListResponse">AdminAuthProviderListResponse</a>
+
+Methods:
+
+- <code title="post /v1/admin/auth_providers">client.Admin.AuthProviders.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminAuthProviderService.New">New</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminAuthProviderNewParams">AdminAuthProviderNewParams</a>) (<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthProviderResponse">AuthProviderResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /v1/admin/auth_providers">client.Admin.AuthProviders.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminAuthProviderService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>) (<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminAuthProviderListResponse">AdminAuthProviderListResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="delete /v1/admin/auth_providers/{id}">client.Admin.AuthProviders.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminAuthProviderService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthProviderResponse">AuthProviderResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /v1/admin/auth_providers/{id}">client.Admin.AuthProviders.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminAuthProviderService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthProviderResponse">AuthProviderResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="patch /v1/admin/auth_providers/{id}">client.Admin.AuthProviders.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminAuthProviderService.Patch">Patch</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminAuthProviderPatchParams">AdminAuthProviderPatchParams</a>) (<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthProviderResponse">AuthProviderResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
+## Secrets
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#SecretResponse">SecretResponse</a>
+- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminSecretListResponse">AdminSecretListResponse</a>
+
+Methods:
+
+- <code title="get /v1/admin/secrets">client.Admin.Secrets.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminSecretService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>) (<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminSecretListResponse">AdminSecretListResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="delete /v1/admin/secrets/{secret_id}">client.Admin.Secrets.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AdminSecretService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, secretID <a href="https://pkg.go.dev/builtin#string">string</a>) <a href="https://pkg.go.dev/builtin#error">error</a></code>
+
 # Auth
 
 Params Types:
