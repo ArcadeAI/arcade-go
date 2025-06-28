@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.0-alpha.5 (2025-06-28)
+
+Full Changelog: [v0.1.0-alpha.4...v0.1.0-alpha.5](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.4...v0.1.0-alpha.5)
+
+### Bug Fixes
+
+* don't try to deserialize as json when ResponseBodyInto is []byte ([8bd111c](https://github.com/ArcadeAI/arcade-go/commit/8bd111cff7a9554f168e964bf8c5ef693b18a106))
+* **pagination:** check if page data is empty in GetNextPage ([25a1c31](https://github.com/ArcadeAI/arcade-go/commit/25a1c31e4b24d0d1b66b84e623779b994ae77977))
+
+
+### Chores
+
+* **ci:** only run for pushes and fork pull requests ([1219e03](https://github.com/ArcadeAI/arcade-go/commit/1219e03267fd9633c409a330880bdf2f0f04fd56))
+
 ## 0.1.0-alpha.4 (2025-06-17)
 
 Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
