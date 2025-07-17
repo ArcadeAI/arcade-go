@@ -96,9 +96,6 @@ func (r *ToolService) Get(ctx context.Context, name string, query ToolGetParams,
 
 type AuthorizeToolRequestParam struct {
 	ToolName param.Field[string] `json:"tool_name,required"`
-	// Optional: if true, the user will be forced to verify their identity (strict
-	// session check). TODO: Remove as soon as this is the default for everyone.
-	ForceVerification param.Field[bool] `json:"force_verification"`
 	// Optional: if provided, the user will be redirected to this URI after
 	// authorization
 	NextUri param.Field[string] `json:"next_uri"`

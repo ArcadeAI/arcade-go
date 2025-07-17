@@ -35,9 +35,8 @@ func TestAuthAuthorizeWithOptionalParams(t *testing.T) {
 				ProviderID:   arcadego.F("provider_id"),
 				ProviderType: arcadego.F("provider_type"),
 			}),
-			UserID:            arcadego.F("user_id"),
-			ForceVerification: arcadego.F(true),
-			NextUri:           arcadego.F("next_uri"),
+			UserID:  arcadego.F("user_id"),
+			NextUri: arcadego.F("next_uri"),
 		},
 	})
 	if err != nil {
