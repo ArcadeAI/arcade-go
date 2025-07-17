@@ -53,10 +53,16 @@ Methods:
 Params Types:
 
 - <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthRequestParam">AuthRequestParam</a>
+- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ConfirmUserRequestParam">ConfirmUserRequestParam</a>
+
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ConfirmUserResponse">ConfirmUserResponse</a>
 
 Methods:
 
 - <code title="post /v1/auth/authorize">client.Auth.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthService.Authorize">Authorize</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthAuthorizeParams">AuthAuthorizeParams</a>) (<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/shared#AuthorizationResponse">AuthorizationResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="post /v1/auth/confirm_user">client.Auth.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthService.ConfirmUser">ConfirmUser</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthConfirmUserParams">AuthConfirmUserParams</a>) (<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ConfirmUserResponse">ConfirmUserResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v1/auth/status">client.Auth.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthService.Status">Status</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#AuthStatusParams">AuthStatusParams</a>) (<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/shared#AuthorizationResponse">AuthorizationResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Health

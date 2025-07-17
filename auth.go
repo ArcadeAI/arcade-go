@@ -42,6 +42,14 @@ func (r *AuthService) Authorize(ctx context.Context, body AuthAuthorizeParams, o
 	return
 }
 
+// Confirms a user's details during an authorization flow
+func (r *AuthService) ConfirmUser(ctx context.Context, body AuthConfirmUserParams, opts ...option.RequestOption) (res *ConfirmUserResponse, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "v1/auth/confirm_user"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Checks the status of an ongoing authorization process for a specific tool. If
 // 'wait' param is present, does not respond until either the auth status becomes
 // completed or the timeout is reached.
@@ -85,12 +93,52 @@ func (r AuthRequestAuthRequirementOauth2Param) MarshalJSON() (data []byte, err e
 	return apijson.MarshalRoot(r)
 }
 
+type ConfirmUserRequestParam struct {
+	FlowID param.Field[string] `json:"flow_id,required"`
+	UserID param.Field[string] `json:"user_id,required"`
+}
+
+func (r ConfirmUserRequestParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type ConfirmUserResponse struct {
+	AuthID  string                  `json:"auth_id,required"`
+	NextUri string                  `json:"next_uri"`
+	JSON    confirmUserResponseJSON `json:"-"`
+}
+
+// confirmUserResponseJSON contains the JSON metadata for the struct
+// [ConfirmUserResponse]
+type confirmUserResponseJSON struct {
+	AuthID      apijson.Field
+	NextUri     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ConfirmUserResponse) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r confirmUserResponseJSON) RawJSON() string {
+	return r.raw
+}
+
 type AuthAuthorizeParams struct {
 	AuthRequest AuthRequestParam `json:"auth_request,required"`
 }
 
 func (r AuthAuthorizeParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r.AuthRequest)
+}
+
+type AuthConfirmUserParams struct {
+	ConfirmUserRequest ConfirmUserRequestParam `json:"confirm_user_request,required"`
+}
+
+func (r AuthConfirmUserParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r.ConfirmUserRequest)
 }
 
 type AuthStatusParams struct {
