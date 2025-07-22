@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.1.0-alpha.5 (2025-07-22)
+
+Full Changelog: [v0.1.0-alpha.4...v0.1.0-alpha.5](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.4...v0.1.0-alpha.5)
+
+### Features
+
+* **api:** api update ([36a34f6](https://github.com/ArcadeAI/arcade-go/commit/36a34f6cd98540ac3bb383842bf8d486f66b844a))
+* **api:** api update ([5663810](https://github.com/ArcadeAI/arcade-go/commit/56638109c998c66426e9a3587683756269398d2e))
+* **api:** api update ([9182cae](https://github.com/ArcadeAI/arcade-go/commit/9182cae9dc6d4533840cec781c321127a1f6e3de))
+
+
+### Bug Fixes
+
+* **client:** process custom base url ahead of time ([9aa7161](https://github.com/ArcadeAI/arcade-go/commit/9aa7161c88a53779baf18223a1d37433bebbf6dc))
+* don't try to deserialize as json when ResponseBodyInto is []byte ([8bd111c](https://github.com/ArcadeAI/arcade-go/commit/8bd111cff7a9554f168e964bf8c5ef693b18a106))
+* **pagination:** check if page data is empty in GetNextPage ([25a1c31](https://github.com/ArcadeAI/arcade-go/commit/25a1c31e4b24d0d1b66b84e623779b994ae77977))
+
+
+### Chores
+
+* **ci:** only run for pushes and fork pull requests ([1219e03](https://github.com/ArcadeAI/arcade-go/commit/1219e03267fd9633c409a330880bdf2f0f04fd56))
+* **internal:** fix lint script for tests ([9e3ac8e](https://github.com/ArcadeAI/arcade-go/commit/9e3ac8e3416d37e82bee0d4a86ce2815b3d7cd54))
+* lint tests ([90b7660](https://github.com/ArcadeAI/arcade-go/commit/90b76607f527f2733aca8cf29ce1a37f14505a2b))
+* lint tests in subpackages ([e81cd75](https://github.com/ArcadeAI/arcade-go/commit/e81cd75b46ecb6457ef6f84b6c51b9b9fd159145))
+
 ## 0.1.0-alpha.4 (2025-06-17)
 
 Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
