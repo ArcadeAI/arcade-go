@@ -86,12 +86,14 @@ func (r *AdminAuthProviderService) Patch(ctx context.Context, id string, body Ad
 }
 
 type AuthProviderCreateRequestParam struct {
-	ID          param.Field[string]                               `json:"id,required"`
-	Description param.Field[string]                               `json:"description"`
-	Oauth2      param.Field[AuthProviderCreateRequestOauth2Param] `json:"oauth2"`
-	ProviderID  param.Field[string]                               `json:"provider_id"`
-	Status      param.Field[string]                               `json:"status"`
-	Type        param.Field[string]                               `json:"type"`
+	ID          param.Field[string] `json:"id,required"`
+	Description param.Field[string] `json:"description"`
+	// The unique external ID for the auth provider
+	ExternalID param.Field[string]                               `json:"external_id"`
+	Oauth2     param.Field[AuthProviderCreateRequestOauth2Param] `json:"oauth2"`
+	ProviderID param.Field[string]                               `json:"provider_id"`
+	Status     param.Field[string]                               `json:"status"`
+	Type       param.Field[string]                               `json:"type"`
 }
 
 func (r AuthProviderCreateRequestParam) MarshalJSON() (data []byte, err error) {
@@ -456,10 +458,12 @@ func (r AuthProviderResponseBindingType) IsKnown() bool {
 }
 
 type AuthProviderResponseOauth2 struct {
-	AuthorizeRequest          AuthProviderResponseOauth2AuthorizeRequest          `json:"authorize_request"`
-	ClientID                  string                                              `json:"client_id"`
-	ClientSecret              AuthProviderResponseOauth2ClientSecret              `json:"client_secret"`
-	Pkce                      AuthProviderResponseOauth2Pkce                      `json:"pkce"`
+	AuthorizeRequest AuthProviderResponseOauth2AuthorizeRequest `json:"authorize_request"`
+	ClientID         string                                     `json:"client_id"`
+	ClientSecret     AuthProviderResponseOauth2ClientSecret     `json:"client_secret"`
+	Pkce             AuthProviderResponseOauth2Pkce             `json:"pkce"`
+	// The redirect URI required for this provider.
+	RedirectUri               string                                              `json:"redirect_uri"`
 	RefreshRequest            AuthProviderResponseOauth2RefreshRequest            `json:"refresh_request"`
 	ScopeDelimiter            string                                              `json:"scope_delimiter"`
 	TokenIntrospectionRequest AuthProviderResponseOauth2TokenIntrospectionRequest `json:"token_introspection_request"`
@@ -475,6 +479,7 @@ type authProviderResponseOauth2JSON struct {
 	ClientID                  apijson.Field
 	ClientSecret              apijson.Field
 	Pkce                      apijson.Field
+	RedirectUri               apijson.Field
 	RefreshRequest            apijson.Field
 	ScopeDelimiter            apijson.Field
 	TokenIntrospectionRequest apijson.Field
