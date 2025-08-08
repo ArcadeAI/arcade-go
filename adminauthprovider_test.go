@@ -29,6 +29,7 @@ func TestAdminAuthProviderNewWithOptionalParams(t *testing.T) {
 		AuthProviderCreateRequest: arcadego.AuthProviderCreateRequestParam{
 			ID:          arcadego.F("id"),
 			Description: arcadego.F("description"),
+			ExternalID:  arcadego.F("external_id"),
 			Oauth2: arcadego.F(arcadego.AuthProviderCreateRequestOauth2Param{
 				ClientID: arcadego.F("client_id"),
 				AuthorizeRequest: arcadego.F(arcadego.AuthProviderCreateRequestOauth2AuthorizeRequestParam{
