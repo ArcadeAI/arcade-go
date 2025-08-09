@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.1.0-alpha.6 (2025-08-09)
+
+Full Changelog: [v0.1.0-alpha.5...v0.1.0-alpha.6](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.5...v0.1.0-alpha.6)
+
+### Features
+
+* **api:** api update ([d415981](https://github.com/ArcadeAI/arcade-go/commit/d415981f968576b7ede48267a12dffcc5ee2c244))
+* **client:** support optional json html escaping ([d8fd3c5](https://github.com/ArcadeAI/arcade-go/commit/d8fd3c5589c6b87726d5dcd0261062700dd37981))
+
+
+### Chores
+
+* **internal:** update comment in script ([9e4da4c](https://github.com/ArcadeAI/arcade-go/commit/9e4da4c48e41317c1b4862006d0b938dbcbf0e85))
+* update @stainless-api/prism-cli to v5.15.0 ([9d08270](https://github.com/ArcadeAI/arcade-go/commit/9d08270477349d3fce0cebc725ae19a1670212ee))
+
 ## 0.1.0-alpha.5 (2025-07-22)
 
 Full Changelog: [v0.1.0-alpha.4...v0.1.0-alpha.5](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.4...v0.1.0-alpha.5)
