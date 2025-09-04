@@ -239,6 +239,7 @@ type WorkerResponse struct {
 	Binding WorkerResponseBinding `json:"binding"`
 	Enabled bool                  `json:"enabled"`
 	HTTP    WorkerResponseHTTP    `json:"http"`
+	Managed bool                  `json:"managed"`
 	Mcp     WorkerResponseMcp     `json:"mcp"`
 	Oxp     WorkerResponseOxp     `json:"oxp"`
 	Type    WorkerResponseType    `json:"type"`
@@ -251,6 +252,7 @@ type workerResponseJSON struct {
 	Binding     apijson.Field
 	Enabled     apijson.Field
 	HTTP        apijson.Field
+	Managed     apijson.Field
 	Mcp         apijson.Field
 	Oxp         apijson.Field
 	Type        apijson.Field
