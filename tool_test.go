@@ -84,7 +84,8 @@ func TestToolExecuteWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Tools.Execute(context.TODO(), arcadego.ToolExecuteParams{
 		ExecuteToolRequest: arcadego.ExecuteToolRequestParam{
-			ToolName: arcadego.F("tool_name"),
+			ToolName:               arcadego.F("tool_name"),
+			IncludeErrorStacktrace: arcadego.F(true),
 			Input: arcadego.F(map[string]interface{}{
 				"foo": "bar",
 			}),
