@@ -111,6 +111,9 @@ func (r AuthorizeToolRequestParam) MarshalJSON() (data []byte, err error) {
 
 type ExecuteToolRequestParam struct {
 	ToolName param.Field[string] `json:"tool_name,required"`
+	// Whether to include the error stacktrace in the response. If not provided, the
+	// error stacktrace is not included.
+	IncludeErrorStacktrace param.Field[bool] `json:"include_error_stacktrace"`
 	// JSON input to the tool, if any
 	Input param.Field[map[string]interface{}] `json:"input"`
 	// The time at which the tool should be run (optional). If not provided, the tool
@@ -193,22 +196,30 @@ func (r executeToolResponseOutputJSON) RawJSON() string {
 }
 
 type ExecuteToolResponseOutputError struct {
+	CanRetry                bool                               `json:"can_retry,required"`
+	Kind                    ExecuteToolResponseOutputErrorKind `json:"kind,required"`
 	Message                 string                             `json:"message,required"`
 	AdditionalPromptContent string                             `json:"additional_prompt_content"`
-	CanRetry                bool                               `json:"can_retry"`
 	DeveloperMessage        string                             `json:"developer_message"`
+	Extra                   map[string]interface{}             `json:"extra"`
 	RetryAfterMs            int64                              `json:"retry_after_ms"`
+	Stacktrace              string                             `json:"stacktrace"`
+	StatusCode              int64                              `json:"status_code"`
 	JSON                    executeToolResponseOutputErrorJSON `json:"-"`
 }
 
 // executeToolResponseOutputErrorJSON contains the JSON metadata for the struct
 // [ExecuteToolResponseOutputError]
 type executeToolResponseOutputErrorJSON struct {
+	CanRetry                apijson.Field
+	Kind                    apijson.Field
 	Message                 apijson.Field
 	AdditionalPromptContent apijson.Field
-	CanRetry                apijson.Field
 	DeveloperMessage        apijson.Field
+	Extra                   apijson.Field
 	RetryAfterMs            apijson.Field
+	Stacktrace              apijson.Field
+	StatusCode              apijson.Field
 	raw                     string
 	ExtraFields             map[string]apijson.Field
 }
@@ -219,6 +230,37 @@ func (r *ExecuteToolResponseOutputError) UnmarshalJSON(data []byte) (err error) 
 
 func (r executeToolResponseOutputErrorJSON) RawJSON() string {
 	return r.raw
+}
+
+type ExecuteToolResponseOutputErrorKind string
+
+const (
+	ExecuteToolResponseOutputErrorKindToolkitLoadFailed              ExecuteToolResponseOutputErrorKind = "TOOLKIT_LOAD_FAILED"
+	ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition    ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_DEFINITION"
+	ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema   ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_INPUT_SCHEMA"
+	ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema  ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_OUTPUT_SCHEMA"
+	ExecuteToolResponseOutputErrorKindToolRequirementsNotMet         ExecuteToolResponseOutputErrorKind = "TOOL_REQUIREMENTS_NOT_MET"
+	ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue       ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_BAD_INPUT_VALUE"
+	ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue      ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_BAD_OUTPUT_VALUE"
+	ExecuteToolResponseOutputErrorKindToolRuntimeRetry               ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_RETRY"
+	ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired     ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_CONTEXT_REQUIRED"
+	ExecuteToolResponseOutputErrorKindToolRuntimeFatal               ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_FATAL"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest      ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_BAD_REQUEST"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError       ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_AUTH_ERROR"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound        ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_NOT_FOUND"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_VALIDATION_ERROR"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit       ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_RATE_LIMIT"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError     ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_SERVER_ERROR"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped        ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_UNMAPPED"
+	ExecuteToolResponseOutputErrorKindUnknown                        ExecuteToolResponseOutputErrorKind = "UNKNOWN"
+)
+
+func (r ExecuteToolResponseOutputErrorKind) IsKnown() bool {
+	switch r {
+	case ExecuteToolResponseOutputErrorKindToolkitLoadFailed, ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition, ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema, ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema, ExecuteToolResponseOutputErrorKindToolRequirementsNotMet, ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue, ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue, ExecuteToolResponseOutputErrorKindToolRuntimeRetry, ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired, ExecuteToolResponseOutputErrorKindToolRuntimeFatal, ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest, ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound, ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit, ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped, ExecuteToolResponseOutputErrorKindUnknown:
+		return true
+	}
+	return false
 }
 
 type ExecuteToolResponseOutputLog struct {
@@ -619,22 +661,30 @@ func (r toolExecutionAttemptOutputJSON) RawJSON() string {
 }
 
 type ToolExecutionAttemptOutputError struct {
+	CanRetry                bool                                `json:"can_retry,required"`
+	Kind                    ToolExecutionAttemptOutputErrorKind `json:"kind,required"`
 	Message                 string                              `json:"message,required"`
 	AdditionalPromptContent string                              `json:"additional_prompt_content"`
-	CanRetry                bool                                `json:"can_retry"`
 	DeveloperMessage        string                              `json:"developer_message"`
+	Extra                   map[string]interface{}              `json:"extra"`
 	RetryAfterMs            int64                               `json:"retry_after_ms"`
+	Stacktrace              string                              `json:"stacktrace"`
+	StatusCode              int64                               `json:"status_code"`
 	JSON                    toolExecutionAttemptOutputErrorJSON `json:"-"`
 }
 
 // toolExecutionAttemptOutputErrorJSON contains the JSON metadata for the struct
 // [ToolExecutionAttemptOutputError]
 type toolExecutionAttemptOutputErrorJSON struct {
+	CanRetry                apijson.Field
+	Kind                    apijson.Field
 	Message                 apijson.Field
 	AdditionalPromptContent apijson.Field
-	CanRetry                apijson.Field
 	DeveloperMessage        apijson.Field
+	Extra                   apijson.Field
 	RetryAfterMs            apijson.Field
+	Stacktrace              apijson.Field
+	StatusCode              apijson.Field
 	raw                     string
 	ExtraFields             map[string]apijson.Field
 }
@@ -645,6 +695,37 @@ func (r *ToolExecutionAttemptOutputError) UnmarshalJSON(data []byte) (err error)
 
 func (r toolExecutionAttemptOutputErrorJSON) RawJSON() string {
 	return r.raw
+}
+
+type ToolExecutionAttemptOutputErrorKind string
+
+const (
+	ToolExecutionAttemptOutputErrorKindToolkitLoadFailed              ToolExecutionAttemptOutputErrorKind = "TOOLKIT_LOAD_FAILED"
+	ToolExecutionAttemptOutputErrorKindToolDefinitionBadDefinition    ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_DEFINITION"
+	ToolExecutionAttemptOutputErrorKindToolDefinitionBadInputSchema   ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_INPUT_SCHEMA"
+	ToolExecutionAttemptOutputErrorKindToolDefinitionBadOutputSchema  ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_OUTPUT_SCHEMA"
+	ToolExecutionAttemptOutputErrorKindToolRequirementsNotMet         ToolExecutionAttemptOutputErrorKind = "TOOL_REQUIREMENTS_NOT_MET"
+	ToolExecutionAttemptOutputErrorKindToolRuntimeBadInputValue       ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_BAD_INPUT_VALUE"
+	ToolExecutionAttemptOutputErrorKindToolRuntimeBadOutputValue      ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_BAD_OUTPUT_VALUE"
+	ToolExecutionAttemptOutputErrorKindToolRuntimeRetry               ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_RETRY"
+	ToolExecutionAttemptOutputErrorKindToolRuntimeContextRequired     ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_CONTEXT_REQUIRED"
+	ToolExecutionAttemptOutputErrorKindToolRuntimeFatal               ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_FATAL"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeBadRequest      ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_BAD_REQUEST"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeAuthError       ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_AUTH_ERROR"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeNotFound        ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_NOT_FOUND"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeValidationError ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_VALIDATION_ERROR"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeRateLimit       ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_RATE_LIMIT"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeServerError     ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_SERVER_ERROR"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeUnmapped        ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_UNMAPPED"
+	ToolExecutionAttemptOutputErrorKindUnknown                        ToolExecutionAttemptOutputErrorKind = "UNKNOWN"
+)
+
+func (r ToolExecutionAttemptOutputErrorKind) IsKnown() bool {
+	switch r {
+	case ToolExecutionAttemptOutputErrorKindToolkitLoadFailed, ToolExecutionAttemptOutputErrorKindToolDefinitionBadDefinition, ToolExecutionAttemptOutputErrorKindToolDefinitionBadInputSchema, ToolExecutionAttemptOutputErrorKindToolDefinitionBadOutputSchema, ToolExecutionAttemptOutputErrorKindToolRequirementsNotMet, ToolExecutionAttemptOutputErrorKindToolRuntimeBadInputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeBadOutputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeRetry, ToolExecutionAttemptOutputErrorKindToolRuntimeContextRequired, ToolExecutionAttemptOutputErrorKindToolRuntimeFatal, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeBadRequest, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeAuthError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeNotFound, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeValidationError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeRateLimit, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeServerError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeUnmapped, ToolExecutionAttemptOutputErrorKindUnknown:
+		return true
+	}
+	return false
 }
 
 type ToolExecutionAttemptOutputLog struct {
