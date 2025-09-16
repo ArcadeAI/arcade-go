@@ -241,7 +241,6 @@ type WorkerResponse struct {
 	HTTP    WorkerResponseHTTP    `json:"http"`
 	Managed bool                  `json:"managed"`
 	Mcp     WorkerResponseMcp     `json:"mcp"`
-	Oxp     WorkerResponseOxp     `json:"oxp"`
 	Type    WorkerResponseType    `json:"type"`
 	JSON    workerResponseJSON    `json:"-"`
 }
@@ -254,7 +253,6 @@ type workerResponseJSON struct {
 	HTTP        apijson.Field
 	Managed     apijson.Field
 	Mcp         apijson.Field
-	Oxp         apijson.Field
 	Type        apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -404,79 +402,6 @@ func (r *WorkerResponseMcp) UnmarshalJSON(data []byte) (err error) {
 
 func (r workerResponseMcpJSON) RawJSON() string {
 	return r.raw
-}
-
-type WorkerResponseOxp struct {
-	Retry   int64                   `json:"retry"`
-	Secret  WorkerResponseOxpSecret `json:"secret"`
-	Timeout int64                   `json:"timeout"`
-	Uri     string                  `json:"uri"`
-	JSON    workerResponseOxpJSON   `json:"-"`
-}
-
-// workerResponseOxpJSON contains the JSON metadata for the struct
-// [WorkerResponseOxp]
-type workerResponseOxpJSON struct {
-	Retry       apijson.Field
-	Secret      apijson.Field
-	Timeout     apijson.Field
-	Uri         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *WorkerResponseOxp) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r workerResponseOxpJSON) RawJSON() string {
-	return r.raw
-}
-
-type WorkerResponseOxpSecret struct {
-	Binding  WorkerResponseOxpSecretBinding `json:"binding"`
-	Editable bool                           `json:"editable"`
-	Exists   bool                           `json:"exists"`
-	Hint     string                         `json:"hint"`
-	Value    string                         `json:"value"`
-	JSON     workerResponseOxpSecretJSON    `json:"-"`
-}
-
-// workerResponseOxpSecretJSON contains the JSON metadata for the struct
-// [WorkerResponseOxpSecret]
-type workerResponseOxpSecretJSON struct {
-	Binding     apijson.Field
-	Editable    apijson.Field
-	Exists      apijson.Field
-	Hint        apijson.Field
-	Value       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *WorkerResponseOxpSecret) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r workerResponseOxpSecretJSON) RawJSON() string {
-	return r.raw
-}
-
-type WorkerResponseOxpSecretBinding string
-
-const (
-	WorkerResponseOxpSecretBindingStatic  WorkerResponseOxpSecretBinding = "static"
-	WorkerResponseOxpSecretBindingTenant  WorkerResponseOxpSecretBinding = "tenant"
-	WorkerResponseOxpSecretBindingProject WorkerResponseOxpSecretBinding = "project"
-	WorkerResponseOxpSecretBindingAccount WorkerResponseOxpSecretBinding = "account"
-)
-
-func (r WorkerResponseOxpSecretBinding) IsKnown() bool {
-	switch r {
-	case WorkerResponseOxpSecretBindingStatic, WorkerResponseOxpSecretBindingTenant, WorkerResponseOxpSecretBindingProject, WorkerResponseOxpSecretBindingAccount:
-		return true
-	}
-	return false
 }
 
 type WorkerResponseType string
