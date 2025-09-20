@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/apiquery"
@@ -36,7 +37,7 @@ func NewAuthService(opts ...option.RequestOption) (r *AuthService) {
 
 // Starts the authorization process for given authorization requirements
 func (r *AuthService) Authorize(ctx context.Context, body AuthAuthorizeParams, opts ...option.RequestOption) (res *shared.AuthorizationResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v1/auth/authorize"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -44,7 +45,7 @@ func (r *AuthService) Authorize(ctx context.Context, body AuthAuthorizeParams, o
 
 // Confirms a user's details during an authorization flow
 func (r *AuthService) ConfirmUser(ctx context.Context, body AuthConfirmUserParams, opts ...option.RequestOption) (res *ConfirmUserResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v1/auth/confirm_user"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -54,7 +55,7 @@ func (r *AuthService) ConfirmUser(ctx context.Context, body AuthConfirmUserParam
 // 'wait' param is present, does not respond until either the auth status becomes
 // completed or the timeout is reached.
 func (r *AuthService) Status(ctx context.Context, query AuthStatusParams, opts ...option.RequestOption) (res *shared.AuthorizationResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v1/auth/status"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return

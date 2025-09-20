@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/param"
@@ -35,7 +36,7 @@ func NewAdminAuthProviderService(opts ...option.RequestOption) (r *AdminAuthProv
 
 // Create a new auth provider
 func (r *AdminAuthProviderService) New(ctx context.Context, body AdminAuthProviderNewParams, opts ...option.RequestOption) (res *AuthProviderResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v1/admin/auth_providers"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -43,7 +44,7 @@ func (r *AdminAuthProviderService) New(ctx context.Context, body AdminAuthProvid
 
 // List a page of auth providers that are available to the caller
 func (r *AdminAuthProviderService) List(ctx context.Context, opts ...option.RequestOption) (res *AdminAuthProviderListResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v1/admin/auth_providers"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -51,7 +52,7 @@ func (r *AdminAuthProviderService) List(ctx context.Context, opts ...option.Requ
 
 // Delete a specific auth provider
 func (r *AdminAuthProviderService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *AuthProviderResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -63,7 +64,7 @@ func (r *AdminAuthProviderService) Delete(ctx context.Context, id string, opts .
 
 // Get the details of a specific auth provider
 func (r *AdminAuthProviderService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *AuthProviderResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -75,7 +76,7 @@ func (r *AdminAuthProviderService) Get(ctx context.Context, id string, opts ...o
 
 // Patch an existing auth provider
 func (r *AdminAuthProviderService) Patch(ctx context.Context, id string, body AdminAuthProviderPatchParams, opts ...option.RequestOption) (res *AuthProviderResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

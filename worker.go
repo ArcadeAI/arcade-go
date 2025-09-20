@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/apiquery"
@@ -38,7 +39,7 @@ func NewWorkerService(opts ...option.RequestOption) (r *WorkerService) {
 
 // Create a worker
 func (r *WorkerService) New(ctx context.Context, body WorkerNewParams, opts ...option.RequestOption) (res *WorkerResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v1/workers"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -46,7 +47,7 @@ func (r *WorkerService) New(ctx context.Context, body WorkerNewParams, opts ...o
 
 // Update a worker
 func (r *WorkerService) Update(ctx context.Context, id string, body WorkerUpdateParams, opts ...option.RequestOption) (res *WorkerResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -59,7 +60,7 @@ func (r *WorkerService) Update(ctx context.Context, id string, body WorkerUpdate
 // List all workers with their definitions
 func (r *WorkerService) List(ctx context.Context, query WorkerListParams, opts ...option.RequestOption) (res *pagination.OffsetPage[WorkerResponse], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "v1/workers"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -81,7 +82,7 @@ func (r *WorkerService) ListAutoPaging(ctx context.Context, query WorkerListPara
 
 // Delete a worker
 func (r *WorkerService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
@@ -94,7 +95,7 @@ func (r *WorkerService) Delete(ctx context.Context, id string, opts ...option.Re
 
 // Get a worker by ID
 func (r *WorkerService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *WorkerResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -106,7 +107,7 @@ func (r *WorkerService) Get(ctx context.Context, id string, opts ...option.Reque
 
 // Get the health of a worker
 func (r *WorkerService) Health(ctx context.Context, id string, opts ...option.RequestOption) (res *WorkerHealthResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -119,7 +120,7 @@ func (r *WorkerService) Health(ctx context.Context, id string, opts ...option.Re
 // Returns a page of tools
 func (r *WorkerService) Tools(ctx context.Context, id string, query WorkerToolsParams, opts ...option.RequestOption) (res *pagination.OffsetPage[ToolDefinition], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")

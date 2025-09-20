@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apiquery"
 	"github.com/ArcadeAI/arcade-go/internal/param"
@@ -39,7 +40,7 @@ func NewToolFormattedService(opts ...option.RequestOption) (r *ToolFormattedServ
 // toolkit, formatted for a specific provider
 func (r *ToolFormattedService) List(ctx context.Context, query ToolFormattedListParams, opts ...option.RequestOption) (res *pagination.OffsetPage[ToolFormattedListResponse], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "v1/formatted_tools"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -62,7 +63,7 @@ func (r *ToolFormattedService) ListAutoPaging(ctx context.Context, query ToolFor
 
 // Returns the formatted tool specification for a specific tool, given a provider
 func (r *ToolFormattedService) Get(ctx context.Context, name string, query ToolFormattedGetParams, opts ...option.RequestOption) (res *ToolFormattedGetResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if name == "" {
 		err = errors.New("missing required name parameter")
 		return
