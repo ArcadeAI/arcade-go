@@ -31,7 +31,7 @@ go get -u 'github.com/ArcadeAI/arcade-go@v0.1.0-alpha.6'
 
 ## Requirements
 
-This library requires Go 1.18+.
+This library requires Go 1.22+.
 
 ## Usage
 
