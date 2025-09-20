@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/apiquery"
@@ -39,7 +40,7 @@ func NewAdminUserConnectionService(opts ...option.RequestOption) (r *AdminUserCo
 // List all auth connections
 func (r *AdminUserConnectionService) List(ctx context.Context, query AdminUserConnectionListParams, opts ...option.RequestOption) (res *pagination.OffsetPage[UserConnectionResponse], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "v1/admin/user_connections"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -61,7 +62,7 @@ func (r *AdminUserConnectionService) ListAutoPaging(ctx context.Context, query A
 
 // Delete a user/auth provider connection
 func (r *AdminUserConnectionService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")

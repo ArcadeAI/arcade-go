@@ -5,6 +5,7 @@ package arcadego
 import (
 	"context"
 	"net/http"
+	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
@@ -32,7 +33,7 @@ func NewChatCompletionService(opts ...option.RequestOption) (r *ChatCompletionSe
 
 // Interact with language models via OpenAI's chat completions API
 func (r *ChatCompletionService) New(ctx context.Context, body ChatCompletionNewParams, opts ...option.RequestOption) (res *ChatResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v1/chat/completions"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

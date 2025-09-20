@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
@@ -34,7 +35,7 @@ func NewAdminSecretService(opts ...option.RequestOption) (r *AdminSecretService)
 
 // List all secrets that are visible to the caller
 func (r *AdminSecretService) List(ctx context.Context, opts ...option.RequestOption) (res *AdminSecretListResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v1/admin/secrets"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -42,7 +43,7 @@ func (r *AdminSecretService) List(ctx context.Context, opts ...option.RequestOpt
 
 // Delete a secret by its ID
 func (r *AdminSecretService) Delete(ctx context.Context, secretID string, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	if secretID == "" {
 		err = errors.New("missing required secret_id parameter")

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/apiquery"
@@ -39,7 +40,7 @@ func NewToolScheduledService(opts ...option.RequestOption) (r *ToolScheduledServ
 // Returns a page of scheduled tool executions
 func (r *ToolScheduledService) List(ctx context.Context, query ToolScheduledListParams, opts ...option.RequestOption) (res *pagination.OffsetPage[ToolExecution], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "v1/scheduled_tools"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -61,7 +62,7 @@ func (r *ToolScheduledService) ListAutoPaging(ctx context.Context, query ToolSch
 
 // Returns the details for a specific scheduled tool execution
 func (r *ToolScheduledService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *ToolScheduledGetResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

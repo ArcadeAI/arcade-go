@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/apiquery"
@@ -45,7 +46,7 @@ func NewToolService(opts ...option.RequestOption) (r *ToolService) {
 // toolkit
 func (r *ToolService) List(ctx context.Context, query ToolListParams, opts ...option.RequestOption) (res *pagination.OffsetPage[ToolDefinition], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "v1/tools"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -68,7 +69,7 @@ func (r *ToolService) ListAutoPaging(ctx context.Context, query ToolListParams, 
 
 // Authorizes a user for a specific tool by name
 func (r *ToolService) Authorize(ctx context.Context, body ToolAuthorizeParams, opts ...option.RequestOption) (res *shared.AuthorizationResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v1/tools/authorize"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -76,7 +77,7 @@ func (r *ToolService) Authorize(ctx context.Context, body ToolAuthorizeParams, o
 
 // Executes a tool by name and arguments
 func (r *ToolService) Execute(ctx context.Context, body ToolExecuteParams, opts ...option.RequestOption) (res *ExecuteToolResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v1/tools/execute"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -84,7 +85,7 @@ func (r *ToolService) Execute(ctx context.Context, body ToolExecuteParams, opts 
 
 // Returns the arcade tool specification for a specific tool
 func (r *ToolService) Get(ctx context.Context, name string, query ToolGetParams, opts ...option.RequestOption) (res *ToolDefinition, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if name == "" {
 		err = errors.New("missing required name parameter")
 		return
