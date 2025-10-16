@@ -236,27 +236,29 @@ func (r workerHealthResponseJSON) RawJSON() string {
 }
 
 type WorkerResponse struct {
-	ID      string                `json:"id"`
-	Binding WorkerResponseBinding `json:"binding"`
-	Enabled bool                  `json:"enabled"`
-	HTTP    WorkerResponseHTTP    `json:"http"`
-	Managed bool                  `json:"managed"`
-	Mcp     WorkerResponseMcp     `json:"mcp"`
-	Type    WorkerResponseType    `json:"type"`
-	JSON    workerResponseJSON    `json:"-"`
+	ID           string                     `json:"id"`
+	Binding      WorkerResponseBinding      `json:"binding"`
+	Enabled      bool                       `json:"enabled"`
+	HTTP         WorkerResponseHTTP         `json:"http"`
+	Managed      bool                       `json:"managed"`
+	Mcp          WorkerResponseMcp          `json:"mcp"`
+	Requirements WorkerResponseRequirements `json:"requirements"`
+	Type         WorkerResponseType         `json:"type"`
+	JSON         workerResponseJSON         `json:"-"`
 }
 
 // workerResponseJSON contains the JSON metadata for the struct [WorkerResponse]
 type workerResponseJSON struct {
-	ID          apijson.Field
-	Binding     apijson.Field
-	Enabled     apijson.Field
-	HTTP        apijson.Field
-	Managed     apijson.Field
-	Mcp         apijson.Field
-	Type        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	ID           apijson.Field
+	Binding      apijson.Field
+	Enabled      apijson.Field
+	HTTP         apijson.Field
+	Managed      apijson.Field
+	Mcp          apijson.Field
+	Requirements apijson.Field
+	Type         apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
 }
 
 func (r *WorkerResponse) UnmarshalJSON(data []byte) (err error) {
@@ -402,6 +404,73 @@ func (r *WorkerResponseMcp) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r workerResponseMcpJSON) RawJSON() string {
+	return r.raw
+}
+
+type WorkerResponseRequirements struct {
+	Authorization WorkerResponseRequirementsAuthorization `json:"authorization"`
+	Met           bool                                    `json:"met"`
+	JSON          workerResponseRequirementsJSON          `json:"-"`
+}
+
+// workerResponseRequirementsJSON contains the JSON metadata for the struct
+// [WorkerResponseRequirements]
+type workerResponseRequirementsJSON struct {
+	Authorization apijson.Field
+	Met           apijson.Field
+	raw           string
+	ExtraFields   map[string]apijson.Field
+}
+
+func (r *WorkerResponseRequirements) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseRequirementsJSON) RawJSON() string {
+	return r.raw
+}
+
+type WorkerResponseRequirementsAuthorization struct {
+	Met    bool                                          `json:"met"`
+	Oauth2 WorkerResponseRequirementsAuthorizationOauth2 `json:"oauth2"`
+	JSON   workerResponseRequirementsAuthorizationJSON   `json:"-"`
+}
+
+// workerResponseRequirementsAuthorizationJSON contains the JSON metadata for the
+// struct [WorkerResponseRequirementsAuthorization]
+type workerResponseRequirementsAuthorizationJSON struct {
+	Met         apijson.Field
+	Oauth2      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerResponseRequirementsAuthorization) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseRequirementsAuthorizationJSON) RawJSON() string {
+	return r.raw
+}
+
+type WorkerResponseRequirementsAuthorizationOauth2 struct {
+	Met  bool                                              `json:"met"`
+	JSON workerResponseRequirementsAuthorizationOauth2JSON `json:"-"`
+}
+
+// workerResponseRequirementsAuthorizationOauth2JSON contains the JSON metadata for
+// the struct [WorkerResponseRequirementsAuthorizationOauth2]
+type workerResponseRequirementsAuthorizationOauth2JSON struct {
+	Met         apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerResponseRequirementsAuthorizationOauth2) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseRequirementsAuthorizationOauth2JSON) RawJSON() string {
 	return r.raw
 }
 
