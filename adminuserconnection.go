@@ -79,6 +79,7 @@ type UserConnectionResponse struct {
 	ConnectionStatus    string                     `json:"connection_status"`
 	ProviderDescription string                     `json:"provider_description"`
 	ProviderID          string                     `json:"provider_id"`
+	ProviderType        string                     `json:"provider_type"`
 	ProviderUserInfo    interface{}                `json:"provider_user_info"`
 	Scopes              []string                   `json:"scopes"`
 	UserID              string                     `json:"user_id"`
@@ -93,6 +94,7 @@ type userConnectionResponseJSON struct {
 	ConnectionStatus    apijson.Field
 	ProviderDescription apijson.Field
 	ProviderID          apijson.Field
+	ProviderType        apijson.Field
 	ProviderUserInfo    apijson.Field
 	Scopes              apijson.Field
 	UserID              apijson.Field
