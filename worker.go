@@ -168,12 +168,26 @@ func (r CreateWorkerRequestHTTPParam) MarshalJSON() (data []byte, err error) {
 }
 
 type CreateWorkerRequestMcpParam struct {
-	Retry   param.Field[int64]  `json:"retry,required"`
-	Timeout param.Field[int64]  `json:"timeout,required"`
-	Uri     param.Field[string] `json:"uri,required"`
+	Retry   param.Field[int64]                             `json:"retry,required"`
+	Timeout param.Field[int64]                             `json:"timeout,required"`
+	Uri     param.Field[string]                            `json:"uri,required"`
+	Headers param.Field[map[string]string]                 `json:"headers"`
+	Oauth2  param.Field[CreateWorkerRequestMcpOauth2Param] `json:"oauth2"`
+	Secrets param.Field[map[string]string]                 `json:"secrets"`
 }
 
 func (r CreateWorkerRequestMcpParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type CreateWorkerRequestMcpOauth2Param struct {
+	AuthorizationURL param.Field[string] `json:"authorization_url"`
+	ClientID         param.Field[string] `json:"client_id"`
+	ClientSecret     param.Field[string] `json:"client_secret"`
+	ExternalID       param.Field[string] `json:"external_id"`
+}
+
+func (r CreateWorkerRequestMcpOauth2Param) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -199,12 +213,25 @@ func (r UpdateWorkerRequestHTTPParam) MarshalJSON() (data []byte, err error) {
 }
 
 type UpdateWorkerRequestMcpParam struct {
-	Retry   param.Field[int64]  `json:"retry"`
-	Timeout param.Field[int64]  `json:"timeout"`
-	Uri     param.Field[string] `json:"uri"`
+	Headers param.Field[map[string]string]                 `json:"headers"`
+	Oauth2  param.Field[UpdateWorkerRequestMcpOauth2Param] `json:"oauth2"`
+	Retry   param.Field[int64]                             `json:"retry"`
+	Secrets param.Field[map[string]string]                 `json:"secrets"`
+	Timeout param.Field[int64]                             `json:"timeout"`
+	Uri     param.Field[string]                            `json:"uri"`
 }
 
 func (r UpdateWorkerRequestMcpParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type UpdateWorkerRequestMcpOauth2Param struct {
+	AuthorizationURL param.Field[string] `json:"authorization_url"`
+	ClientID         param.Field[string] `json:"client_id"`
+	ClientSecret     param.Field[string] `json:"client_secret"`
+}
+
+func (r UpdateWorkerRequestMcpOauth2Param) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -383,16 +410,22 @@ func (r WorkerResponseHTTPSecretBinding) IsKnown() bool {
 }
 
 type WorkerResponseMcp struct {
-	Retry   int64                 `json:"retry"`
-	Timeout int64                 `json:"timeout"`
-	Uri     string                `json:"uri"`
-	JSON    workerResponseMcpJSON `json:"-"`
+	Headers map[string]string                  `json:"headers"`
+	Oauth2  WorkerResponseMcpOauth2            `json:"oauth2"`
+	Retry   int64                              `json:"retry"`
+	Secrets map[string]WorkerResponseMcpSecret `json:"secrets"`
+	Timeout int64                              `json:"timeout"`
+	Uri     string                             `json:"uri"`
+	JSON    workerResponseMcpJSON              `json:"-"`
 }
 
 // workerResponseMcpJSON contains the JSON metadata for the struct
 // [WorkerResponseMcp]
 type workerResponseMcpJSON struct {
+	Headers     apijson.Field
+	Oauth2      apijson.Field
 	Retry       apijson.Field
+	Secrets     apijson.Field
 	Timeout     apijson.Field
 	Uri         apijson.Field
 	raw         string
@@ -405,6 +438,125 @@ func (r *WorkerResponseMcp) UnmarshalJSON(data []byte) (err error) {
 
 func (r workerResponseMcpJSON) RawJSON() string {
 	return r.raw
+}
+
+type WorkerResponseMcpOauth2 struct {
+	AuthorizationURL string                              `json:"authorization_url"`
+	ClientID         string                              `json:"client_id"`
+	ClientSecret     WorkerResponseMcpOauth2ClientSecret `json:"client_secret"`
+	RedirectUri      string                              `json:"redirect_uri"`
+	JSON             workerResponseMcpOauth2JSON         `json:"-"`
+}
+
+// workerResponseMcpOauth2JSON contains the JSON metadata for the struct
+// [WorkerResponseMcpOauth2]
+type workerResponseMcpOauth2JSON struct {
+	AuthorizationURL apijson.Field
+	ClientID         apijson.Field
+	ClientSecret     apijson.Field
+	RedirectUri      apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r *WorkerResponseMcpOauth2) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseMcpOauth2JSON) RawJSON() string {
+	return r.raw
+}
+
+type WorkerResponseMcpOauth2ClientSecret struct {
+	Binding  WorkerResponseMcpOauth2ClientSecretBinding `json:"binding"`
+	Editable bool                                       `json:"editable"`
+	Exists   bool                                       `json:"exists"`
+	Hint     string                                     `json:"hint"`
+	Value    string                                     `json:"value"`
+	JSON     workerResponseMcpOauth2ClientSecretJSON    `json:"-"`
+}
+
+// workerResponseMcpOauth2ClientSecretJSON contains the JSON metadata for the
+// struct [WorkerResponseMcpOauth2ClientSecret]
+type workerResponseMcpOauth2ClientSecretJSON struct {
+	Binding     apijson.Field
+	Editable    apijson.Field
+	Exists      apijson.Field
+	Hint        apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerResponseMcpOauth2ClientSecret) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseMcpOauth2ClientSecretJSON) RawJSON() string {
+	return r.raw
+}
+
+type WorkerResponseMcpOauth2ClientSecretBinding string
+
+const (
+	WorkerResponseMcpOauth2ClientSecretBindingStatic  WorkerResponseMcpOauth2ClientSecretBinding = "static"
+	WorkerResponseMcpOauth2ClientSecretBindingTenant  WorkerResponseMcpOauth2ClientSecretBinding = "tenant"
+	WorkerResponseMcpOauth2ClientSecretBindingProject WorkerResponseMcpOauth2ClientSecretBinding = "project"
+	WorkerResponseMcpOauth2ClientSecretBindingAccount WorkerResponseMcpOauth2ClientSecretBinding = "account"
+)
+
+func (r WorkerResponseMcpOauth2ClientSecretBinding) IsKnown() bool {
+	switch r {
+	case WorkerResponseMcpOauth2ClientSecretBindingStatic, WorkerResponseMcpOauth2ClientSecretBindingTenant, WorkerResponseMcpOauth2ClientSecretBindingProject, WorkerResponseMcpOauth2ClientSecretBindingAccount:
+		return true
+	}
+	return false
+}
+
+type WorkerResponseMcpSecret struct {
+	Binding  WorkerResponseMcpSecretsBinding `json:"binding"`
+	Editable bool                            `json:"editable"`
+	Exists   bool                            `json:"exists"`
+	Hint     string                          `json:"hint"`
+	Value    string                          `json:"value"`
+	JSON     workerResponseMcpSecretJSON     `json:"-"`
+}
+
+// workerResponseMcpSecretJSON contains the JSON metadata for the struct
+// [WorkerResponseMcpSecret]
+type workerResponseMcpSecretJSON struct {
+	Binding     apijson.Field
+	Editable    apijson.Field
+	Exists      apijson.Field
+	Hint        apijson.Field
+	Value       apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *WorkerResponseMcpSecret) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r workerResponseMcpSecretJSON) RawJSON() string {
+	return r.raw
+}
+
+type WorkerResponseMcpSecretsBinding string
+
+const (
+	WorkerResponseMcpSecretsBindingStatic  WorkerResponseMcpSecretsBinding = "static"
+	WorkerResponseMcpSecretsBindingTenant  WorkerResponseMcpSecretsBinding = "tenant"
+	WorkerResponseMcpSecretsBindingProject WorkerResponseMcpSecretsBinding = "project"
+	WorkerResponseMcpSecretsBindingAccount WorkerResponseMcpSecretsBinding = "account"
+)
+
+func (r WorkerResponseMcpSecretsBinding) IsKnown() bool {
+	switch r {
+	case WorkerResponseMcpSecretsBindingStatic, WorkerResponseMcpSecretsBindingTenant, WorkerResponseMcpSecretsBindingProject, WorkerResponseMcpSecretsBindingAccount:
+		return true
+	}
+	return false
 }
 
 type WorkerResponseRequirements struct {

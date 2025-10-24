@@ -39,6 +39,18 @@ func TestWorkerNewWithOptionalParams(t *testing.T) {
 				Retry:   arcadego.F(int64(0)),
 				Timeout: arcadego.F(int64(1)),
 				Uri:     arcadego.F("uri"),
+				Headers: arcadego.F(map[string]string{
+					"foo": "string",
+				}),
+				Oauth2: arcadego.F(arcadego.CreateWorkerRequestMcpOauth2Param{
+					AuthorizationURL: arcadego.F("authorization_url"),
+					ClientID:         arcadego.F("client_id"),
+					ClientSecret:     arcadego.F("client_secret"),
+					ExternalID:       arcadego.F("external_id"),
+				}),
+				Secrets: arcadego.F(map[string]string{
+					"foo": "string",
+				}),
 			}),
 			Type: arcadego.F("type"),
 		},
@@ -77,7 +89,18 @@ func TestWorkerUpdateWithOptionalParams(t *testing.T) {
 					Uri:     arcadego.F("uri"),
 				}),
 				Mcp: arcadego.F(arcadego.UpdateWorkerRequestMcpParam{
-					Retry:   arcadego.F(int64(0)),
+					Headers: arcadego.F(map[string]string{
+						"foo": "string",
+					}),
+					Oauth2: arcadego.F(arcadego.UpdateWorkerRequestMcpOauth2Param{
+						AuthorizationURL: arcadego.F("authorization_url"),
+						ClientID:         arcadego.F("client_id"),
+						ClientSecret:     arcadego.F("client_secret"),
+					}),
+					Retry: arcadego.F(int64(0)),
+					Secrets: arcadego.F(map[string]string{
+						"foo": "string",
+					}),
 					Timeout: arcadego.F(int64(1)),
 					Uri:     arcadego.F("uri"),
 				}),
