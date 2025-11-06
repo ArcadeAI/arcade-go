@@ -118,13 +118,14 @@ func (r AuthProviderCreateRequestOauth2Param) MarshalJSON() (data []byte, err er
 }
 
 type AuthProviderCreateRequestOauth2AuthorizeRequestParam struct {
-	Endpoint            param.Field[string]                                                             `json:"endpoint,required"`
-	AuthMethod          param.Field[string]                                                             `json:"auth_method"`
-	Method              param.Field[string]                                                             `json:"method"`
-	Params              param.Field[map[string]string]                                                  `json:"params"`
-	RequestContentType  param.Field[AuthProviderCreateRequestOauth2AuthorizeRequestRequestContentType]  `json:"request_content_type"`
-	ResponseContentType param.Field[AuthProviderCreateRequestOauth2AuthorizeRequestResponseContentType] `json:"response_content_type"`
-	ResponseMap         param.Field[map[string]string]                                                  `json:"response_map"`
+	Endpoint              param.Field[string]                                                             `json:"endpoint,required"`
+	AuthHeaderValueFormat param.Field[string]                                                             `json:"auth_header_value_format"`
+	AuthMethod            param.Field[string]                                                             `json:"auth_method"`
+	Method                param.Field[string]                                                             `json:"method"`
+	Params                param.Field[map[string]string]                                                  `json:"params"`
+	RequestContentType    param.Field[AuthProviderCreateRequestOauth2AuthorizeRequestRequestContentType]  `json:"request_content_type"`
+	ResponseContentType   param.Field[AuthProviderCreateRequestOauth2AuthorizeRequestResponseContentType] `json:"response_content_type"`
+	ResponseMap           param.Field[map[string]string]                                                  `json:"response_map"`
 }
 
 func (r AuthProviderCreateRequestOauth2AuthorizeRequestParam) MarshalJSON() (data []byte, err error) {
@@ -171,13 +172,14 @@ func (r AuthProviderCreateRequestOauth2PkceParam) MarshalJSON() (data []byte, er
 }
 
 type AuthProviderCreateRequestOauth2RefreshRequestParam struct {
-	Endpoint            param.Field[string]                                                           `json:"endpoint,required"`
-	AuthMethod          param.Field[string]                                                           `json:"auth_method"`
-	Method              param.Field[string]                                                           `json:"method"`
-	Params              param.Field[map[string]string]                                                `json:"params"`
-	RequestContentType  param.Field[AuthProviderCreateRequestOauth2RefreshRequestRequestContentType]  `json:"request_content_type"`
-	ResponseContentType param.Field[AuthProviderCreateRequestOauth2RefreshRequestResponseContentType] `json:"response_content_type"`
-	ResponseMap         param.Field[map[string]string]                                                `json:"response_map"`
+	Endpoint              param.Field[string]                                                           `json:"endpoint,required"`
+	AuthHeaderValueFormat param.Field[string]                                                           `json:"auth_header_value_format"`
+	AuthMethod            param.Field[string]                                                           `json:"auth_method"`
+	Method                param.Field[string]                                                           `json:"method"`
+	Params                param.Field[map[string]string]                                                `json:"params"`
+	RequestContentType    param.Field[AuthProviderCreateRequestOauth2RefreshRequestRequestContentType]  `json:"request_content_type"`
+	ResponseContentType   param.Field[AuthProviderCreateRequestOauth2RefreshRequestResponseContentType] `json:"response_content_type"`
+	ResponseMap           param.Field[map[string]string]                                                `json:"response_map"`
 }
 
 func (r AuthProviderCreateRequestOauth2RefreshRequestParam) MarshalJSON() (data []byte, err error) {
@@ -230,14 +232,15 @@ func (r AuthProviderCreateRequestOauth2ScopeDelimiter) IsKnown() bool {
 }
 
 type AuthProviderCreateRequestOauth2TokenIntrospectionRequestParam struct {
-	Endpoint            param.Field[string]                                                                      `json:"endpoint,required"`
-	Triggers            param.Field[AuthProviderCreateRequestOauth2TokenIntrospectionRequestTriggersParam]       `json:"triggers,required"`
-	AuthMethod          param.Field[string]                                                                      `json:"auth_method"`
-	Method              param.Field[string]                                                                      `json:"method"`
-	Params              param.Field[map[string]string]                                                           `json:"params"`
-	RequestContentType  param.Field[AuthProviderCreateRequestOauth2TokenIntrospectionRequestRequestContentType]  `json:"request_content_type"`
-	ResponseContentType param.Field[AuthProviderCreateRequestOauth2TokenIntrospectionRequestResponseContentType] `json:"response_content_type"`
-	ResponseMap         param.Field[map[string]string]                                                           `json:"response_map"`
+	Endpoint              param.Field[string]                                                                      `json:"endpoint,required"`
+	Triggers              param.Field[AuthProviderCreateRequestOauth2TokenIntrospectionRequestTriggersParam]       `json:"triggers,required"`
+	AuthHeaderValueFormat param.Field[string]                                                                      `json:"auth_header_value_format"`
+	AuthMethod            param.Field[string]                                                                      `json:"auth_method"`
+	Method                param.Field[string]                                                                      `json:"method"`
+	Params                param.Field[map[string]string]                                                           `json:"params"`
+	RequestContentType    param.Field[AuthProviderCreateRequestOauth2TokenIntrospectionRequestRequestContentType]  `json:"request_content_type"`
+	ResponseContentType   param.Field[AuthProviderCreateRequestOauth2TokenIntrospectionRequestResponseContentType] `json:"response_content_type"`
+	ResponseMap           param.Field[map[string]string]                                                           `json:"response_map"`
 }
 
 func (r AuthProviderCreateRequestOauth2TokenIntrospectionRequestParam) MarshalJSON() (data []byte, err error) {
@@ -284,13 +287,14 @@ func (r AuthProviderCreateRequestOauth2TokenIntrospectionRequestResponseContentT
 }
 
 type AuthProviderCreateRequestOauth2TokenRequestParam struct {
-	Endpoint            param.Field[string]                                                         `json:"endpoint,required"`
-	AuthMethod          param.Field[string]                                                         `json:"auth_method"`
-	Method              param.Field[string]                                                         `json:"method"`
-	Params              param.Field[map[string]string]                                              `json:"params"`
-	RequestContentType  param.Field[AuthProviderCreateRequestOauth2TokenRequestRequestContentType]  `json:"request_content_type"`
-	ResponseContentType param.Field[AuthProviderCreateRequestOauth2TokenRequestResponseContentType] `json:"response_content_type"`
-	ResponseMap         param.Field[map[string]string]                                              `json:"response_map"`
+	Endpoint              param.Field[string]                                                         `json:"endpoint,required"`
+	AuthHeaderValueFormat param.Field[string]                                                         `json:"auth_header_value_format"`
+	AuthMethod            param.Field[string]                                                         `json:"auth_method"`
+	Method                param.Field[string]                                                         `json:"method"`
+	Params                param.Field[map[string]string]                                              `json:"params"`
+	RequestContentType    param.Field[AuthProviderCreateRequestOauth2TokenRequestRequestContentType]  `json:"request_content_type"`
+	ResponseContentType   param.Field[AuthProviderCreateRequestOauth2TokenRequestResponseContentType] `json:"response_content_type"`
+	ResponseMap           param.Field[map[string]string]                                              `json:"response_map"`
 }
 
 func (r AuthProviderCreateRequestOauth2TokenRequestParam) MarshalJSON() (data []byte, err error) {
@@ -328,14 +332,15 @@ func (r AuthProviderCreateRequestOauth2TokenRequestResponseContentType) IsKnown(
 }
 
 type AuthProviderCreateRequestOauth2UserInfoRequestParam struct {
-	Endpoint            param.Field[string]                                                            `json:"endpoint,required"`
-	Triggers            param.Field[AuthProviderCreateRequestOauth2UserInfoRequestTriggersParam]       `json:"triggers,required"`
-	AuthMethod          param.Field[string]                                                            `json:"auth_method"`
-	Method              param.Field[string]                                                            `json:"method"`
-	Params              param.Field[map[string]string]                                                 `json:"params"`
-	RequestContentType  param.Field[AuthProviderCreateRequestOauth2UserInfoRequestRequestContentType]  `json:"request_content_type"`
-	ResponseContentType param.Field[AuthProviderCreateRequestOauth2UserInfoRequestResponseContentType] `json:"response_content_type"`
-	ResponseMap         param.Field[map[string]string]                                                 `json:"response_map"`
+	Endpoint              param.Field[string]                                                            `json:"endpoint,required"`
+	Triggers              param.Field[AuthProviderCreateRequestOauth2UserInfoRequestTriggersParam]       `json:"triggers,required"`
+	AuthHeaderValueFormat param.Field[string]                                                            `json:"auth_header_value_format"`
+	AuthMethod            param.Field[string]                                                            `json:"auth_method"`
+	Method                param.Field[string]                                                            `json:"method"`
+	Params                param.Field[map[string]string]                                                 `json:"params"`
+	RequestContentType    param.Field[AuthProviderCreateRequestOauth2UserInfoRequestRequestContentType]  `json:"request_content_type"`
+	ResponseContentType   param.Field[AuthProviderCreateRequestOauth2UserInfoRequestResponseContentType] `json:"response_content_type"`
+	ResponseMap           param.Field[map[string]string]                                                 `json:"response_map"`
 }
 
 func (r AuthProviderCreateRequestOauth2UserInfoRequestParam) MarshalJSON() (data []byte, err error) {
@@ -499,30 +504,32 @@ func (r authProviderResponseOauth2JSON) RawJSON() string {
 }
 
 type AuthProviderResponseOauth2AuthorizeRequest struct {
-	AuthMethod          string                                         `json:"auth_method"`
-	Endpoint            string                                         `json:"endpoint"`
-	ExpirationFormat    string                                         `json:"expiration_format"`
-	Method              string                                         `json:"method"`
-	Params              map[string]string                              `json:"params"`
-	RequestContentType  string                                         `json:"request_content_type"`
-	ResponseContentType string                                         `json:"response_content_type"`
-	ResponseMap         map[string]string                              `json:"response_map"`
-	JSON                authProviderResponseOauth2AuthorizeRequestJSON `json:"-"`
+	AuthHeaderValueFormat string                                         `json:"auth_header_value_format"`
+	AuthMethod            string                                         `json:"auth_method"`
+	Endpoint              string                                         `json:"endpoint"`
+	ExpirationFormat      string                                         `json:"expiration_format"`
+	Method                string                                         `json:"method"`
+	Params                map[string]string                              `json:"params"`
+	RequestContentType    string                                         `json:"request_content_type"`
+	ResponseContentType   string                                         `json:"response_content_type"`
+	ResponseMap           map[string]string                              `json:"response_map"`
+	JSON                  authProviderResponseOauth2AuthorizeRequestJSON `json:"-"`
 }
 
 // authProviderResponseOauth2AuthorizeRequestJSON contains the JSON metadata for
 // the struct [AuthProviderResponseOauth2AuthorizeRequest]
 type authProviderResponseOauth2AuthorizeRequestJSON struct {
-	AuthMethod          apijson.Field
-	Endpoint            apijson.Field
-	ExpirationFormat    apijson.Field
-	Method              apijson.Field
-	Params              apijson.Field
-	RequestContentType  apijson.Field
-	ResponseContentType apijson.Field
-	ResponseMap         apijson.Field
-	raw                 string
-	ExtraFields         map[string]apijson.Field
+	AuthHeaderValueFormat apijson.Field
+	AuthMethod            apijson.Field
+	Endpoint              apijson.Field
+	ExpirationFormat      apijson.Field
+	Method                apijson.Field
+	Params                apijson.Field
+	RequestContentType    apijson.Field
+	ResponseContentType   apijson.Field
+	ResponseMap           apijson.Field
+	raw                   string
+	ExtraFields           map[string]apijson.Field
 }
 
 func (r *AuthProviderResponseOauth2AuthorizeRequest) UnmarshalJSON(data []byte) (err error) {
@@ -603,30 +610,32 @@ func (r authProviderResponseOauth2PkceJSON) RawJSON() string {
 }
 
 type AuthProviderResponseOauth2RefreshRequest struct {
-	AuthMethod          string                                       `json:"auth_method"`
-	Endpoint            string                                       `json:"endpoint"`
-	ExpirationFormat    string                                       `json:"expiration_format"`
-	Method              string                                       `json:"method"`
-	Params              map[string]string                            `json:"params"`
-	RequestContentType  string                                       `json:"request_content_type"`
-	ResponseContentType string                                       `json:"response_content_type"`
-	ResponseMap         map[string]string                            `json:"response_map"`
-	JSON                authProviderResponseOauth2RefreshRequestJSON `json:"-"`
+	AuthHeaderValueFormat string                                       `json:"auth_header_value_format"`
+	AuthMethod            string                                       `json:"auth_method"`
+	Endpoint              string                                       `json:"endpoint"`
+	ExpirationFormat      string                                       `json:"expiration_format"`
+	Method                string                                       `json:"method"`
+	Params                map[string]string                            `json:"params"`
+	RequestContentType    string                                       `json:"request_content_type"`
+	ResponseContentType   string                                       `json:"response_content_type"`
+	ResponseMap           map[string]string                            `json:"response_map"`
+	JSON                  authProviderResponseOauth2RefreshRequestJSON `json:"-"`
 }
 
 // authProviderResponseOauth2RefreshRequestJSON contains the JSON metadata for the
 // struct [AuthProviderResponseOauth2RefreshRequest]
 type authProviderResponseOauth2RefreshRequestJSON struct {
-	AuthMethod          apijson.Field
-	Endpoint            apijson.Field
-	ExpirationFormat    apijson.Field
-	Method              apijson.Field
-	Params              apijson.Field
-	RequestContentType  apijson.Field
-	ResponseContentType apijson.Field
-	ResponseMap         apijson.Field
-	raw                 string
-	ExtraFields         map[string]apijson.Field
+	AuthHeaderValueFormat apijson.Field
+	AuthMethod            apijson.Field
+	Endpoint              apijson.Field
+	ExpirationFormat      apijson.Field
+	Method                apijson.Field
+	Params                apijson.Field
+	RequestContentType    apijson.Field
+	ResponseContentType   apijson.Field
+	ResponseMap           apijson.Field
+	raw                   string
+	ExtraFields           map[string]apijson.Field
 }
 
 func (r *AuthProviderResponseOauth2RefreshRequest) UnmarshalJSON(data []byte) (err error) {
@@ -638,34 +647,36 @@ func (r authProviderResponseOauth2RefreshRequestJSON) RawJSON() string {
 }
 
 type AuthProviderResponseOauth2TokenIntrospectionRequest struct {
-	AuthMethod          string                                                      `json:"auth_method"`
-	Enabled             bool                                                        `json:"enabled"`
-	Endpoint            string                                                      `json:"endpoint"`
-	ExpirationFormat    string                                                      `json:"expiration_format"`
-	Method              string                                                      `json:"method"`
-	Params              map[string]string                                           `json:"params"`
-	RequestContentType  string                                                      `json:"request_content_type"`
-	ResponseContentType string                                                      `json:"response_content_type"`
-	ResponseMap         map[string]string                                           `json:"response_map"`
-	Triggers            AuthProviderResponseOauth2TokenIntrospectionRequestTriggers `json:"triggers"`
-	JSON                authProviderResponseOauth2TokenIntrospectionRequestJSON     `json:"-"`
+	AuthHeaderValueFormat string                                                      `json:"auth_header_value_format"`
+	AuthMethod            string                                                      `json:"auth_method"`
+	Enabled               bool                                                        `json:"enabled"`
+	Endpoint              string                                                      `json:"endpoint"`
+	ExpirationFormat      string                                                      `json:"expiration_format"`
+	Method                string                                                      `json:"method"`
+	Params                map[string]string                                           `json:"params"`
+	RequestContentType    string                                                      `json:"request_content_type"`
+	ResponseContentType   string                                                      `json:"response_content_type"`
+	ResponseMap           map[string]string                                           `json:"response_map"`
+	Triggers              AuthProviderResponseOauth2TokenIntrospectionRequestTriggers `json:"triggers"`
+	JSON                  authProviderResponseOauth2TokenIntrospectionRequestJSON     `json:"-"`
 }
 
 // authProviderResponseOauth2TokenIntrospectionRequestJSON contains the JSON
 // metadata for the struct [AuthProviderResponseOauth2TokenIntrospectionRequest]
 type authProviderResponseOauth2TokenIntrospectionRequestJSON struct {
-	AuthMethod          apijson.Field
-	Enabled             apijson.Field
-	Endpoint            apijson.Field
-	ExpirationFormat    apijson.Field
-	Method              apijson.Field
-	Params              apijson.Field
-	RequestContentType  apijson.Field
-	ResponseContentType apijson.Field
-	ResponseMap         apijson.Field
-	Triggers            apijson.Field
-	raw                 string
-	ExtraFields         map[string]apijson.Field
+	AuthHeaderValueFormat apijson.Field
+	AuthMethod            apijson.Field
+	Enabled               apijson.Field
+	Endpoint              apijson.Field
+	ExpirationFormat      apijson.Field
+	Method                apijson.Field
+	Params                apijson.Field
+	RequestContentType    apijson.Field
+	ResponseContentType   apijson.Field
+	ResponseMap           apijson.Field
+	Triggers              apijson.Field
+	raw                   string
+	ExtraFields           map[string]apijson.Field
 }
 
 func (r *AuthProviderResponseOauth2TokenIntrospectionRequest) UnmarshalJSON(data []byte) (err error) {
@@ -701,30 +712,32 @@ func (r authProviderResponseOauth2TokenIntrospectionRequestTriggersJSON) RawJSON
 }
 
 type AuthProviderResponseOauth2TokenRequest struct {
-	AuthMethod          string                                     `json:"auth_method"`
-	Endpoint            string                                     `json:"endpoint"`
-	ExpirationFormat    string                                     `json:"expiration_format"`
-	Method              string                                     `json:"method"`
-	Params              map[string]string                          `json:"params"`
-	RequestContentType  string                                     `json:"request_content_type"`
-	ResponseContentType string                                     `json:"response_content_type"`
-	ResponseMap         map[string]string                          `json:"response_map"`
-	JSON                authProviderResponseOauth2TokenRequestJSON `json:"-"`
+	AuthHeaderValueFormat string                                     `json:"auth_header_value_format"`
+	AuthMethod            string                                     `json:"auth_method"`
+	Endpoint              string                                     `json:"endpoint"`
+	ExpirationFormat      string                                     `json:"expiration_format"`
+	Method                string                                     `json:"method"`
+	Params                map[string]string                          `json:"params"`
+	RequestContentType    string                                     `json:"request_content_type"`
+	ResponseContentType   string                                     `json:"response_content_type"`
+	ResponseMap           map[string]string                          `json:"response_map"`
+	JSON                  authProviderResponseOauth2TokenRequestJSON `json:"-"`
 }
 
 // authProviderResponseOauth2TokenRequestJSON contains the JSON metadata for the
 // struct [AuthProviderResponseOauth2TokenRequest]
 type authProviderResponseOauth2TokenRequestJSON struct {
-	AuthMethod          apijson.Field
-	Endpoint            apijson.Field
-	ExpirationFormat    apijson.Field
-	Method              apijson.Field
-	Params              apijson.Field
-	RequestContentType  apijson.Field
-	ResponseContentType apijson.Field
-	ResponseMap         apijson.Field
-	raw                 string
-	ExtraFields         map[string]apijson.Field
+	AuthHeaderValueFormat apijson.Field
+	AuthMethod            apijson.Field
+	Endpoint              apijson.Field
+	ExpirationFormat      apijson.Field
+	Method                apijson.Field
+	Params                apijson.Field
+	RequestContentType    apijson.Field
+	ResponseContentType   apijson.Field
+	ResponseMap           apijson.Field
+	raw                   string
+	ExtraFields           map[string]apijson.Field
 }
 
 func (r *AuthProviderResponseOauth2TokenRequest) UnmarshalJSON(data []byte) (err error) {
@@ -736,32 +749,34 @@ func (r authProviderResponseOauth2TokenRequestJSON) RawJSON() string {
 }
 
 type AuthProviderResponseOauth2UserInfoRequest struct {
-	AuthMethod          string                                            `json:"auth_method"`
-	Endpoint            string                                            `json:"endpoint"`
-	ExpirationFormat    string                                            `json:"expiration_format"`
-	Method              string                                            `json:"method"`
-	Params              map[string]string                                 `json:"params"`
-	RequestContentType  string                                            `json:"request_content_type"`
-	ResponseContentType string                                            `json:"response_content_type"`
-	ResponseMap         map[string]string                                 `json:"response_map"`
-	Triggers            AuthProviderResponseOauth2UserInfoRequestTriggers `json:"triggers"`
-	JSON                authProviderResponseOauth2UserInfoRequestJSON     `json:"-"`
+	AuthHeaderValueFormat string                                            `json:"auth_header_value_format"`
+	AuthMethod            string                                            `json:"auth_method"`
+	Endpoint              string                                            `json:"endpoint"`
+	ExpirationFormat      string                                            `json:"expiration_format"`
+	Method                string                                            `json:"method"`
+	Params                map[string]string                                 `json:"params"`
+	RequestContentType    string                                            `json:"request_content_type"`
+	ResponseContentType   string                                            `json:"response_content_type"`
+	ResponseMap           map[string]string                                 `json:"response_map"`
+	Triggers              AuthProviderResponseOauth2UserInfoRequestTriggers `json:"triggers"`
+	JSON                  authProviderResponseOauth2UserInfoRequestJSON     `json:"-"`
 }
 
 // authProviderResponseOauth2UserInfoRequestJSON contains the JSON metadata for the
 // struct [AuthProviderResponseOauth2UserInfoRequest]
 type authProviderResponseOauth2UserInfoRequestJSON struct {
-	AuthMethod          apijson.Field
-	Endpoint            apijson.Field
-	ExpirationFormat    apijson.Field
-	Method              apijson.Field
-	Params              apijson.Field
-	RequestContentType  apijson.Field
-	ResponseContentType apijson.Field
-	ResponseMap         apijson.Field
-	Triggers            apijson.Field
-	raw                 string
-	ExtraFields         map[string]apijson.Field
+	AuthHeaderValueFormat apijson.Field
+	AuthMethod            apijson.Field
+	Endpoint              apijson.Field
+	ExpirationFormat      apijson.Field
+	Method                apijson.Field
+	Params                apijson.Field
+	RequestContentType    apijson.Field
+	ResponseContentType   apijson.Field
+	ResponseMap           apijson.Field
+	Triggers              apijson.Field
+	raw                   string
+	ExtraFields           map[string]apijson.Field
 }
 
 func (r *AuthProviderResponseOauth2UserInfoRequest) UnmarshalJSON(data []byte) (err error) {
@@ -824,13 +839,14 @@ func (r AuthProviderUpdateRequestOauth2Param) MarshalJSON() (data []byte, err er
 }
 
 type AuthProviderUpdateRequestOauth2AuthorizeRequestParam struct {
-	AuthMethod          param.Field[string]                                                             `json:"auth_method"`
-	Endpoint            param.Field[string]                                                             `json:"endpoint"`
-	Method              param.Field[string]                                                             `json:"method"`
-	Params              param.Field[map[string]string]                                                  `json:"params"`
-	RequestContentType  param.Field[AuthProviderUpdateRequestOauth2AuthorizeRequestRequestContentType]  `json:"request_content_type"`
-	ResponseContentType param.Field[AuthProviderUpdateRequestOauth2AuthorizeRequestResponseContentType] `json:"response_content_type"`
-	ResponseMap         param.Field[map[string]string]                                                  `json:"response_map"`
+	AuthHeaderValueFormat param.Field[string]                                                             `json:"auth_header_value_format"`
+	AuthMethod            param.Field[string]                                                             `json:"auth_method"`
+	Endpoint              param.Field[string]                                                             `json:"endpoint"`
+	Method                param.Field[string]                                                             `json:"method"`
+	Params                param.Field[map[string]string]                                                  `json:"params"`
+	RequestContentType    param.Field[AuthProviderUpdateRequestOauth2AuthorizeRequestRequestContentType]  `json:"request_content_type"`
+	ResponseContentType   param.Field[AuthProviderUpdateRequestOauth2AuthorizeRequestResponseContentType] `json:"response_content_type"`
+	ResponseMap           param.Field[map[string]string]                                                  `json:"response_map"`
 }
 
 func (r AuthProviderUpdateRequestOauth2AuthorizeRequestParam) MarshalJSON() (data []byte, err error) {
@@ -877,13 +893,14 @@ func (r AuthProviderUpdateRequestOauth2PkceParam) MarshalJSON() (data []byte, er
 }
 
 type AuthProviderUpdateRequestOauth2RefreshRequestParam struct {
-	AuthMethod          param.Field[string]                                                           `json:"auth_method"`
-	Endpoint            param.Field[string]                                                           `json:"endpoint"`
-	Method              param.Field[string]                                                           `json:"method"`
-	Params              param.Field[map[string]string]                                                `json:"params"`
-	RequestContentType  param.Field[AuthProviderUpdateRequestOauth2RefreshRequestRequestContentType]  `json:"request_content_type"`
-	ResponseContentType param.Field[AuthProviderUpdateRequestOauth2RefreshRequestResponseContentType] `json:"response_content_type"`
-	ResponseMap         param.Field[map[string]string]                                                `json:"response_map"`
+	AuthHeaderValueFormat param.Field[string]                                                           `json:"auth_header_value_format"`
+	AuthMethod            param.Field[string]                                                           `json:"auth_method"`
+	Endpoint              param.Field[string]                                                           `json:"endpoint"`
+	Method                param.Field[string]                                                           `json:"method"`
+	Params                param.Field[map[string]string]                                                `json:"params"`
+	RequestContentType    param.Field[AuthProviderUpdateRequestOauth2RefreshRequestRequestContentType]  `json:"request_content_type"`
+	ResponseContentType   param.Field[AuthProviderUpdateRequestOauth2RefreshRequestResponseContentType] `json:"response_content_type"`
+	ResponseMap           param.Field[map[string]string]                                                `json:"response_map"`
 }
 
 func (r AuthProviderUpdateRequestOauth2RefreshRequestParam) MarshalJSON() (data []byte, err error) {
@@ -936,13 +953,14 @@ func (r AuthProviderUpdateRequestOauth2ScopeDelimiter) IsKnown() bool {
 }
 
 type AuthProviderUpdateRequestOauth2TokenRequestParam struct {
-	AuthMethod          param.Field[string]                                                         `json:"auth_method"`
-	Endpoint            param.Field[string]                                                         `json:"endpoint"`
-	Method              param.Field[string]                                                         `json:"method"`
-	Params              param.Field[map[string]string]                                              `json:"params"`
-	RequestContentType  param.Field[AuthProviderUpdateRequestOauth2TokenRequestRequestContentType]  `json:"request_content_type"`
-	ResponseContentType param.Field[AuthProviderUpdateRequestOauth2TokenRequestResponseContentType] `json:"response_content_type"`
-	ResponseMap         param.Field[map[string]string]                                              `json:"response_map"`
+	AuthHeaderValueFormat param.Field[string]                                                         `json:"auth_header_value_format"`
+	AuthMethod            param.Field[string]                                                         `json:"auth_method"`
+	Endpoint              param.Field[string]                                                         `json:"endpoint"`
+	Method                param.Field[string]                                                         `json:"method"`
+	Params                param.Field[map[string]string]                                              `json:"params"`
+	RequestContentType    param.Field[AuthProviderUpdateRequestOauth2TokenRequestRequestContentType]  `json:"request_content_type"`
+	ResponseContentType   param.Field[AuthProviderUpdateRequestOauth2TokenRequestResponseContentType] `json:"response_content_type"`
+	ResponseMap           param.Field[map[string]string]                                              `json:"response_map"`
 }
 
 func (r AuthProviderUpdateRequestOauth2TokenRequestParam) MarshalJSON() (data []byte, err error) {
@@ -980,14 +998,15 @@ func (r AuthProviderUpdateRequestOauth2TokenRequestResponseContentType) IsKnown(
 }
 
 type AuthProviderUpdateRequestOauth2UserInfoRequestParam struct {
-	AuthMethod          param.Field[string]                                                            `json:"auth_method"`
-	Endpoint            param.Field[string]                                                            `json:"endpoint"`
-	Method              param.Field[string]                                                            `json:"method"`
-	Params              param.Field[map[string]string]                                                 `json:"params"`
-	RequestContentType  param.Field[AuthProviderUpdateRequestOauth2UserInfoRequestRequestContentType]  `json:"request_content_type"`
-	ResponseContentType param.Field[AuthProviderUpdateRequestOauth2UserInfoRequestResponseContentType] `json:"response_content_type"`
-	ResponseMap         param.Field[map[string]string]                                                 `json:"response_map"`
-	Triggers            param.Field[AuthProviderUpdateRequestOauth2UserInfoRequestTriggersParam]       `json:"triggers"`
+	AuthHeaderValueFormat param.Field[string]                                                            `json:"auth_header_value_format"`
+	AuthMethod            param.Field[string]                                                            `json:"auth_method"`
+	Endpoint              param.Field[string]                                                            `json:"endpoint"`
+	Method                param.Field[string]                                                            `json:"method"`
+	Params                param.Field[map[string]string]                                                 `json:"params"`
+	RequestContentType    param.Field[AuthProviderUpdateRequestOauth2UserInfoRequestRequestContentType]  `json:"request_content_type"`
+	ResponseContentType   param.Field[AuthProviderUpdateRequestOauth2UserInfoRequestResponseContentType] `json:"response_content_type"`
+	ResponseMap           param.Field[map[string]string]                                                 `json:"response_map"`
+	Triggers              param.Field[AuthProviderUpdateRequestOauth2UserInfoRequestTriggersParam]       `json:"triggers"`
 }
 
 func (r AuthProviderUpdateRequestOauth2UserInfoRequestParam) MarshalJSON() (data []byte, err error) {
