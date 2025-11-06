@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.1.0-alpha.7 (2025-10-30)
+
+Full Changelog: [v0.1.0-alpha.6...v0.1.0-alpha.7](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.6...v0.1.0-alpha.7)
+
+### Features
+
+* **api:** api update ([ad9d4db](https://github.com/ArcadeAI/arcade-go/commit/ad9d4dbebc634eb26031e502d94a64e2bb9f5f0b))
+* **api:** api update ([1282346](https://github.com/ArcadeAI/arcade-go/commit/1282346b79e230ff02ca793266b14bc2e71fc6ec))
+* **api:** api update ([13f2e8d](https://github.com/ArcadeAI/arcade-go/commit/13f2e8d97b80331c3db86910bbe1fc16f6dcb0b6))
+* **api:** api update ([c79ca58](https://github.com/ArcadeAI/arcade-go/commit/c79ca58034862dd769a20665ef3da0111063d1f6))
+
+
+### Bug Fixes
+
+* bugfix for setting JSON keys with special characters ([95c2ce4](https://github.com/ArcadeAI/arcade-go/commit/95c2ce4bca778b09cf2459b5c4b10e8f7c8ecd5b))
+* use slices.Concat instead of sometimes modifying r.Options ([a755c41](https://github.com/ArcadeAI/arcade-go/commit/a755c417977ab29ecce43970c09df3aa6d4deaf1))
+
+
+### Chores
+
+* bump minimum go version to 1.22 ([d90f945](https://github.com/ArcadeAI/arcade-go/commit/d90f945fc410df80a63d0bf662351909e91fb00a))
+* do not install brew dependencies in ./scripts/bootstrap by default ([83c1902](https://github.com/ArcadeAI/arcade-go/commit/83c1902c473f6e03dd05e7a209c0a23769108e76))
+* update more docs for 1.22 ([ee232e0](https://github.com/ArcadeAI/arcade-go/commit/ee232e0d123ac605bbf0aa6cd0219cd7b866d497))
+
 ## 0.1.0-alpha.6 (2025-09-11)
 
 Full Changelog: [v0.1.0-alpha.5...v0.1.0-alpha.6](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.5...v0.1.0-alpha.6)

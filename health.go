@@ -5,6 +5,7 @@ package arcadego
 import (
 	"context"
 	"net/http"
+	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
 	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
@@ -32,7 +33,7 @@ func NewHealthService(opts ...option.RequestOption) (r *HealthService) {
 
 // Check if Arcade Engine is healthy
 func (r *HealthService) Check(ctx context.Context, opts ...option.RequestOption) (res *HealthSchema, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "v1/health"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
