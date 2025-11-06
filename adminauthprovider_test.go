@@ -33,9 +33,10 @@ func TestAdminAuthProviderNewWithOptionalParams(t *testing.T) {
 			Oauth2: arcadego.F(arcadego.AuthProviderCreateRequestOauth2Param{
 				ClientID: arcadego.F("client_id"),
 				AuthorizeRequest: arcadego.F(arcadego.AuthProviderCreateRequestOauth2AuthorizeRequestParam{
-					Endpoint:   arcadego.F("endpoint"),
-					AuthMethod: arcadego.F("auth_method"),
-					Method:     arcadego.F("method"),
+					Endpoint:              arcadego.F("endpoint"),
+					AuthHeaderValueFormat: arcadego.F("auth_header_value_format"),
+					AuthMethod:            arcadego.F("auth_method"),
+					Method:                arcadego.F("method"),
 					Params: arcadego.F(map[string]string{
 						"foo": "string",
 					}),
@@ -51,9 +52,10 @@ func TestAdminAuthProviderNewWithOptionalParams(t *testing.T) {
 					Enabled:             arcadego.F(true),
 				}),
 				RefreshRequest: arcadego.F(arcadego.AuthProviderCreateRequestOauth2RefreshRequestParam{
-					Endpoint:   arcadego.F("endpoint"),
-					AuthMethod: arcadego.F("auth_method"),
-					Method:     arcadego.F("method"),
+					Endpoint:              arcadego.F("endpoint"),
+					AuthHeaderValueFormat: arcadego.F("auth_header_value_format"),
+					AuthMethod:            arcadego.F("auth_method"),
+					Method:                arcadego.F("method"),
 					Params: arcadego.F(map[string]string{
 						"foo": "string",
 					}),
@@ -70,8 +72,9 @@ func TestAdminAuthProviderNewWithOptionalParams(t *testing.T) {
 						OnTokenGrant:   arcadego.F(true),
 						OnTokenRefresh: arcadego.F(true),
 					}),
-					AuthMethod: arcadego.F("auth_method"),
-					Method:     arcadego.F("method"),
+					AuthHeaderValueFormat: arcadego.F("auth_header_value_format"),
+					AuthMethod:            arcadego.F("auth_method"),
+					Method:                arcadego.F("method"),
 					Params: arcadego.F(map[string]string{
 						"foo": "string",
 					}),
@@ -82,9 +85,10 @@ func TestAdminAuthProviderNewWithOptionalParams(t *testing.T) {
 					}),
 				}),
 				TokenRequest: arcadego.F(arcadego.AuthProviderCreateRequestOauth2TokenRequestParam{
-					Endpoint:   arcadego.F("endpoint"),
-					AuthMethod: arcadego.F("auth_method"),
-					Method:     arcadego.F("method"),
+					Endpoint:              arcadego.F("endpoint"),
+					AuthHeaderValueFormat: arcadego.F("auth_header_value_format"),
+					AuthMethod:            arcadego.F("auth_method"),
+					Method:                arcadego.F("method"),
 					Params: arcadego.F(map[string]string{
 						"foo": "string",
 					}),
@@ -100,8 +104,9 @@ func TestAdminAuthProviderNewWithOptionalParams(t *testing.T) {
 						OnTokenGrant:   arcadego.F(true),
 						OnTokenRefresh: arcadego.F(true),
 					}),
-					AuthMethod: arcadego.F("auth_method"),
-					Method:     arcadego.F("method"),
+					AuthHeaderValueFormat: arcadego.F("auth_header_value_format"),
+					AuthMethod:            arcadego.F("auth_method"),
+					Method:                arcadego.F("method"),
 					Params: arcadego.F(map[string]string{
 						"foo": "string",
 					}),
@@ -213,9 +218,10 @@ func TestAdminAuthProviderPatchWithOptionalParams(t *testing.T) {
 				Description: arcadego.F("description"),
 				Oauth2: arcadego.F(arcadego.AuthProviderUpdateRequestOauth2Param{
 					AuthorizeRequest: arcadego.F(arcadego.AuthProviderUpdateRequestOauth2AuthorizeRequestParam{
-						AuthMethod: arcadego.F("auth_method"),
-						Endpoint:   arcadego.F("endpoint"),
-						Method:     arcadego.F("method"),
+						AuthHeaderValueFormat: arcadego.F("auth_header_value_format"),
+						AuthMethod:            arcadego.F("auth_method"),
+						Endpoint:              arcadego.F("endpoint"),
+						Method:                arcadego.F("method"),
 						Params: arcadego.F(map[string]string{
 							"foo": "string",
 						}),
@@ -232,9 +238,10 @@ func TestAdminAuthProviderPatchWithOptionalParams(t *testing.T) {
 						Enabled:             arcadego.F(true),
 					}),
 					RefreshRequest: arcadego.F(arcadego.AuthProviderUpdateRequestOauth2RefreshRequestParam{
-						AuthMethod: arcadego.F("auth_method"),
-						Endpoint:   arcadego.F("endpoint"),
-						Method:     arcadego.F("method"),
+						AuthHeaderValueFormat: arcadego.F("auth_header_value_format"),
+						AuthMethod:            arcadego.F("auth_method"),
+						Endpoint:              arcadego.F("endpoint"),
+						Method:                arcadego.F("method"),
 						Params: arcadego.F(map[string]string{
 							"foo": "string",
 						}),
@@ -246,9 +253,10 @@ func TestAdminAuthProviderPatchWithOptionalParams(t *testing.T) {
 					}),
 					ScopeDelimiter: arcadego.F(arcadego.AuthProviderUpdateRequestOauth2ScopeDelimiterUnknown1),
 					TokenRequest: arcadego.F(arcadego.AuthProviderUpdateRequestOauth2TokenRequestParam{
-						AuthMethod: arcadego.F("auth_method"),
-						Endpoint:   arcadego.F("endpoint"),
-						Method:     arcadego.F("method"),
+						AuthHeaderValueFormat: arcadego.F("auth_header_value_format"),
+						AuthMethod:            arcadego.F("auth_method"),
+						Endpoint:              arcadego.F("endpoint"),
+						Method:                arcadego.F("method"),
 						Params: arcadego.F(map[string]string{
 							"foo": "string",
 						}),
@@ -259,9 +267,10 @@ func TestAdminAuthProviderPatchWithOptionalParams(t *testing.T) {
 						}),
 					}),
 					UserInfoRequest: arcadego.F(arcadego.AuthProviderUpdateRequestOauth2UserInfoRequestParam{
-						AuthMethod: arcadego.F("auth_method"),
-						Endpoint:   arcadego.F("endpoint"),
-						Method:     arcadego.F("method"),
+						AuthHeaderValueFormat: arcadego.F("auth_header_value_format"),
+						AuthMethod:            arcadego.F("auth_method"),
+						Endpoint:              arcadego.F("endpoint"),
+						Method:                arcadego.F("method"),
 						Params: arcadego.F(map[string]string{
 							"foo": "string",
 						}),
