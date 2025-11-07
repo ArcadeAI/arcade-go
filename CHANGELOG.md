@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.8 (2025-11-07)
+
+Full Changelog: [v0.1.0-alpha.7...v0.1.0-alpha.8](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.7...v0.1.0-alpha.8)
+
+### Features
+
+* **api:** api update ([e63d7cb](https://github.com/ArcadeAI/arcade-go/commit/e63d7cb6da00bf69516a9fbac880057254b8e691))
+
 ## 0.1.0-alpha.7 (2025-10-30)
 
 Full Changelog: [v0.1.0-alpha.6...v0.1.0-alpha.7](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.6...v0.1.0-alpha.7)
