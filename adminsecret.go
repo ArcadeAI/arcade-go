@@ -44,7 +44,7 @@ func (r *AdminSecretService) List(ctx context.Context, opts ...option.RequestOpt
 // Delete a secret by its ID
 func (r *AdminSecretService) Delete(ctx context.Context, secretID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if secretID == "" {
 		err = errors.New("missing required secret_id parameter")
 		return
