@@ -26,11 +26,12 @@ func TestToolFormattedListWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Tools.Formatted.List(context.TODO(), arcadego.ToolFormattedListParams{
-		Format:  arcadego.F("format"),
-		Limit:   arcadego.F(int64(0)),
-		Offset:  arcadego.F(int64(0)),
-		Toolkit: arcadego.F("toolkit"),
-		UserID:  arcadego.F("user_id"),
+		Format:             arcadego.F("format"),
+		IncludeAllVersions: arcadego.F(true),
+		Limit:              arcadego.F(int64(0)),
+		Offset:             arcadego.F(int64(0)),
+		Toolkit:            arcadego.F("toolkit"),
+		UserID:             arcadego.F("user_id"),
 	})
 	if err != nil {
 		var apierr *arcadego.Error

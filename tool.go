@@ -779,6 +779,8 @@ func (r valueSchemaJSON) RawJSON() string {
 }
 
 type ToolListParams struct {
+	// Include all versions of each tool
+	IncludeAllVersions param.Field[bool] `query:"include_all_versions"`
 	// Comma separated tool formats that will be included in the response.
 	IncludeFormat param.Field[[]ToolListParamsIncludeFormat] `query:"include_format"`
 	// Number of items to return (default: 25, max: 100)

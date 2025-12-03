@@ -80,6 +80,8 @@ type ToolFormattedGetResponse = interface{}
 type ToolFormattedListParams struct {
 	// Provider format
 	Format param.Field[string] `query:"format"`
+	// Include all versions of each tool
+	IncludeAllVersions param.Field[bool] `query:"include_all_versions"`
 	// Number of items to return (default: 25, max: 100)
 	Limit param.Field[int64] `query:"limit"`
 	// Offset from the start of the list (default: 0)
