@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-alpha.9 (2025-12-03)
+
+Full Changelog: [v0.1.0-alpha.8...v0.1.0-alpha.9](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.8...v0.1.0-alpha.9)
+
+### Features
+
+* **api:** api update ([225468e](https://github.com/ArcadeAI/arcade-go/commit/225468eb94ab97ea95c360939964eef2c9f15142))
+
+
+### Bug Fixes
+
+* **client:** correctly specify Accept header with */* instead of empty ([b4971e9](https://github.com/ArcadeAI/arcade-go/commit/b4971e9ac4114e03f0b91628a5e5bea5055d4d90))
+
 ## 0.1.0-alpha.8 (2025-11-07)
 
 Full Changelog: [v0.1.0-alpha.7...v0.1.0-alpha.8](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.7...v0.1.0-alpha.8)
