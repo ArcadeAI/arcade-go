@@ -10,6 +10,7 @@ import (
 	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
+	"github.com/ArcadeAI/arcade-go/internal/param"
 	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
 	"github.com/ArcadeAI/arcade-go/option"
 )
@@ -30,6 +31,18 @@ type AdminSecretService struct {
 func NewAdminSecretService(opts ...option.RequestOption) (r *AdminSecretService) {
 	r = &AdminSecretService{}
 	r.Options = opts
+	return
+}
+
+// Create or update a secret
+func (r *AdminSecretService) New(ctx context.Context, secretKey string, body AdminSecretNewParams, opts ...option.RequestOption) (res *SecretResponse, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if secretKey == "" {
+		err = errors.New("missing required secret_key parameter")
+		return
+	}
+	path := fmt.Sprintf("v1/admin/secrets/%s", secretKey)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -155,4 +168,13 @@ func (r *AdminSecretListResponse) UnmarshalJSON(data []byte) (err error) {
 
 func (r adminSecretListResponseJSON) RawJSON() string {
 	return r.raw
+}
+
+type AdminSecretNewParams struct {
+	Value       param.Field[string] `json:"value,required"`
+	Description param.Field[string] `json:"description"`
+}
+
+func (r AdminSecretNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
