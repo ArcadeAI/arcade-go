@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.1.0-alpha.9 (2025-12-13)
+
+Full Changelog: [v0.1.0-alpha.8...v0.1.0-alpha.9](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.8...v0.1.0-alpha.9)
+
+### Features
+
+* **api:** api update ([8a8ad69](https://github.com/ArcadeAI/arcade-go/commit/8a8ad6959f8ae3aed9085661c6efd7a19713ea41))
+* **api:** api update ([225468e](https://github.com/ArcadeAI/arcade-go/commit/225468eb94ab97ea95c360939964eef2c9f15142))
+
+
+### Bug Fixes
+
+* **client:** correctly specify Accept header with */* instead of empty ([b4971e9](https://github.com/ArcadeAI/arcade-go/commit/b4971e9ac4114e03f0b91628a5e5bea5055d4d90))
+* **mcp:** correct code tool API endpoint ([cdd7fa0](https://github.com/ArcadeAI/arcade-go/commit/cdd7fa02a5ca03e198cad5a969e7e2951e6fb372))
+* rename param to avoid collision ([31f124a](https://github.com/ArcadeAI/arcade-go/commit/31f124a0dd547c82e1655a34e30be9bbed9ed06f))
+
+
+### Chores
+
+* elide duplicate aliases ([37f1785](https://github.com/ArcadeAI/arcade-go/commit/37f1785677e7707685049d97ea3fc88f6955cd45))
+* **internal:** codegen related update ([263a9c8](https://github.com/ArcadeAI/arcade-go/commit/263a9c8e76c9920b0b7984701e9498da2cee6398))
+
 ## 0.1.0-alpha.8 (2025-11-07)
 
 Full Changelog: [v0.1.0-alpha.7...v0.1.0-alpha.8](https://github.com/ArcadeAI/arcade-go/compare/v0.1.0-alpha.7...v0.1.0-alpha.8)

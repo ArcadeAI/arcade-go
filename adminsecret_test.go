@@ -13,6 +13,35 @@ import (
 	"github.com/ArcadeAI/arcade-go/option"
 )
 
+func TestAdminSecretNewWithOptionalParams(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := arcadego.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+	)
+	_, err := client.Admin.Secrets.New(
+		context.TODO(),
+		"secret_key",
+		arcadego.AdminSecretNewParams{
+			Value:       arcadego.F("value"),
+			Description: arcadego.F("description"),
+		},
+	)
+	if err != nil {
+		var apierr *arcadego.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
 func TestAdminSecretList(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
