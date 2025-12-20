@@ -165,8 +165,33 @@ This library provides some conveniences for working with paginated list endpoint
 
 You can use `.ListAutoPaging()` methods to iterate through items across all pages:
 
+```go
+iter := client.Admin.UserConnections.ListAutoPaging(context.TODO(), arcadego.AdminUserConnectionListParams{})
+// Automatically fetches more pages as needed.
+for iter.Next() {
+	userConnectionResponse := iter.Current()
+	fmt.Printf("%+v\n", userConnectionResponse)
+}
+if err := iter.Err(); err != nil {
+	panic(err.Error())
+}
+```
+
 Or you can use simple `.List()` methods to fetch a single page and receive a standard response object
 with additional helper methods like `.GetNextPage()`, e.g.:
+
+```go
+page, err := client.Admin.UserConnections.List(context.TODO(), arcadego.AdminUserConnectionListParams{})
+for page != nil {
+	for _, userConnection := range page.Items {
+		fmt.Printf("%+v\n", userConnection)
+	}
+	page, err = page.GetNextPage()
+}
+if err != nil {
+	panic(err.Error())
+}
+```
 
 ### Errors
 
