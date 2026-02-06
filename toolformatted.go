@@ -73,9 +73,9 @@ func (r *ToolFormattedService) Get(ctx context.Context, name string, query ToolF
 	return
 }
 
-type ToolFormattedListResponse = interface{}
+type ToolFormattedListResponse map[string]interface{}
 
-type ToolFormattedGetResponse = interface{}
+type ToolFormattedGetResponse map[string]interface{}
 
 type ToolFormattedListParams struct {
 	// Provider format
