@@ -114,42 +114,16 @@ type AdminUserConnectionListParams struct {
 	// Page size
 	Limit param.Field[int64] `query:"limit"`
 	// Page offset
-	Offset   param.Field[int64]                                 `query:"offset"`
-	Provider param.Field[AdminUserConnectionListParamsProvider] `query:"provider"`
-	User     param.Field[AdminUserConnectionListParamsUser]     `query:"user"`
+	Offset param.Field[int64] `query:"offset"`
+	// Provider ID
+	ProviderID param.Field[string] `query:"provider_id"`
+	// User ID
+	UserID param.Field[string] `query:"user_id"`
 }
 
 // URLQuery serializes [AdminUserConnectionListParams]'s query parameters as
 // `url.Values`.
 func (r AdminUserConnectionListParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
-type AdminUserConnectionListParamsProvider struct {
-	// Provider ID
-	ID param.Field[string] `query:"id"`
-}
-
-// URLQuery serializes [AdminUserConnectionListParamsProvider]'s query parameters
-// as `url.Values`.
-func (r AdminUserConnectionListParamsProvider) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
-type AdminUserConnectionListParamsUser struct {
-	// User ID
-	ID param.Field[string] `query:"id"`
-}
-
-// URLQuery serializes [AdminUserConnectionListParamsUser]'s query parameters as
-// `url.Values`.
-func (r AdminUserConnectionListParamsUser) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
