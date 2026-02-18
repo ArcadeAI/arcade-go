@@ -72,7 +72,6 @@ type SecretResponse struct {
 	Binding        SecretResponseBinding `json:"binding"`
 	CreatedAt      string                `json:"created_at"`
 	Description    string                `json:"description"`
-	Hint           string                `json:"hint"`
 	Key            string                `json:"key"`
 	LastAccessedAt string                `json:"last_accessed_at"`
 	UpdatedAt      string                `json:"updated_at"`
@@ -85,7 +84,6 @@ type secretResponseJSON struct {
 	Binding        apijson.Field
 	CreatedAt      apijson.Field
 	Description    apijson.Field
-	Hint           apijson.Field
 	Key            apijson.Field
 	LastAccessedAt apijson.Field
 	UpdatedAt      apijson.Field

@@ -367,7 +367,6 @@ type WorkerResponseHTTPSecret struct {
 	Binding  WorkerResponseHTTPSecretBinding `json:"binding"`
 	Editable bool                            `json:"editable"`
 	Exists   bool                            `json:"exists"`
-	Hint     string                          `json:"hint"`
 	Value    string                          `json:"value"`
 	JSON     workerResponseHTTPSecretJSON    `json:"-"`
 }
@@ -378,7 +377,6 @@ type workerResponseHTTPSecretJSON struct {
 	Binding     apijson.Field
 	Editable    apijson.Field
 	Exists      apijson.Field
-	Hint        apijson.Field
 	Value       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -471,7 +469,6 @@ type WorkerResponseMcpOauth2ClientSecret struct {
 	Binding  WorkerResponseMcpOauth2ClientSecretBinding `json:"binding"`
 	Editable bool                                       `json:"editable"`
 	Exists   bool                                       `json:"exists"`
-	Hint     string                                     `json:"hint"`
 	Value    string                                     `json:"value"`
 	JSON     workerResponseMcpOauth2ClientSecretJSON    `json:"-"`
 }
@@ -482,7 +479,6 @@ type workerResponseMcpOauth2ClientSecretJSON struct {
 	Binding     apijson.Field
 	Editable    apijson.Field
 	Exists      apijson.Field
-	Hint        apijson.Field
 	Value       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -517,7 +513,6 @@ type WorkerResponseMcpSecret struct {
 	Binding  WorkerResponseMcpSecretsBinding `json:"binding"`
 	Editable bool                            `json:"editable"`
 	Exists   bool                            `json:"exists"`
-	Hint     string                          `json:"hint"`
 	Value    string                          `json:"value"`
 	JSON     workerResponseMcpSecretJSON     `json:"-"`
 }
@@ -528,7 +523,6 @@ type workerResponseMcpSecretJSON struct {
 	Binding     apijson.Field
 	Editable    apijson.Field
 	Exists      apijson.Field
-	Hint        apijson.Field
 	Value       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
