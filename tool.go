@@ -299,6 +299,7 @@ type ToolDefinition struct {
 	Toolkit            ToolDefinitionToolkit      `json:"toolkit,required"`
 	Description        string                     `json:"description"`
 	FormattedSchema    map[string]interface{}     `json:"formatted_schema"`
+	Metadata           ToolDefinitionMetadata     `json:"metadata"`
 	Output             ToolDefinitionOutput       `json:"output"`
 	Requirements       ToolDefinitionRequirements `json:"requirements"`
 	JSON               toolDefinitionJSON         `json:"-"`
@@ -313,6 +314,7 @@ type toolDefinitionJSON struct {
 	Toolkit            apijson.Field
 	Description        apijson.Field
 	FormattedSchema    apijson.Field
+	Metadata           apijson.Field
 	Output             apijson.Field
 	Requirements       apijson.Field
 	raw                string
@@ -399,6 +401,81 @@ func (r *ToolDefinitionToolkit) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r toolDefinitionToolkitJSON) RawJSON() string {
+	return r.raw
+}
+
+type ToolDefinitionMetadata struct {
+	Behavior       ToolDefinitionMetadataBehavior       `json:"behavior"`
+	Classification ToolDefinitionMetadataClassification `json:"classification"`
+	Extras         map[string]interface{}               `json:"extras"`
+	JSON           toolDefinitionMetadataJSON           `json:"-"`
+}
+
+// toolDefinitionMetadataJSON contains the JSON metadata for the struct
+// [ToolDefinitionMetadata]
+type toolDefinitionMetadataJSON struct {
+	Behavior       apijson.Field
+	Classification apijson.Field
+	Extras         apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *ToolDefinitionMetadata) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionMetadataJSON) RawJSON() string {
+	return r.raw
+}
+
+type ToolDefinitionMetadataBehavior struct {
+	Destructive bool                               `json:"destructive"`
+	Idempotent  bool                               `json:"idempotent"`
+	OpenWorld   bool                               `json:"open_world"`
+	Operations  []string                           `json:"operations"`
+	ReadOnly    bool                               `json:"read_only"`
+	JSON        toolDefinitionMetadataBehaviorJSON `json:"-"`
+}
+
+// toolDefinitionMetadataBehaviorJSON contains the JSON metadata for the struct
+// [ToolDefinitionMetadataBehavior]
+type toolDefinitionMetadataBehaviorJSON struct {
+	Destructive apijson.Field
+	Idempotent  apijson.Field
+	OpenWorld   apijson.Field
+	Operations  apijson.Field
+	ReadOnly    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ToolDefinitionMetadataBehavior) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionMetadataBehaviorJSON) RawJSON() string {
+	return r.raw
+}
+
+type ToolDefinitionMetadataClassification struct {
+	ServiceDomains []string                                 `json:"service_domains"`
+	JSON           toolDefinitionMetadataClassificationJSON `json:"-"`
+}
+
+// toolDefinitionMetadataClassificationJSON contains the JSON metadata for the
+// struct [ToolDefinitionMetadataClassification]
+type toolDefinitionMetadataClassificationJSON struct {
+	ServiceDomains apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *ToolDefinitionMetadataClassification) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionMetadataClassificationJSON) RawJSON() string {
 	return r.raw
 }
 
