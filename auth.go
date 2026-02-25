@@ -62,8 +62,8 @@ func (r *AuthService) Status(ctx context.Context, query AuthStatusParams, opts .
 }
 
 type AuthRequestParam struct {
-	AuthRequirement param.Field[AuthRequestAuthRequirementParam] `json:"auth_requirement,required"`
-	UserID          param.Field[string]                          `json:"user_id,required"`
+	AuthRequirement param.Field[AuthRequestAuthRequirementParam] `json:"auth_requirement" api:"required"`
+	UserID          param.Field[string]                          `json:"user_id" api:"required"`
 	// Optional: if provided, the user will be redirected to this URI after
 	// authorization
 	NextUri param.Field[string] `json:"next_uri"`
@@ -95,8 +95,8 @@ func (r AuthRequestAuthRequirementOauth2Param) MarshalJSON() (data []byte, err e
 }
 
 type ConfirmUserRequestParam struct {
-	FlowID param.Field[string] `json:"flow_id,required"`
-	UserID param.Field[string] `json:"user_id,required"`
+	FlowID param.Field[string] `json:"flow_id" api:"required"`
+	UserID param.Field[string] `json:"user_id" api:"required"`
 }
 
 func (r ConfirmUserRequestParam) MarshalJSON() (data []byte, err error) {
@@ -104,7 +104,7 @@ func (r ConfirmUserRequestParam) MarshalJSON() (data []byte, err error) {
 }
 
 type ConfirmUserResponse struct {
-	AuthID  string                  `json:"auth_id,required"`
+	AuthID  string                  `json:"auth_id" api:"required"`
 	NextUri string                  `json:"next_uri"`
 	JSON    confirmUserResponseJSON `json:"-"`
 }
@@ -127,7 +127,7 @@ func (r confirmUserResponseJSON) RawJSON() string {
 }
 
 type AuthAuthorizeParams struct {
-	AuthRequest AuthRequestParam `json:"auth_request,required"`
+	AuthRequest AuthRequestParam `json:"auth_request" api:"required"`
 }
 
 func (r AuthAuthorizeParams) MarshalJSON() (data []byte, err error) {
@@ -135,7 +135,7 @@ func (r AuthAuthorizeParams) MarshalJSON() (data []byte, err error) {
 }
 
 type AuthConfirmUserParams struct {
-	ConfirmUserRequest ConfirmUserRequestParam `json:"confirm_user_request,required"`
+	ConfirmUserRequest ConfirmUserRequestParam `json:"confirm_user_request" api:"required"`
 }
 
 func (r AuthConfirmUserParams) MarshalJSON() (data []byte, err error) {
@@ -144,7 +144,7 @@ func (r AuthConfirmUserParams) MarshalJSON() (data []byte, err error) {
 
 type AuthStatusParams struct {
 	// Authorization ID
-	ID param.Field[string] `query:"id,required"`
+	ID param.Field[string] `query:"id" api:"required"`
 	// Timeout in seconds (max 59)
 	Wait param.Field[int64] `query:"wait"`
 }

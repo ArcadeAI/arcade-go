@@ -40,7 +40,7 @@ func (r *ChatCompletionService) New(ctx context.Context, body ChatCompletionNewP
 }
 
 type ChatCompletionNewParams struct {
-	ChatRequest ChatRequestParam `json:"chat_request,required"`
+	ChatRequest ChatRequestParam `json:"chat_request" api:"required"`
 }
 
 func (r ChatCompletionNewParams) MarshalJSON() (data []byte, err error) {

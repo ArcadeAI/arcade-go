@@ -145,7 +145,7 @@ func (r *WorkerService) ToolsAutoPaging(ctx context.Context, id string, query Wo
 }
 
 type CreateWorkerRequestParam struct {
-	ID      param.Field[string]                       `json:"id,required"`
+	ID      param.Field[string]                       `json:"id" api:"required"`
 	Enabled param.Field[bool]                         `json:"enabled"`
 	HTTP    param.Field[CreateWorkerRequestHTTPParam] `json:"http"`
 	Mcp     param.Field[CreateWorkerRequestMcpParam]  `json:"mcp"`
@@ -157,10 +157,10 @@ func (r CreateWorkerRequestParam) MarshalJSON() (data []byte, err error) {
 }
 
 type CreateWorkerRequestHTTPParam struct {
-	Retry   param.Field[int64]  `json:"retry,required"`
-	Secret  param.Field[string] `json:"secret,required"`
-	Timeout param.Field[int64]  `json:"timeout,required"`
-	Uri     param.Field[string] `json:"uri,required"`
+	Retry   param.Field[int64]  `json:"retry" api:"required"`
+	Secret  param.Field[string] `json:"secret" api:"required"`
+	Timeout param.Field[int64]  `json:"timeout" api:"required"`
+	Uri     param.Field[string] `json:"uri" api:"required"`
 }
 
 func (r CreateWorkerRequestHTTPParam) MarshalJSON() (data []byte, err error) {
@@ -168,9 +168,9 @@ func (r CreateWorkerRequestHTTPParam) MarshalJSON() (data []byte, err error) {
 }
 
 type CreateWorkerRequestMcpParam struct {
-	Retry   param.Field[int64]                             `json:"retry,required"`
-	Timeout param.Field[int64]                             `json:"timeout,required"`
-	Uri     param.Field[string]                            `json:"uri,required"`
+	Retry   param.Field[int64]                             `json:"retry" api:"required"`
+	Timeout param.Field[int64]                             `json:"timeout" api:"required"`
+	Uri     param.Field[string]                            `json:"uri" api:"required"`
 	Headers param.Field[map[string]string]                 `json:"headers"`
 	Oauth2  param.Field[CreateWorkerRequestMcpOauth2Param] `json:"oauth2"`
 	Secrets param.Field[map[string]string]                 `json:"secrets"`
@@ -637,7 +637,7 @@ func (r WorkerResponseType) IsKnown() bool {
 }
 
 type WorkerNewParams struct {
-	CreateWorkerRequest CreateWorkerRequestParam `json:"create_worker_request,required"`
+	CreateWorkerRequest CreateWorkerRequestParam `json:"create_worker_request" api:"required"`
 }
 
 func (r WorkerNewParams) MarshalJSON() (data []byte, err error) {
@@ -645,7 +645,7 @@ func (r WorkerNewParams) MarshalJSON() (data []byte, err error) {
 }
 
 type WorkerUpdateParams struct {
-	UpdateWorkerRequest UpdateWorkerRequestParam `json:"update_worker_request,required"`
+	UpdateWorkerRequest UpdateWorkerRequestParam `json:"update_worker_request" api:"required"`
 }
 
 func (r WorkerUpdateParams) MarshalJSON() (data []byte, err error) {

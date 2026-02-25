@@ -32,9 +32,9 @@ func NewChatService(opts ...option.RequestOption) (r *ChatService) {
 
 type ChatMessage struct {
 	// The content of the message.
-	Content string `json:"content,required"`
+	Content string `json:"content" api:"required"`
 	// The role of the author of this message. One of system, user, tool, or assistant.
-	Role string `json:"role,required"`
+	Role string `json:"role" api:"required"`
 	// tool Name
 	Name string `json:"name"`
 	// tool_call_id
@@ -127,9 +127,9 @@ func (r ChatMessageToolCallsType) IsKnown() bool {
 
 type ChatMessageParam struct {
 	// The content of the message.
-	Content param.Field[string] `json:"content,required"`
+	Content param.Field[string] `json:"content" api:"required"`
 	// The role of the author of this message. One of system, user, tool, or assistant.
-	Role param.Field[string] `json:"role,required"`
+	Role param.Field[string] `json:"role" api:"required"`
 	// tool Name
 	Name param.Field[string] `json:"name"`
 	// tool_call_id

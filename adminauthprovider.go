@@ -87,7 +87,7 @@ func (r *AdminAuthProviderService) Patch(ctx context.Context, id string, body Ad
 }
 
 type AuthProviderCreateRequestParam struct {
-	ID          param.Field[string] `json:"id,required"`
+	ID          param.Field[string] `json:"id" api:"required"`
 	Description param.Field[string] `json:"description"`
 	// The unique external ID for the auth provider
 	ExternalID param.Field[string]                               `json:"external_id"`
@@ -102,7 +102,7 @@ func (r AuthProviderCreateRequestParam) MarshalJSON() (data []byte, err error) {
 }
 
 type AuthProviderCreateRequestOauth2Param struct {
-	ClientID                  param.Field[string]                                                        `json:"client_id,required"`
+	ClientID                  param.Field[string]                                                        `json:"client_id" api:"required"`
 	AuthorizeRequest          param.Field[AuthProviderCreateRequestOauth2AuthorizeRequestParam]          `json:"authorize_request"`
 	ClientSecret              param.Field[string]                                                        `json:"client_secret"`
 	Pkce                      param.Field[AuthProviderCreateRequestOauth2PkceParam]                      `json:"pkce"`
@@ -118,7 +118,7 @@ func (r AuthProviderCreateRequestOauth2Param) MarshalJSON() (data []byte, err er
 }
 
 type AuthProviderCreateRequestOauth2AuthorizeRequestParam struct {
-	Endpoint              param.Field[string]                                                             `json:"endpoint,required"`
+	Endpoint              param.Field[string]                                                             `json:"endpoint" api:"required"`
 	AuthHeaderValueFormat param.Field[string]                                                             `json:"auth_header_value_format"`
 	AuthMethod            param.Field[string]                                                             `json:"auth_method"`
 	Method                param.Field[string]                                                             `json:"method"`
@@ -172,7 +172,7 @@ func (r AuthProviderCreateRequestOauth2PkceParam) MarshalJSON() (data []byte, er
 }
 
 type AuthProviderCreateRequestOauth2RefreshRequestParam struct {
-	Endpoint              param.Field[string]                                                           `json:"endpoint,required"`
+	Endpoint              param.Field[string]                                                           `json:"endpoint" api:"required"`
 	AuthHeaderValueFormat param.Field[string]                                                           `json:"auth_header_value_format"`
 	AuthMethod            param.Field[string]                                                           `json:"auth_method"`
 	Method                param.Field[string]                                                           `json:"method"`
@@ -232,8 +232,8 @@ func (r AuthProviderCreateRequestOauth2ScopeDelimiter) IsKnown() bool {
 }
 
 type AuthProviderCreateRequestOauth2TokenIntrospectionRequestParam struct {
-	Endpoint              param.Field[string]                                                                      `json:"endpoint,required"`
-	Triggers              param.Field[AuthProviderCreateRequestOauth2TokenIntrospectionRequestTriggersParam]       `json:"triggers,required"`
+	Endpoint              param.Field[string]                                                                      `json:"endpoint" api:"required"`
+	Triggers              param.Field[AuthProviderCreateRequestOauth2TokenIntrospectionRequestTriggersParam]       `json:"triggers" api:"required"`
 	AuthHeaderValueFormat param.Field[string]                                                                      `json:"auth_header_value_format"`
 	AuthMethod            param.Field[string]                                                                      `json:"auth_method"`
 	Method                param.Field[string]                                                                      `json:"method"`
@@ -287,7 +287,7 @@ func (r AuthProviderCreateRequestOauth2TokenIntrospectionRequestResponseContentT
 }
 
 type AuthProviderCreateRequestOauth2TokenRequestParam struct {
-	Endpoint              param.Field[string]                                                         `json:"endpoint,required"`
+	Endpoint              param.Field[string]                                                         `json:"endpoint" api:"required"`
 	AuthHeaderValueFormat param.Field[string]                                                         `json:"auth_header_value_format"`
 	AuthMethod            param.Field[string]                                                         `json:"auth_method"`
 	Method                param.Field[string]                                                         `json:"method"`
@@ -332,8 +332,8 @@ func (r AuthProviderCreateRequestOauth2TokenRequestResponseContentType) IsKnown(
 }
 
 type AuthProviderCreateRequestOauth2UserInfoRequestParam struct {
-	Endpoint              param.Field[string]                                                            `json:"endpoint,required"`
-	Triggers              param.Field[AuthProviderCreateRequestOauth2UserInfoRequestTriggersParam]       `json:"triggers,required"`
+	Endpoint              param.Field[string]                                                            `json:"endpoint" api:"required"`
+	Triggers              param.Field[AuthProviderCreateRequestOauth2UserInfoRequestTriggersParam]       `json:"triggers" api:"required"`
 	AuthHeaderValueFormat param.Field[string]                                                            `json:"auth_header_value_format"`
 	AuthMethod            param.Field[string]                                                            `json:"auth_method"`
 	Method                param.Field[string]                                                            `json:"method"`
@@ -1080,7 +1080,7 @@ func (r adminAuthProviderListResponseJSON) RawJSON() string {
 }
 
 type AdminAuthProviderNewParams struct {
-	AuthProviderCreateRequest AuthProviderCreateRequestParam `json:"auth_provider_create_request,required"`
+	AuthProviderCreateRequest AuthProviderCreateRequestParam `json:"auth_provider_create_request" api:"required"`
 }
 
 func (r AdminAuthProviderNewParams) MarshalJSON() (data []byte, err error) {
@@ -1088,7 +1088,7 @@ func (r AdminAuthProviderNewParams) MarshalJSON() (data []byte, err error) {
 }
 
 type AdminAuthProviderPatchParams struct {
-	AuthProviderUpdateRequest AuthProviderUpdateRequestParam `json:"auth_provider_update_request,required"`
+	AuthProviderUpdateRequest AuthProviderUpdateRequestParam `json:"auth_provider_update_request" api:"required"`
 }
 
 func (r AdminAuthProviderPatchParams) MarshalJSON() (data []byte, err error) {
