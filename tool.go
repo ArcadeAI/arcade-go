@@ -96,7 +96,7 @@ func (r *ToolService) Get(ctx context.Context, name string, query ToolGetParams,
 }
 
 type AuthorizeToolRequestParam struct {
-	ToolName param.Field[string] `json:"tool_name,required"`
+	ToolName param.Field[string] `json:"tool_name" api:"required"`
 	// Optional: if provided, the user will be redirected to this URI after
 	// authorization
 	NextUri param.Field[string] `json:"next_uri"`
@@ -111,7 +111,7 @@ func (r AuthorizeToolRequestParam) MarshalJSON() (data []byte, err error) {
 }
 
 type ExecuteToolRequestParam struct {
-	ToolName param.Field[string] `json:"tool_name,required"`
+	ToolName param.Field[string] `json:"tool_name" api:"required"`
 	// Whether to include the error stacktrace in the response. If not provided, the
 	// error stacktrace is not included.
 	IncludeErrorStacktrace param.Field[bool] `json:"include_error_stacktrace"`
@@ -197,9 +197,9 @@ func (r executeToolResponseOutputJSON) RawJSON() string {
 }
 
 type ExecuteToolResponseOutputError struct {
-	CanRetry                bool                               `json:"can_retry,required"`
-	Kind                    ExecuteToolResponseOutputErrorKind `json:"kind,required"`
-	Message                 string                             `json:"message,required"`
+	CanRetry                bool                               `json:"can_retry" api:"required"`
+	Kind                    ExecuteToolResponseOutputErrorKind `json:"kind" api:"required"`
+	Message                 string                             `json:"message" api:"required"`
 	AdditionalPromptContent string                             `json:"additional_prompt_content"`
 	DeveloperMessage        string                             `json:"developer_message"`
 	Extra                   map[string]interface{}             `json:"extra"`
@@ -267,8 +267,8 @@ func (r ExecuteToolResponseOutputErrorKind) IsKnown() bool {
 }
 
 type ExecuteToolResponseOutputLog struct {
-	Level   string                           `json:"level,required"`
-	Message string                           `json:"message,required"`
+	Level   string                           `json:"level" api:"required"`
+	Message string                           `json:"message" api:"required"`
 	Subtype string                           `json:"subtype"`
 	JSON    executeToolResponseOutputLogJSON `json:"-"`
 }
@@ -292,11 +292,11 @@ func (r executeToolResponseOutputLogJSON) RawJSON() string {
 }
 
 type ToolDefinition struct {
-	FullyQualifiedName string                     `json:"fully_qualified_name,required"`
-	Input              ToolDefinitionInput        `json:"input,required"`
-	Name               string                     `json:"name,required"`
-	QualifiedName      string                     `json:"qualified_name,required"`
-	Toolkit            ToolDefinitionToolkit      `json:"toolkit,required"`
+	FullyQualifiedName string                     `json:"fully_qualified_name" api:"required"`
+	Input              ToolDefinitionInput        `json:"input" api:"required"`
+	Name               string                     `json:"name" api:"required"`
+	QualifiedName      string                     `json:"qualified_name" api:"required"`
+	Toolkit            ToolDefinitionToolkit      `json:"toolkit" api:"required"`
 	Description        string                     `json:"description"`
 	FormattedSchema    map[string]interface{}     `json:"formatted_schema"`
 	Metadata           ToolDefinitionMetadata     `json:"metadata"`
@@ -351,8 +351,8 @@ func (r toolDefinitionInputJSON) RawJSON() string {
 }
 
 type ToolDefinitionInputParameter struct {
-	Name        string                           `json:"name,required"`
-	ValueSchema ValueSchema                      `json:"value_schema,required"`
+	Name        string                           `json:"name" api:"required"`
+	ValueSchema ValueSchema                      `json:"value_schema" api:"required"`
 	Description string                           `json:"description"`
 	Inferrable  bool                             `json:"inferrable"`
 	Required    bool                             `json:"required"`
@@ -380,7 +380,7 @@ func (r toolDefinitionInputParameterJSON) RawJSON() string {
 }
 
 type ToolDefinitionToolkit struct {
-	Name        string                    `json:"name,required"`
+	Name        string                    `json:"name" api:"required"`
 	Description string                    `json:"description"`
 	Version     string                    `json:"version"`
 	JSON        toolDefinitionToolkitJSON `json:"-"`
@@ -616,7 +616,7 @@ func (r ToolDefinitionRequirementsAuthorizationTokenStatus) IsKnown() bool {
 }
 
 type ToolDefinitionRequirementsSecret struct {
-	Key          string                               `json:"key,required"`
+	Key          string                               `json:"key" api:"required"`
 	Met          bool                                 `json:"met"`
 	StatusReason string                               `json:"status_reason"`
 	JSON         toolDefinitionRequirementsSecretJSON `json:"-"`
@@ -741,9 +741,9 @@ func (r toolExecutionAttemptOutputJSON) RawJSON() string {
 }
 
 type ToolExecutionAttemptOutputError struct {
-	CanRetry                bool                                `json:"can_retry,required"`
-	Kind                    ToolExecutionAttemptOutputErrorKind `json:"kind,required"`
-	Message                 string                              `json:"message,required"`
+	CanRetry                bool                                `json:"can_retry" api:"required"`
+	Kind                    ToolExecutionAttemptOutputErrorKind `json:"kind" api:"required"`
+	Message                 string                              `json:"message" api:"required"`
 	AdditionalPromptContent string                              `json:"additional_prompt_content"`
 	DeveloperMessage        string                              `json:"developer_message"`
 	Extra                   map[string]interface{}              `json:"extra"`
@@ -811,8 +811,8 @@ func (r ToolExecutionAttemptOutputErrorKind) IsKnown() bool {
 }
 
 type ToolExecutionAttemptOutputLog struct {
-	Level   string                            `json:"level,required"`
-	Message string                            `json:"message,required"`
+	Level   string                            `json:"level" api:"required"`
+	Message string                            `json:"message" api:"required"`
 	Subtype string                            `json:"subtype"`
 	JSON    toolExecutionAttemptOutputLogJSON `json:"-"`
 }
@@ -836,7 +836,7 @@ func (r toolExecutionAttemptOutputLogJSON) RawJSON() string {
 }
 
 type ValueSchema struct {
-	ValType      string          `json:"val_type,required"`
+	ValType      string          `json:"val_type" api:"required"`
 	Enum         []string        `json:"enum"`
 	InnerValType string          `json:"inner_val_type"`
 	JSON         valueSchemaJSON `json:"-"`
@@ -899,7 +899,7 @@ func (r ToolListParamsIncludeFormat) IsKnown() bool {
 }
 
 type ToolAuthorizeParams struct {
-	AuthorizeToolRequest AuthorizeToolRequestParam `json:"authorize_tool_request,required"`
+	AuthorizeToolRequest AuthorizeToolRequestParam `json:"authorize_tool_request" api:"required"`
 }
 
 func (r ToolAuthorizeParams) MarshalJSON() (data []byte, err error) {
@@ -907,7 +907,7 @@ func (r ToolAuthorizeParams) MarshalJSON() (data []byte, err error) {
 }
 
 type ToolExecuteParams struct {
-	ExecuteToolRequest ExecuteToolRequestParam `json:"execute_tool_request,required"`
+	ExecuteToolRequest ExecuteToolRequestParam `json:"execute_tool_request" api:"required"`
 }
 
 func (r ToolExecuteParams) MarshalJSON() (data []byte, err error) {

@@ -169,7 +169,7 @@ func (r adminSecretListResponseJSON) RawJSON() string {
 }
 
 type AdminSecretNewParams struct {
-	Value       param.Field[string] `json:"value,required"`
+	Value       param.Field[string] `json:"value" api:"required"`
 	Description param.Field[string] `json:"description"`
 }
 
