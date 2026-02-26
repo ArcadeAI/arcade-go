@@ -443,6 +443,7 @@ type WorkerResponseMcpOauth2 struct {
 	ClientID         string                              `json:"client_id"`
 	ClientSecret     WorkerResponseMcpOauth2ClientSecret `json:"client_secret"`
 	RedirectUri      string                              `json:"redirect_uri"`
+	SupportedScopes  []string                            `json:"supported_scopes"`
 	JSON             workerResponseMcpOauth2JSON         `json:"-"`
 }
 
@@ -453,6 +454,7 @@ type workerResponseMcpOauth2JSON struct {
 	ClientID         apijson.Field
 	ClientSecret     apijson.Field
 	RedirectUri      apijson.Field
+	SupportedScopes  apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
