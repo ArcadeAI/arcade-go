@@ -367,6 +367,7 @@ type WorkerResponseHTTPSecret struct {
 	Binding  WorkerResponseHTTPSecretBinding `json:"binding"`
 	Editable bool                            `json:"editable"`
 	Exists   bool                            `json:"exists"`
+	Hint     string                          `json:"hint"`
 	Value    string                          `json:"value"`
 	JSON     workerResponseHTTPSecretJSON    `json:"-"`
 }
@@ -377,6 +378,7 @@ type workerResponseHTTPSecretJSON struct {
 	Binding     apijson.Field
 	Editable    apijson.Field
 	Exists      apijson.Field
+	Hint        apijson.Field
 	Value       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -442,9 +444,7 @@ type WorkerResponseMcpOauth2 struct {
 	AuthorizationURL string                              `json:"authorization_url"`
 	ClientID         string                              `json:"client_id"`
 	ClientSecret     WorkerResponseMcpOauth2ClientSecret `json:"client_secret"`
-	ExternalID       string                              `json:"external_id"`
 	RedirectUri      string                              `json:"redirect_uri"`
-	SupportedScopes  []string                            `json:"supported_scopes"`
 	JSON             workerResponseMcpOauth2JSON         `json:"-"`
 }
 
@@ -454,9 +454,7 @@ type workerResponseMcpOauth2JSON struct {
 	AuthorizationURL apijson.Field
 	ClientID         apijson.Field
 	ClientSecret     apijson.Field
-	ExternalID       apijson.Field
 	RedirectUri      apijson.Field
-	SupportedScopes  apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -473,6 +471,7 @@ type WorkerResponseMcpOauth2ClientSecret struct {
 	Binding  WorkerResponseMcpOauth2ClientSecretBinding `json:"binding"`
 	Editable bool                                       `json:"editable"`
 	Exists   bool                                       `json:"exists"`
+	Hint     string                                     `json:"hint"`
 	Value    string                                     `json:"value"`
 	JSON     workerResponseMcpOauth2ClientSecretJSON    `json:"-"`
 }
@@ -483,6 +482,7 @@ type workerResponseMcpOauth2ClientSecretJSON struct {
 	Binding     apijson.Field
 	Editable    apijson.Field
 	Exists      apijson.Field
+	Hint        apijson.Field
 	Value       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -517,6 +517,7 @@ type WorkerResponseMcpSecret struct {
 	Binding  WorkerResponseMcpSecretsBinding `json:"binding"`
 	Editable bool                            `json:"editable"`
 	Exists   bool                            `json:"exists"`
+	Hint     string                          `json:"hint"`
 	Value    string                          `json:"value"`
 	JSON     workerResponseMcpSecretJSON     `json:"-"`
 }
@@ -527,6 +528,7 @@ type workerResponseMcpSecretJSON struct {
 	Binding     apijson.Field
 	Editable    apijson.Field
 	Exists      apijson.Field
+	Hint        apijson.Field
 	Value       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field

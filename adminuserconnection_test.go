@@ -26,10 +26,14 @@ func TestAdminUserConnectionListWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Admin.UserConnections.List(context.TODO(), arcadego.AdminUserConnectionListParams{
-		Limit:      arcadego.F(int64(0)),
-		Offset:     arcadego.F(int64(0)),
-		ProviderID: arcadego.F("provider_id"),
-		UserID:     arcadego.F("user_id"),
+		Limit:  arcadego.F(int64(0)),
+		Offset: arcadego.F(int64(0)),
+		Provider: arcadego.F(arcadego.AdminUserConnectionListParamsProvider{
+			ID: arcadego.F("id"),
+		}),
+		User: arcadego.F(arcadego.AdminUserConnectionListParamsUser{
+			ID: arcadego.F("id"),
+		}),
 	})
 	if err != nil {
 		var apierr *arcadego.Error
