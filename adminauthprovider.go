@@ -544,6 +544,7 @@ type AuthProviderResponseOauth2ClientSecret struct {
 	Binding  AuthProviderResponseOauth2ClientSecretBinding `json:"binding"`
 	Editable bool                                          `json:"editable"`
 	Exists   bool                                          `json:"exists"`
+	Hint     string                                        `json:"hint"`
 	Value    string                                        `json:"value"`
 	JSON     authProviderResponseOauth2ClientSecretJSON    `json:"-"`
 }
@@ -554,6 +555,7 @@ type authProviderResponseOauth2ClientSecretJSON struct {
 	Binding     apijson.Field
 	Editable    apijson.Field
 	Exists      apijson.Field
+	Hint        apijson.Field
 	Value       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
