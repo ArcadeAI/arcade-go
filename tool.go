@@ -246,6 +246,8 @@ const (
 	ExecuteToolResponseOutputErrorKindToolRuntimeRetry               ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_RETRY"
 	ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired     ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_CONTEXT_REQUIRED"
 	ExecuteToolResponseOutputErrorKindToolRuntimeFatal               ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_FATAL"
+	ExecuteToolResponseOutputErrorKindContextCheckFailed             ExecuteToolResponseOutputErrorKind = "CONTEXT_CHECK_FAILED"
+	ExecuteToolResponseOutputErrorKindContextDenied                  ExecuteToolResponseOutputErrorKind = "CONTEXT_DENIED"
 	ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest      ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_BAD_REQUEST"
 	ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError       ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_AUTH_ERROR"
 	ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound        ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_NOT_FOUND"
@@ -258,7 +260,7 @@ const (
 
 func (r ExecuteToolResponseOutputErrorKind) IsKnown() bool {
 	switch r {
-	case ExecuteToolResponseOutputErrorKindToolkitLoadFailed, ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition, ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema, ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema, ExecuteToolResponseOutputErrorKindToolRequirementsNotMet, ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue, ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue, ExecuteToolResponseOutputErrorKindToolRuntimeRetry, ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired, ExecuteToolResponseOutputErrorKindToolRuntimeFatal, ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest, ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound, ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit, ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped, ExecuteToolResponseOutputErrorKindUnknown:
+	case ExecuteToolResponseOutputErrorKindToolkitLoadFailed, ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition, ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema, ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema, ExecuteToolResponseOutputErrorKindToolRequirementsNotMet, ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue, ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue, ExecuteToolResponseOutputErrorKindToolRuntimeRetry, ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired, ExecuteToolResponseOutputErrorKindToolRuntimeFatal, ExecuteToolResponseOutputErrorKindContextCheckFailed, ExecuteToolResponseOutputErrorKindContextDenied, ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest, ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound, ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit, ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped, ExecuteToolResponseOutputErrorKindUnknown:
 		return true
 	}
 	return false
@@ -297,6 +299,7 @@ type ToolDefinition struct {
 	Toolkit            ToolDefinitionToolkit      `json:"toolkit" api:"required"`
 	Description        string                     `json:"description"`
 	FormattedSchema    map[string]interface{}     `json:"formatted_schema"`
+	Metadata           ToolDefinitionMetadata     `json:"metadata"`
 	Output             ToolDefinitionOutput       `json:"output"`
 	Requirements       ToolDefinitionRequirements `json:"requirements"`
 	JSON               toolDefinitionJSON         `json:"-"`
@@ -311,6 +314,7 @@ type toolDefinitionJSON struct {
 	Toolkit            apijson.Field
 	Description        apijson.Field
 	FormattedSchema    apijson.Field
+	Metadata           apijson.Field
 	Output             apijson.Field
 	Requirements       apijson.Field
 	raw                string
@@ -397,6 +401,81 @@ func (r *ToolDefinitionToolkit) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r toolDefinitionToolkitJSON) RawJSON() string {
+	return r.raw
+}
+
+type ToolDefinitionMetadata struct {
+	Behavior       ToolDefinitionMetadataBehavior       `json:"behavior"`
+	Classification ToolDefinitionMetadataClassification `json:"classification"`
+	Extras         map[string]interface{}               `json:"extras"`
+	JSON           toolDefinitionMetadataJSON           `json:"-"`
+}
+
+// toolDefinitionMetadataJSON contains the JSON metadata for the struct
+// [ToolDefinitionMetadata]
+type toolDefinitionMetadataJSON struct {
+	Behavior       apijson.Field
+	Classification apijson.Field
+	Extras         apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *ToolDefinitionMetadata) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionMetadataJSON) RawJSON() string {
+	return r.raw
+}
+
+type ToolDefinitionMetadataBehavior struct {
+	Destructive bool                               `json:"destructive"`
+	Idempotent  bool                               `json:"idempotent"`
+	OpenWorld   bool                               `json:"open_world"`
+	Operations  []string                           `json:"operations"`
+	ReadOnly    bool                               `json:"read_only"`
+	JSON        toolDefinitionMetadataBehaviorJSON `json:"-"`
+}
+
+// toolDefinitionMetadataBehaviorJSON contains the JSON metadata for the struct
+// [ToolDefinitionMetadataBehavior]
+type toolDefinitionMetadataBehaviorJSON struct {
+	Destructive apijson.Field
+	Idempotent  apijson.Field
+	OpenWorld   apijson.Field
+	Operations  apijson.Field
+	ReadOnly    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ToolDefinitionMetadataBehavior) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionMetadataBehaviorJSON) RawJSON() string {
+	return r.raw
+}
+
+type ToolDefinitionMetadataClassification struct {
+	ServiceDomains []string                                 `json:"service_domains"`
+	JSON           toolDefinitionMetadataClassificationJSON `json:"-"`
+}
+
+// toolDefinitionMetadataClassificationJSON contains the JSON metadata for the
+// struct [ToolDefinitionMetadataClassification]
+type toolDefinitionMetadataClassificationJSON struct {
+	ServiceDomains apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *ToolDefinitionMetadataClassification) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionMetadataClassificationJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -711,6 +790,8 @@ const (
 	ToolExecutionAttemptOutputErrorKindToolRuntimeRetry               ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_RETRY"
 	ToolExecutionAttemptOutputErrorKindToolRuntimeContextRequired     ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_CONTEXT_REQUIRED"
 	ToolExecutionAttemptOutputErrorKindToolRuntimeFatal               ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_FATAL"
+	ToolExecutionAttemptOutputErrorKindContextCheckFailed             ToolExecutionAttemptOutputErrorKind = "CONTEXT_CHECK_FAILED"
+	ToolExecutionAttemptOutputErrorKindContextDenied                  ToolExecutionAttemptOutputErrorKind = "CONTEXT_DENIED"
 	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeBadRequest      ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_BAD_REQUEST"
 	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeAuthError       ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_AUTH_ERROR"
 	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeNotFound        ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_NOT_FOUND"
@@ -723,7 +804,7 @@ const (
 
 func (r ToolExecutionAttemptOutputErrorKind) IsKnown() bool {
 	switch r {
-	case ToolExecutionAttemptOutputErrorKindToolkitLoadFailed, ToolExecutionAttemptOutputErrorKindToolDefinitionBadDefinition, ToolExecutionAttemptOutputErrorKindToolDefinitionBadInputSchema, ToolExecutionAttemptOutputErrorKindToolDefinitionBadOutputSchema, ToolExecutionAttemptOutputErrorKindToolRequirementsNotMet, ToolExecutionAttemptOutputErrorKindToolRuntimeBadInputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeBadOutputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeRetry, ToolExecutionAttemptOutputErrorKindToolRuntimeContextRequired, ToolExecutionAttemptOutputErrorKindToolRuntimeFatal, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeBadRequest, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeAuthError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeNotFound, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeValidationError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeRateLimit, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeServerError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeUnmapped, ToolExecutionAttemptOutputErrorKindUnknown:
+	case ToolExecutionAttemptOutputErrorKindToolkitLoadFailed, ToolExecutionAttemptOutputErrorKindToolDefinitionBadDefinition, ToolExecutionAttemptOutputErrorKindToolDefinitionBadInputSchema, ToolExecutionAttemptOutputErrorKindToolDefinitionBadOutputSchema, ToolExecutionAttemptOutputErrorKindToolRequirementsNotMet, ToolExecutionAttemptOutputErrorKindToolRuntimeBadInputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeBadOutputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeRetry, ToolExecutionAttemptOutputErrorKindToolRuntimeContextRequired, ToolExecutionAttemptOutputErrorKindToolRuntimeFatal, ToolExecutionAttemptOutputErrorKindContextCheckFailed, ToolExecutionAttemptOutputErrorKindContextDenied, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeBadRequest, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeAuthError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeNotFound, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeValidationError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeRateLimit, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeServerError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeUnmapped, ToolExecutionAttemptOutputErrorKindUnknown:
 		return true
 	}
 	return false
