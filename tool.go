@@ -72,7 +72,7 @@ func (r *ToolService) Authorize(ctx context.Context, body ToolAuthorizeParams, o
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/tools/authorize"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Executes a tool by name and arguments
@@ -80,7 +80,7 @@ func (r *ToolService) Execute(ctx context.Context, body ToolExecuteParams, opts 
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/tools/execute"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Returns the arcade tool specification for a specific tool
@@ -88,11 +88,11 @@ func (r *ToolService) Get(ctx context.Context, name string, query ToolGetParams,
 	opts = slices.Concat(r.Options, opts)
 	if name == "" {
 		err = errors.New("missing required name parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/tools/%s", name)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	return res, err
 }
 
 type AuthorizeToolRequestParam struct {

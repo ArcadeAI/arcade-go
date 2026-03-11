@@ -39,11 +39,11 @@ func (r *AdminSecretService) New(ctx context.Context, secretKey string, body Adm
 	opts = slices.Concat(r.Options, opts)
 	if secretKey == "" {
 		err = errors.New("missing required secret_key parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/admin/secrets/%s", secretKey)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // List all secrets that are visible to the caller
@@ -51,7 +51,7 @@ func (r *AdminSecretService) List(ctx context.Context, opts ...option.RequestOpt
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/admin/secrets"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Delete a secret by its ID
@@ -60,11 +60,11 @@ func (r *AdminSecretService) Delete(ctx context.Context, secretID string, opts .
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if secretID == "" {
 		err = errors.New("missing required secret_id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("v1/admin/secrets/%s", secretID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return
+	return err
 }
 
 type SecretResponse struct {

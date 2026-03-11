@@ -40,7 +40,7 @@ func (r *AuthService) Authorize(ctx context.Context, body AuthAuthorizeParams, o
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/auth/authorize"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Confirms a user's details during an authorization flow
@@ -48,7 +48,7 @@ func (r *AuthService) ConfirmUser(ctx context.Context, body AuthConfirmUserParam
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/auth/confirm_user"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Checks the status of an ongoing authorization process for a specific tool. If
@@ -58,7 +58,7 @@ func (r *AuthService) Status(ctx context.Context, query AuthStatusParams, opts .
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/auth/status"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	return res, err
 }
 
 type AuthRequestParam struct {

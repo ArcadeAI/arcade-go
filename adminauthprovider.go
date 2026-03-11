@@ -39,7 +39,7 @@ func (r *AdminAuthProviderService) New(ctx context.Context, body AdminAuthProvid
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/admin/auth_providers"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // List a page of auth providers that are available to the caller
@@ -47,7 +47,7 @@ func (r *AdminAuthProviderService) List(ctx context.Context, opts ...option.Requ
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/admin/auth_providers"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Delete a specific auth provider
@@ -55,11 +55,11 @@ func (r *AdminAuthProviderService) Delete(ctx context.Context, id string, opts .
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/admin/auth_providers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Get the details of a specific auth provider
@@ -67,11 +67,11 @@ func (r *AdminAuthProviderService) Get(ctx context.Context, id string, opts ...o
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/admin/auth_providers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Patch an existing auth provider
@@ -79,11 +79,11 @@ func (r *AdminAuthProviderService) Patch(ctx context.Context, id string, body Ad
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/admin/auth_providers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type AuthProviderCreateRequestParam struct {

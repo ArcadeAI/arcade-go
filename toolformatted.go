@@ -66,11 +66,11 @@ func (r *ToolFormattedService) Get(ctx context.Context, name string, query ToolF
 	opts = slices.Concat(r.Options, opts)
 	if name == "" {
 		err = errors.New("missing required name parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/formatted_tools/%s", name)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	return res, err
 }
 
 type ToolFormattedListResponse map[string]interface{}
