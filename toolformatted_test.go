@@ -26,6 +26,7 @@ func TestToolFormattedListWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Tools.Formatted.List(context.TODO(), arcadego.ToolFormattedListParams{
+		Filter:             arcadego.F("filter"),
 		Format:             arcadego.F("format"),
 		IncludeAllVersions: arcadego.F(true),
 		Limit:              arcadego.F(int64(0)),

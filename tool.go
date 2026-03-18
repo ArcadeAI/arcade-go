@@ -43,7 +43,7 @@ func NewToolService(opts ...option.RequestOption) (r *ToolService) {
 }
 
 // Returns a page of tools from the engine configuration, optionally filtered by
-// toolkit
+// toolkit and/or metadata
 func (r *ToolService) List(ctx context.Context, query ToolListParams, opts ...option.RequestOption) (res *pagination.OffsetPage[ToolDefinition], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
@@ -62,7 +62,7 @@ func (r *ToolService) List(ctx context.Context, query ToolListParams, opts ...op
 }
 
 // Returns a page of tools from the engine configuration, optionally filtered by
-// toolkit
+// toolkit and/or metadata
 func (r *ToolService) ListAutoPaging(ctx context.Context, query ToolListParams, opts ...option.RequestOption) *pagination.OffsetPageAutoPager[ToolDefinition] {
 	return pagination.NewOffsetPageAutoPager(r.List(ctx, query, opts...))
 }
@@ -860,6 +860,11 @@ func (r valueSchemaJSON) RawJSON() string {
 }
 
 type ToolListParams struct {
+	// JSON metadata filter. Array fields (service_domains, operations): shorthand
+	// array or object with any_of/all_of/none_of operators (case-insensitive). Boolean
+	// fields: read_only, destructive, idempotent, open_world. Extras: case-sensitive
+	// key-value subset match.
+	Filter param.Field[string] `query:"filter"`
 	// Include all versions of each tool
 	IncludeAllVersions param.Field[bool] `query:"include_all_versions"`
 	// Comma separated tool formats that will be included in the response.
