@@ -408,20 +408,24 @@ func (r WorkerResponseHTTPSecretBinding) IsKnown() bool {
 }
 
 type WorkerResponseMcp struct {
-	Headers map[string]string                  `json:"headers"`
-	Oauth2  WorkerResponseMcpOauth2            `json:"oauth2"`
-	Retry   int64                              `json:"retry"`
-	Secrets map[string]WorkerResponseMcpSecret `json:"secrets"`
-	Timeout int64                              `json:"timeout"`
-	Uri     string                             `json:"uri"`
-	JSON    workerResponseMcpJSON              `json:"-"`
+	ExternalID  string                             `json:"external_id"`
+	Headers     map[string]string                  `json:"headers"`
+	Oauth2      WorkerResponseMcpOauth2            `json:"oauth2"`
+	RedirectUri string                             `json:"redirect_uri"`
+	Retry       int64                              `json:"retry"`
+	Secrets     map[string]WorkerResponseMcpSecret `json:"secrets"`
+	Timeout     int64                              `json:"timeout"`
+	Uri         string                             `json:"uri"`
+	JSON        workerResponseMcpJSON              `json:"-"`
 }
 
 // workerResponseMcpJSON contains the JSON metadata for the struct
 // [WorkerResponseMcp]
 type workerResponseMcpJSON struct {
+	ExternalID  apijson.Field
 	Headers     apijson.Field
 	Oauth2      apijson.Field
+	RedirectUri apijson.Field
 	Retry       apijson.Field
 	Secrets     apijson.Field
 	Timeout     apijson.Field
