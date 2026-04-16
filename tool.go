@@ -236,31 +236,34 @@ func (r executeToolResponseOutputErrorJSON) RawJSON() string {
 type ExecuteToolResponseOutputErrorKind string
 
 const (
-	ExecuteToolResponseOutputErrorKindToolkitLoadFailed              ExecuteToolResponseOutputErrorKind = "TOOLKIT_LOAD_FAILED"
-	ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition    ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_DEFINITION"
-	ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema   ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_INPUT_SCHEMA"
-	ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema  ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_OUTPUT_SCHEMA"
-	ExecuteToolResponseOutputErrorKindToolRequirementsNotMet         ExecuteToolResponseOutputErrorKind = "TOOL_REQUIREMENTS_NOT_MET"
-	ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue       ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_BAD_INPUT_VALUE"
-	ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue      ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_BAD_OUTPUT_VALUE"
-	ExecuteToolResponseOutputErrorKindToolRuntimeRetry               ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_RETRY"
-	ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired     ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_CONTEXT_REQUIRED"
-	ExecuteToolResponseOutputErrorKindToolRuntimeFatal               ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_FATAL"
-	ExecuteToolResponseOutputErrorKindContextCheckFailed             ExecuteToolResponseOutputErrorKind = "CONTEXT_CHECK_FAILED"
-	ExecuteToolResponseOutputErrorKindContextDenied                  ExecuteToolResponseOutputErrorKind = "CONTEXT_DENIED"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest      ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_BAD_REQUEST"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError       ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_AUTH_ERROR"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound        ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_NOT_FOUND"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_VALIDATION_ERROR"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit       ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_RATE_LIMIT"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError     ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_SERVER_ERROR"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped        ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_UNMAPPED"
-	ExecuteToolResponseOutputErrorKindUnknown                        ExecuteToolResponseOutputErrorKind = "UNKNOWN"
+	ExecuteToolResponseOutputErrorKindToolkitLoadFailed                  ExecuteToolResponseOutputErrorKind = "TOOLKIT_LOAD_FAILED"
+	ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition        ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_DEFINITION"
+	ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema       ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_INPUT_SCHEMA"
+	ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema      ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_OUTPUT_SCHEMA"
+	ExecuteToolResponseOutputErrorKindToolRequirementsNotMet             ExecuteToolResponseOutputErrorKind = "TOOL_REQUIREMENTS_NOT_MET"
+	ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue           ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_BAD_INPUT_VALUE"
+	ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue          ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_BAD_OUTPUT_VALUE"
+	ExecuteToolResponseOutputErrorKindToolRuntimeRetry                   ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_RETRY"
+	ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired         ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_CONTEXT_REQUIRED"
+	ExecuteToolResponseOutputErrorKindToolRuntimeFatal                   ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_FATAL"
+	ExecuteToolResponseOutputErrorKindContextCheckFailed                 ExecuteToolResponseOutputErrorKind = "CONTEXT_CHECK_FAILED"
+	ExecuteToolResponseOutputErrorKindContextDenied                      ExecuteToolResponseOutputErrorKind = "CONTEXT_DENIED"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest          ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_BAD_REQUEST"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError           ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_AUTH_ERROR"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound            ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_NOT_FOUND"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError     ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_VALIDATION_ERROR"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit           ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_RATE_LIMIT"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError         ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_SERVER_ERROR"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped            ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_UNMAPPED"
+	ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeTimeout     ExecuteToolResponseOutputErrorKind = "NETWORK_TRANSPORT_RUNTIME_TIMEOUT"
+	ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeUnreachable ExecuteToolResponseOutputErrorKind = "NETWORK_TRANSPORT_RUNTIME_UNREACHABLE"
+	ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeUnmapped    ExecuteToolResponseOutputErrorKind = "NETWORK_TRANSPORT_RUNTIME_UNMAPPED"
+	ExecuteToolResponseOutputErrorKindUnknown                            ExecuteToolResponseOutputErrorKind = "UNKNOWN"
 )
 
 func (r ExecuteToolResponseOutputErrorKind) IsKnown() bool {
 	switch r {
-	case ExecuteToolResponseOutputErrorKindToolkitLoadFailed, ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition, ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema, ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema, ExecuteToolResponseOutputErrorKindToolRequirementsNotMet, ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue, ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue, ExecuteToolResponseOutputErrorKindToolRuntimeRetry, ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired, ExecuteToolResponseOutputErrorKindToolRuntimeFatal, ExecuteToolResponseOutputErrorKindContextCheckFailed, ExecuteToolResponseOutputErrorKindContextDenied, ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest, ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound, ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit, ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped, ExecuteToolResponseOutputErrorKindUnknown:
+	case ExecuteToolResponseOutputErrorKindToolkitLoadFailed, ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition, ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema, ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema, ExecuteToolResponseOutputErrorKindToolRequirementsNotMet, ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue, ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue, ExecuteToolResponseOutputErrorKindToolRuntimeRetry, ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired, ExecuteToolResponseOutputErrorKindToolRuntimeFatal, ExecuteToolResponseOutputErrorKindContextCheckFailed, ExecuteToolResponseOutputErrorKindContextDenied, ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest, ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound, ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit, ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped, ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeTimeout, ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeUnreachable, ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeUnmapped, ExecuteToolResponseOutputErrorKindUnknown:
 		return true
 	}
 	return false
@@ -780,31 +783,34 @@ func (r toolExecutionAttemptOutputErrorJSON) RawJSON() string {
 type ToolExecutionAttemptOutputErrorKind string
 
 const (
-	ToolExecutionAttemptOutputErrorKindToolkitLoadFailed              ToolExecutionAttemptOutputErrorKind = "TOOLKIT_LOAD_FAILED"
-	ToolExecutionAttemptOutputErrorKindToolDefinitionBadDefinition    ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_DEFINITION"
-	ToolExecutionAttemptOutputErrorKindToolDefinitionBadInputSchema   ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_INPUT_SCHEMA"
-	ToolExecutionAttemptOutputErrorKindToolDefinitionBadOutputSchema  ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_OUTPUT_SCHEMA"
-	ToolExecutionAttemptOutputErrorKindToolRequirementsNotMet         ToolExecutionAttemptOutputErrorKind = "TOOL_REQUIREMENTS_NOT_MET"
-	ToolExecutionAttemptOutputErrorKindToolRuntimeBadInputValue       ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_BAD_INPUT_VALUE"
-	ToolExecutionAttemptOutputErrorKindToolRuntimeBadOutputValue      ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_BAD_OUTPUT_VALUE"
-	ToolExecutionAttemptOutputErrorKindToolRuntimeRetry               ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_RETRY"
-	ToolExecutionAttemptOutputErrorKindToolRuntimeContextRequired     ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_CONTEXT_REQUIRED"
-	ToolExecutionAttemptOutputErrorKindToolRuntimeFatal               ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_FATAL"
-	ToolExecutionAttemptOutputErrorKindContextCheckFailed             ToolExecutionAttemptOutputErrorKind = "CONTEXT_CHECK_FAILED"
-	ToolExecutionAttemptOutputErrorKindContextDenied                  ToolExecutionAttemptOutputErrorKind = "CONTEXT_DENIED"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeBadRequest      ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_BAD_REQUEST"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeAuthError       ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_AUTH_ERROR"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeNotFound        ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_NOT_FOUND"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeValidationError ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_VALIDATION_ERROR"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeRateLimit       ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_RATE_LIMIT"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeServerError     ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_SERVER_ERROR"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeUnmapped        ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_UNMAPPED"
-	ToolExecutionAttemptOutputErrorKindUnknown                        ToolExecutionAttemptOutputErrorKind = "UNKNOWN"
+	ToolExecutionAttemptOutputErrorKindToolkitLoadFailed                  ToolExecutionAttemptOutputErrorKind = "TOOLKIT_LOAD_FAILED"
+	ToolExecutionAttemptOutputErrorKindToolDefinitionBadDefinition        ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_DEFINITION"
+	ToolExecutionAttemptOutputErrorKindToolDefinitionBadInputSchema       ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_INPUT_SCHEMA"
+	ToolExecutionAttemptOutputErrorKindToolDefinitionBadOutputSchema      ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_OUTPUT_SCHEMA"
+	ToolExecutionAttemptOutputErrorKindToolRequirementsNotMet             ToolExecutionAttemptOutputErrorKind = "TOOL_REQUIREMENTS_NOT_MET"
+	ToolExecutionAttemptOutputErrorKindToolRuntimeBadInputValue           ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_BAD_INPUT_VALUE"
+	ToolExecutionAttemptOutputErrorKindToolRuntimeBadOutputValue          ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_BAD_OUTPUT_VALUE"
+	ToolExecutionAttemptOutputErrorKindToolRuntimeRetry                   ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_RETRY"
+	ToolExecutionAttemptOutputErrorKindToolRuntimeContextRequired         ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_CONTEXT_REQUIRED"
+	ToolExecutionAttemptOutputErrorKindToolRuntimeFatal                   ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_FATAL"
+	ToolExecutionAttemptOutputErrorKindContextCheckFailed                 ToolExecutionAttemptOutputErrorKind = "CONTEXT_CHECK_FAILED"
+	ToolExecutionAttemptOutputErrorKindContextDenied                      ToolExecutionAttemptOutputErrorKind = "CONTEXT_DENIED"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeBadRequest          ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_BAD_REQUEST"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeAuthError           ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_AUTH_ERROR"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeNotFound            ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_NOT_FOUND"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeValidationError     ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_VALIDATION_ERROR"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeRateLimit           ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_RATE_LIMIT"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeServerError         ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_SERVER_ERROR"
+	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeUnmapped            ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_UNMAPPED"
+	ToolExecutionAttemptOutputErrorKindNetworkTransportRuntimeTimeout     ToolExecutionAttemptOutputErrorKind = "NETWORK_TRANSPORT_RUNTIME_TIMEOUT"
+	ToolExecutionAttemptOutputErrorKindNetworkTransportRuntimeUnreachable ToolExecutionAttemptOutputErrorKind = "NETWORK_TRANSPORT_RUNTIME_UNREACHABLE"
+	ToolExecutionAttemptOutputErrorKindNetworkTransportRuntimeUnmapped    ToolExecutionAttemptOutputErrorKind = "NETWORK_TRANSPORT_RUNTIME_UNMAPPED"
+	ToolExecutionAttemptOutputErrorKindUnknown                            ToolExecutionAttemptOutputErrorKind = "UNKNOWN"
 )
 
 func (r ToolExecutionAttemptOutputErrorKind) IsKnown() bool {
 	switch r {
-	case ToolExecutionAttemptOutputErrorKindToolkitLoadFailed, ToolExecutionAttemptOutputErrorKindToolDefinitionBadDefinition, ToolExecutionAttemptOutputErrorKindToolDefinitionBadInputSchema, ToolExecutionAttemptOutputErrorKindToolDefinitionBadOutputSchema, ToolExecutionAttemptOutputErrorKindToolRequirementsNotMet, ToolExecutionAttemptOutputErrorKindToolRuntimeBadInputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeBadOutputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeRetry, ToolExecutionAttemptOutputErrorKindToolRuntimeContextRequired, ToolExecutionAttemptOutputErrorKindToolRuntimeFatal, ToolExecutionAttemptOutputErrorKindContextCheckFailed, ToolExecutionAttemptOutputErrorKindContextDenied, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeBadRequest, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeAuthError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeNotFound, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeValidationError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeRateLimit, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeServerError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeUnmapped, ToolExecutionAttemptOutputErrorKindUnknown:
+	case ToolExecutionAttemptOutputErrorKindToolkitLoadFailed, ToolExecutionAttemptOutputErrorKindToolDefinitionBadDefinition, ToolExecutionAttemptOutputErrorKindToolDefinitionBadInputSchema, ToolExecutionAttemptOutputErrorKindToolDefinitionBadOutputSchema, ToolExecutionAttemptOutputErrorKindToolRequirementsNotMet, ToolExecutionAttemptOutputErrorKindToolRuntimeBadInputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeBadOutputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeRetry, ToolExecutionAttemptOutputErrorKindToolRuntimeContextRequired, ToolExecutionAttemptOutputErrorKindToolRuntimeFatal, ToolExecutionAttemptOutputErrorKindContextCheckFailed, ToolExecutionAttemptOutputErrorKindContextDenied, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeBadRequest, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeAuthError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeNotFound, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeValidationError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeRateLimit, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeServerError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeUnmapped, ToolExecutionAttemptOutputErrorKindNetworkTransportRuntimeTimeout, ToolExecutionAttemptOutputErrorKindNetworkTransportRuntimeUnreachable, ToolExecutionAttemptOutputErrorKindNetworkTransportRuntimeUnmapped, ToolExecutionAttemptOutputErrorKindUnknown:
 		return true
 	}
 	return false
