@@ -822,14 +822,15 @@ func (r AuthProviderUpdateRequestParam) MarshalJSON() (data []byte, err error) {
 }
 
 type AuthProviderUpdateRequestOauth2Param struct {
-	AuthorizeRequest param.Field[AuthProviderUpdateRequestOauth2AuthorizeRequestParam] `json:"authorize_request"`
-	ClientID         param.Field[string]                                               `json:"client_id"`
-	ClientSecret     param.Field[string]                                               `json:"client_secret"`
-	Pkce             param.Field[AuthProviderUpdateRequestOauth2PkceParam]             `json:"pkce"`
-	RefreshRequest   param.Field[AuthProviderUpdateRequestOauth2RefreshRequestParam]   `json:"refresh_request"`
-	ScopeDelimiter   param.Field[AuthProviderUpdateRequestOauth2ScopeDelimiter]        `json:"scope_delimiter"`
-	TokenRequest     param.Field[AuthProviderUpdateRequestOauth2TokenRequestParam]     `json:"token_request"`
-	UserInfoRequest  param.Field[AuthProviderUpdateRequestOauth2UserInfoRequestParam]  `json:"user_info_request"`
+	AuthorizeRequest          param.Field[AuthProviderUpdateRequestOauth2AuthorizeRequestParam]          `json:"authorize_request"`
+	ClientID                  param.Field[string]                                                        `json:"client_id"`
+	ClientSecret              param.Field[string]                                                        `json:"client_secret"`
+	Pkce                      param.Field[AuthProviderUpdateRequestOauth2PkceParam]                      `json:"pkce"`
+	RefreshRequest            param.Field[AuthProviderUpdateRequestOauth2RefreshRequestParam]            `json:"refresh_request"`
+	ScopeDelimiter            param.Field[AuthProviderUpdateRequestOauth2ScopeDelimiter]                 `json:"scope_delimiter"`
+	TokenIntrospectionRequest param.Field[AuthProviderUpdateRequestOauth2TokenIntrospectionRequestParam] `json:"token_introspection_request"`
+	TokenRequest              param.Field[AuthProviderUpdateRequestOauth2TokenRequestParam]              `json:"token_request"`
+	UserInfoRequest           param.Field[AuthProviderUpdateRequestOauth2UserInfoRequestParam]           `json:"user_info_request"`
 }
 
 func (r AuthProviderUpdateRequestOauth2Param) MarshalJSON() (data []byte, err error) {
@@ -948,6 +949,61 @@ func (r AuthProviderUpdateRequestOauth2ScopeDelimiter) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+type AuthProviderUpdateRequestOauth2TokenIntrospectionRequestParam struct {
+	AuthHeaderValueFormat param.Field[string]                                                                      `json:"auth_header_value_format"`
+	AuthMethod            param.Field[string]                                                                      `json:"auth_method"`
+	Endpoint              param.Field[string]                                                                      `json:"endpoint"`
+	Method                param.Field[string]                                                                      `json:"method"`
+	Params                param.Field[map[string]string]                                                           `json:"params"`
+	RequestContentType    param.Field[AuthProviderUpdateRequestOauth2TokenIntrospectionRequestRequestContentType]  `json:"request_content_type"`
+	ResponseContentType   param.Field[AuthProviderUpdateRequestOauth2TokenIntrospectionRequestResponseContentType] `json:"response_content_type"`
+	ResponseMap           param.Field[map[string]string]                                                           `json:"response_map"`
+	Triggers              param.Field[AuthProviderUpdateRequestOauth2TokenIntrospectionRequestTriggersParam]       `json:"triggers"`
+}
+
+func (r AuthProviderUpdateRequestOauth2TokenIntrospectionRequestParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type AuthProviderUpdateRequestOauth2TokenIntrospectionRequestRequestContentType string
+
+const (
+	AuthProviderUpdateRequestOauth2TokenIntrospectionRequestRequestContentTypeApplicationXWwwFormUrlencoded AuthProviderUpdateRequestOauth2TokenIntrospectionRequestRequestContentType = "application/x-www-form-urlencoded"
+	AuthProviderUpdateRequestOauth2TokenIntrospectionRequestRequestContentTypeApplicationJson               AuthProviderUpdateRequestOauth2TokenIntrospectionRequestRequestContentType = "application/json"
+)
+
+func (r AuthProviderUpdateRequestOauth2TokenIntrospectionRequestRequestContentType) IsKnown() bool {
+	switch r {
+	case AuthProviderUpdateRequestOauth2TokenIntrospectionRequestRequestContentTypeApplicationXWwwFormUrlencoded, AuthProviderUpdateRequestOauth2TokenIntrospectionRequestRequestContentTypeApplicationJson:
+		return true
+	}
+	return false
+}
+
+type AuthProviderUpdateRequestOauth2TokenIntrospectionRequestResponseContentType string
+
+const (
+	AuthProviderUpdateRequestOauth2TokenIntrospectionRequestResponseContentTypeApplicationXWwwFormUrlencoded AuthProviderUpdateRequestOauth2TokenIntrospectionRequestResponseContentType = "application/x-www-form-urlencoded"
+	AuthProviderUpdateRequestOauth2TokenIntrospectionRequestResponseContentTypeApplicationJson               AuthProviderUpdateRequestOauth2TokenIntrospectionRequestResponseContentType = "application/json"
+)
+
+func (r AuthProviderUpdateRequestOauth2TokenIntrospectionRequestResponseContentType) IsKnown() bool {
+	switch r {
+	case AuthProviderUpdateRequestOauth2TokenIntrospectionRequestResponseContentTypeApplicationXWwwFormUrlencoded, AuthProviderUpdateRequestOauth2TokenIntrospectionRequestResponseContentTypeApplicationJson:
+		return true
+	}
+	return false
+}
+
+type AuthProviderUpdateRequestOauth2TokenIntrospectionRequestTriggersParam struct {
+	OnTokenGrant   param.Field[bool] `json:"on_token_grant"`
+	OnTokenRefresh param.Field[bool] `json:"on_token_refresh"`
+}
+
+func (r AuthProviderUpdateRequestOauth2TokenIntrospectionRequestTriggersParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type AuthProviderUpdateRequestOauth2TokenRequestParam struct {
