@@ -32,12 +32,12 @@ func TestWorkerNewWithOptionalParams(t *testing.T) {
 			HTTP: arcadego.F(arcadego.CreateWorkerRequestHTTPParam{
 				Retry:   arcadego.F(int64(0)),
 				Secret:  arcadego.F("secret"),
-				Timeout: arcadego.F(int64(1)),
+				Timeout: arcadego.F(int64(0)),
 				Uri:     arcadego.F("uri"),
 			}),
 			Mcp: arcadego.F(arcadego.CreateWorkerRequestMcpParam{
 				Retry:   arcadego.F(int64(0)),
-				Timeout: arcadego.F(int64(1)),
+				Timeout: arcadego.F(int64(0)),
 				Uri:     arcadego.F("uri"),
 				Headers: arcadego.F(map[string]string{
 					"foo": "string",
@@ -85,7 +85,7 @@ func TestWorkerUpdateWithOptionalParams(t *testing.T) {
 				HTTP: arcadego.F(arcadego.UpdateWorkerRequestHTTPParam{
 					Retry:   arcadego.F(int64(0)),
 					Secret:  arcadego.F("secret"),
-					Timeout: arcadego.F(int64(1)),
+					Timeout: arcadego.F(int64(0)),
 					Uri:     arcadego.F("uri"),
 				}),
 				Mcp: arcadego.F(arcadego.UpdateWorkerRequestMcpParam{
@@ -101,7 +101,7 @@ func TestWorkerUpdateWithOptionalParams(t *testing.T) {
 					Secrets: arcadego.F(map[string]string{
 						"foo": "string",
 					}),
-					Timeout: arcadego.F(int64(1)),
+					Timeout: arcadego.F(int64(0)),
 					Uri:     arcadego.F("uri"),
 				}),
 			},
