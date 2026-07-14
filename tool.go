@@ -842,19 +842,33 @@ func (r toolExecutionAttemptOutputLogJSON) RawJSON() string {
 }
 
 type ValueSchema struct {
-	ValType      string          `json:"val_type" api:"required"`
-	Enum         []string        `json:"enum"`
-	InnerValType string          `json:"inner_val_type"`
-	JSON         valueSchemaJSON `json:"-"`
+	ValType           string                 `json:"val_type" api:"required"`
+	Description       string                 `json:"description"`
+	Enum              []string               `json:"enum"`
+	InnerProperties   map[string]ValueSchema `json:"inner_properties"`
+	InnerRequiredKeys []string               `json:"inner_required_keys"`
+	InnerValType      string                 `json:"inner_val_type"`
+	Items             *ValueSchema           `json:"items"`
+	Nullable          bool                   `json:"nullable"`
+	Properties        map[string]ValueSchema `json:"properties"`
+	RequiredKeys      []string               `json:"required_keys"`
+	JSON              valueSchemaJSON        `json:"-"`
 }
 
 // valueSchemaJSON contains the JSON metadata for the struct [ValueSchema]
 type valueSchemaJSON struct {
-	ValType      apijson.Field
-	Enum         apijson.Field
-	InnerValType apijson.Field
-	raw          string
-	ExtraFields  map[string]apijson.Field
+	ValType           apijson.Field
+	Description       apijson.Field
+	Enum              apijson.Field
+	InnerProperties   apijson.Field
+	InnerRequiredKeys apijson.Field
+	InnerValType      apijson.Field
+	Items             apijson.Field
+	Nullable          apijson.Field
+	Properties        apijson.Field
+	RequiredKeys      apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
 }
 
 func (r *ValueSchema) UnmarshalJSON(data []byte) (err error) {
@@ -899,11 +913,12 @@ const (
 	ToolListParamsIncludeFormatArcade    ToolListParamsIncludeFormat = "arcade"
 	ToolListParamsIncludeFormatOpenAI    ToolListParamsIncludeFormat = "openai"
 	ToolListParamsIncludeFormatAnthropic ToolListParamsIncludeFormat = "anthropic"
+	ToolListParamsIncludeFormatMcp       ToolListParamsIncludeFormat = "mcp"
 )
 
 func (r ToolListParamsIncludeFormat) IsKnown() bool {
 	switch r {
-	case ToolListParamsIncludeFormatArcade, ToolListParamsIncludeFormatOpenAI, ToolListParamsIncludeFormatAnthropic:
+	case ToolListParamsIncludeFormatArcade, ToolListParamsIncludeFormatOpenAI, ToolListParamsIncludeFormatAnthropic, ToolListParamsIncludeFormatMcp:
 		return true
 	}
 	return false
@@ -946,11 +961,12 @@ const (
 	ToolGetParamsIncludeFormatArcade    ToolGetParamsIncludeFormat = "arcade"
 	ToolGetParamsIncludeFormatOpenAI    ToolGetParamsIncludeFormat = "openai"
 	ToolGetParamsIncludeFormatAnthropic ToolGetParamsIncludeFormat = "anthropic"
+	ToolGetParamsIncludeFormatMcp       ToolGetParamsIncludeFormat = "mcp"
 )
 
 func (r ToolGetParamsIncludeFormat) IsKnown() bool {
 	switch r {
-	case ToolGetParamsIncludeFormatArcade, ToolGetParamsIncludeFormatOpenAI, ToolGetParamsIncludeFormatAnthropic:
+	case ToolGetParamsIncludeFormatArcade, ToolGetParamsIncludeFormatOpenAI, ToolGetParamsIncludeFormatAnthropic, ToolGetParamsIncludeFormatMcp:
 		return true
 	}
 	return false
