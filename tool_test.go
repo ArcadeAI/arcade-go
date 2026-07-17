@@ -31,6 +31,7 @@ func TestToolListWithOptionalParams(t *testing.T) {
 		IncludeFormat:      arcadego.F([]arcadego.ToolListParamsIncludeFormat{arcadego.ToolListParamsIncludeFormatArcade}),
 		Limit:              arcadego.F(int64(0)),
 		Offset:             arcadego.F(int64(0)),
+		Search:             arcadego.F("search"),
 		Toolkit:            arcadego.F("toolkit"),
 		UserID:             arcadego.F("user_id"),
 	})
