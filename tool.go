@@ -893,6 +893,10 @@ type ToolListParams struct {
 	Limit param.Field[int64] `query:"limit"`
 	// Offset from the start of the list (default: 0)
 	Offset param.Field[int64] `query:"offset"`
+	// Case-insensitive literal substring matched against each tool's name, MCP server
+	// name, qualified name, and description; multiple whitespace-separated terms must
+	// all match. Max 2000 characters.
+	Search param.Field[string] `query:"search"`
 	// Toolkit name
 	Toolkit param.Field[string] `query:"toolkit"`
 	// User ID
