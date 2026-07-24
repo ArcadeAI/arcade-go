@@ -107,8 +107,6 @@ Response Types:
 
 - <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ExecuteToolResponse">ExecuteToolResponse</a>
 - <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolDefinition">ToolDefinition</a>
-- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolExecution">ToolExecution</a>
-- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolExecutionAttempt">ToolExecutionAttempt</a>
 - <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ValueSchema">ValueSchema</a>
 
 Methods:
@@ -119,15 +117,6 @@ Methods:
 - <code title="get /v1/tools/{name}">client.Tools.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, name <a href="https://pkg.go.dev/builtin#string">string</a>, query <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolGetParams">ToolGetParams</a>) (\*<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolDefinition">ToolDefinition</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 ## Scheduled
-
-Response Types:
-
-- <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolScheduledGetResponse">ToolScheduledGetResponse</a>
-
-Methods:
-
-- <code title="get /v1/scheduled_tools">client.Tools.Scheduled.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolScheduledService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolScheduledListParams">ToolScheduledListParams</a>) (\*<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go/packages/pagination#OffsetPage">OffsetPage</a>[<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolExecution">ToolExecution</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="get /v1/scheduled_tools/{id}">client.Tools.Scheduled.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolScheduledService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (\*<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolScheduledGetResponse">ToolScheduledGetResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 ## Formatted
 
