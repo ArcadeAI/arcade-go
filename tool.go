@@ -644,17 +644,17 @@ func (r toolDefinitionRequirementsSecretJSON) RawJSON() string {
 }
 
 type ValueSchema struct {
-	ValType           string                 `json:"val_type" api:"required"`
-	Description       string                 `json:"description"`
-	Enum              []string               `json:"enum"`
-	InnerProperties   map[string]ValueSchema `json:"inner_properties"`
-	InnerRequiredKeys []string               `json:"inner_required_keys"`
-	InnerValType      string                 `json:"inner_val_type"`
-	Items             *ValueSchema           `json:"items"`
-	Nullable          bool                   `json:"nullable"`
-	Properties        map[string]ValueSchema `json:"properties"`
-	RequiredKeys      []string               `json:"required_keys"`
-	JSON              valueSchemaJSON        `json:"-"`
+	ValType           string          `json:"val_type" api:"required"`
+	Description       string          `json:"description"`
+	Enum              []string        `json:"enum"`
+	InnerProperties   interface{}     `json:"inner_properties"`
+	InnerRequiredKeys []string        `json:"inner_required_keys"`
+	InnerValType      string          `json:"inner_val_type"`
+	Items             *ValueSchema    `json:"items"`
+	Nullable          bool            `json:"nullable"`
+	Properties        interface{}     `json:"properties"`
+	RequiredKeys      []string        `json:"required_keys"`
+	JSON              valueSchemaJSON `json:"-"`
 }
 
 // valueSchemaJSON contains the JSON metadata for the struct [ValueSchema]
