@@ -117,6 +117,10 @@ type ExecuteToolRequestParam struct {
 	IncludeErrorStacktrace param.Field[bool] `json:"include_error_stacktrace"`
 	// JSON input to the tool, if any
 	Input param.Field[map[string]interface{}] `json:"input"`
+	// Optional Condex selection query_id that surfaced this tool. When set, the
+	// execution is correlated to the selection query as training data. Ignored if
+	// empty.
+	QueryID param.Field[string] `json:"query_id"`
 	// The time at which the tool should be run (optional). If not provided, the tool
 	// is run immediately. Format ISO 8601: YYYY-MM-DDTHH:MM:SS
 	RunAt param.Field[string] `json:"run_at"`

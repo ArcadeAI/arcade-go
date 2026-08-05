@@ -92,6 +92,7 @@ func TestToolExecuteWithOptionalParams(t *testing.T) {
 			Input: arcadego.F(map[string]interface{}{
 				"foo": "bar",
 			}),
+			QueryID:     arcadego.F("query_id"),
 			RunAt:       arcadego.F("run_at"),
 			ToolVersion: arcadego.F("tool_version"),
 			UserID:      arcadego.F("user_id"),
