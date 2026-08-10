@@ -299,17 +299,26 @@ func (r executeToolResponseOutputLogJSON) RawJSON() string {
 }
 
 type ToolDefinition struct {
-	FullyQualifiedName string                     `json:"fully_qualified_name" api:"required"`
-	Input              ToolDefinitionInput        `json:"input" api:"required"`
-	Name               string                     `json:"name" api:"required"`
-	QualifiedName      string                     `json:"qualified_name" api:"required"`
-	Toolkit            ToolDefinitionToolkit      `json:"toolkit" api:"required"`
-	Description        string                     `json:"description"`
-	FormattedSchema    map[string]interface{}     `json:"formatted_schema"`
-	Metadata           ToolDefinitionMetadata     `json:"metadata"`
-	Output             ToolDefinitionOutput       `json:"output"`
-	Requirements       ToolDefinitionRequirements `json:"requirements"`
-	JSON               toolDefinitionJSON         `json:"-"`
+	FullyQualifiedName string                 `json:"fully_qualified_name" api:"required"`
+	Input              ToolDefinitionInput    `json:"input" api:"required"`
+	Name               string                 `json:"name" api:"required"`
+	QualifiedName      string                 `json:"qualified_name" api:"required"`
+	Toolkit            ToolDefinitionToolkit  `json:"toolkit" api:"required"`
+	Description        string                 `json:"description"`
+	FormattedSchema    map[string]interface{} `json:"formatted_schema"`
+	// IndexState reports whether this tool is available through tool search yet
+	// ("indexed" or "pending"). Populated only when tool search is active for the org
+	// and Condex is reachable; otherwise omitted, so existing callers are unaffected.
+	// The handler derives and injects this value — see the tool-listing enrichment
+	// path.
+	IndexState string `json:"index_state"`
+	// LastIndexedAt is the tool's last successful index-write time, set only when
+	// IndexState is "indexed" and Condex reported a timestamp.
+	LastIndexedAt string                     `json:"last_indexed_at"`
+	Metadata      ToolDefinitionMetadata     `json:"metadata"`
+	Output        ToolDefinitionOutput       `json:"output"`
+	Requirements  ToolDefinitionRequirements `json:"requirements"`
+	JSON          toolDefinitionJSON         `json:"-"`
 }
 
 // toolDefinitionJSON contains the JSON metadata for the struct [ToolDefinition]
@@ -321,6 +330,8 @@ type toolDefinitionJSON struct {
 	Toolkit            apijson.Field
 	Description        apijson.Field
 	FormattedSchema    apijson.Field
+	IndexState         apijson.Field
+	LastIndexedAt      apijson.Field
 	Metadata           apijson.Field
 	Output             apijson.Field
 	Requirements       apijson.Field
