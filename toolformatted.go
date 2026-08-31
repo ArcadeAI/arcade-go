@@ -66,20 +66,27 @@ func (r *ToolFormattedService) Get(ctx context.Context, name string, query ToolF
 	opts = slices.Concat(r.Options, opts)
 	if name == "" {
 		err = errors.New("missing required name parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/formatted_tools/%s", name)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	return res, err
 }
 
-type ToolFormattedListResponse = interface{}
+type ToolFormattedListResponse map[string]interface{}
 
-type ToolFormattedGetResponse = interface{}
+type ToolFormattedGetResponse map[string]interface{}
 
 type ToolFormattedListParams struct {
+	// JSON metadata filter. Array fields (service_domains, operations): shorthand
+	// array or object with any_of/all_of/none_of operators (case-insensitive). Boolean
+	// fields: read_only, destructive, idempotent, open_world. Extras: case-sensitive
+	// key-value subset match.
+	Filter param.Field[string] `query:"filter"`
 	// Provider format
 	Format param.Field[string] `query:"format"`
+	// Include all versions of each tool
+	IncludeAllVersions param.Field[bool] `query:"include_all_versions"`
 	// Number of items to return (default: 25, max: 100)
 	Limit param.Field[int64] `query:"limit"`
 	// Offset from the start of the list (default: 0)

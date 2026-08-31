@@ -36,17 +36,20 @@ func (r *HealthService) Check(ctx context.Context, opts ...option.RequestOption)
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/health"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 type HealthSchema struct {
-	Healthy bool             `json:"healthy"`
-	JSON    healthSchemaJSON `json:"-"`
+	Healthy bool `json:"healthy"`
+	// Optional: explains why unhealthy
+	Reason string           `json:"reason"`
+	JSON   healthSchemaJSON `json:"-"`
 }
 
 // healthSchemaJSON contains the JSON metadata for the struct [HealthSchema]
 type healthSchemaJSON struct {
 	Healthy     apijson.Field
+	Reason      apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }

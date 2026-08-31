@@ -38,7 +38,7 @@ func TestUserAgentHeader(t *testing.T) {
 			},
 		}),
 	)
-	client.Chat.Completions.New(context.Background(), arcadego.ChatCompletionNewParams{
+	_, _ = client.Chat.Completions.New(context.Background(), arcadego.ChatCompletionNewParams{
 		ChatRequest: arcadego.ChatRequestParam{},
 	})
 	if userAgent != fmt.Sprintf("Arcade/Go %s", internal.PackageVersion) {

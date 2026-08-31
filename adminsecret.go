@@ -10,6 +10,7 @@ import (
 	"slices"
 
 	"github.com/ArcadeAI/arcade-go/internal/apijson"
+	"github.com/ArcadeAI/arcade-go/internal/param"
 	"github.com/ArcadeAI/arcade-go/internal/requestconfig"
 	"github.com/ArcadeAI/arcade-go/option"
 )
@@ -33,25 +34,37 @@ func NewAdminSecretService(opts ...option.RequestOption) (r *AdminSecretService)
 	return
 }
 
+// Create or update a secret
+func (r *AdminSecretService) New(ctx context.Context, secretKey string, body AdminSecretNewParams, opts ...option.RequestOption) (res *SecretResponse, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if secretKey == "" {
+		err = errors.New("missing required secret_key parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("v1/admin/secrets/%s", secretKey)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return res, err
+}
+
 // List all secrets that are visible to the caller
 func (r *AdminSecretService) List(ctx context.Context, opts ...option.RequestOption) (res *AdminSecretListResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/admin/secrets"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Delete a secret by its ID
 func (r *AdminSecretService) Delete(ctx context.Context, secretID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if secretID == "" {
 		err = errors.New("missing required secret_id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("v1/admin/secrets/%s", secretID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return
+	return err
 }
 
 type SecretResponse struct {
@@ -59,7 +72,6 @@ type SecretResponse struct {
 	Binding        SecretResponseBinding `json:"binding"`
 	CreatedAt      string                `json:"created_at"`
 	Description    string                `json:"description"`
-	Hint           string                `json:"hint"`
 	Key            string                `json:"key"`
 	LastAccessedAt string                `json:"last_accessed_at"`
 	UpdatedAt      string                `json:"updated_at"`
@@ -72,7 +84,6 @@ type secretResponseJSON struct {
 	Binding        apijson.Field
 	CreatedAt      apijson.Field
 	Description    apijson.Field
-	Hint           apijson.Field
 	Key            apijson.Field
 	LastAccessedAt apijson.Field
 	UpdatedAt      apijson.Field
@@ -155,4 +166,13 @@ func (r *AdminSecretListResponse) UnmarshalJSON(data []byte) (err error) {
 
 func (r adminSecretListResponseJSON) RawJSON() string {
 	return r.raw
+}
+
+type AdminSecretNewParams struct {
+	Value       param.Field[string] `json:"value" api:"required"`
+	Description param.Field[string] `json:"description"`
+}
+
+func (r AdminSecretNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }

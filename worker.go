@@ -42,7 +42,7 @@ func (r *WorkerService) New(ctx context.Context, body WorkerNewParams, opts ...o
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/workers"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Update a worker
@@ -50,11 +50,11 @@ func (r *WorkerService) Update(ctx context.Context, id string, body WorkerUpdate
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/workers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // List all workers with their definitions
@@ -83,14 +83,14 @@ func (r *WorkerService) ListAutoPaging(ctx context.Context, query WorkerListPara
 // Delete a worker
 func (r *WorkerService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("v1/workers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return
+	return err
 }
 
 // Get a worker by ID
@@ -98,11 +98,11 @@ func (r *WorkerService) Get(ctx context.Context, id string, opts ...option.Reque
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/workers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Get the health of a worker
@@ -110,11 +110,11 @@ func (r *WorkerService) Health(ctx context.Context, id string, opts ...option.Re
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/workers/%s/health", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Returns a page of tools
@@ -124,7 +124,7 @@ func (r *WorkerService) Tools(ctx context.Context, id string, query WorkerToolsP
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/workers/%s/tools", id)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -145,7 +145,7 @@ func (r *WorkerService) ToolsAutoPaging(ctx context.Context, id string, query Wo
 }
 
 type CreateWorkerRequestParam struct {
-	ID      param.Field[string]                       `json:"id,required"`
+	ID      param.Field[string]                       `json:"id" api:"required"`
 	Enabled param.Field[bool]                         `json:"enabled"`
 	HTTP    param.Field[CreateWorkerRequestHTTPParam] `json:"http"`
 	Mcp     param.Field[CreateWorkerRequestMcpParam]  `json:"mcp"`
@@ -157,10 +157,10 @@ func (r CreateWorkerRequestParam) MarshalJSON() (data []byte, err error) {
 }
 
 type CreateWorkerRequestHTTPParam struct {
-	Retry   param.Field[int64]  `json:"retry,required"`
-	Secret  param.Field[string] `json:"secret,required"`
-	Timeout param.Field[int64]  `json:"timeout,required"`
-	Uri     param.Field[string] `json:"uri,required"`
+	Retry   param.Field[int64]  `json:"retry" api:"required"`
+	Secret  param.Field[string] `json:"secret" api:"required"`
+	Timeout param.Field[int64]  `json:"timeout" api:"required"`
+	Uri     param.Field[string] `json:"uri" api:"required"`
 }
 
 func (r CreateWorkerRequestHTTPParam) MarshalJSON() (data []byte, err error) {
@@ -168,9 +168,9 @@ func (r CreateWorkerRequestHTTPParam) MarshalJSON() (data []byte, err error) {
 }
 
 type CreateWorkerRequestMcpParam struct {
-	Retry   param.Field[int64]                             `json:"retry,required"`
-	Timeout param.Field[int64]                             `json:"timeout,required"`
-	Uri     param.Field[string]                            `json:"uri,required"`
+	Retry   param.Field[int64]                             `json:"retry" api:"required"`
+	Timeout param.Field[int64]                             `json:"timeout" api:"required"`
+	Uri     param.Field[string]                            `json:"uri" api:"required"`
 	Headers param.Field[map[string]string]                 `json:"headers"`
 	Oauth2  param.Field[CreateWorkerRequestMcpOauth2Param] `json:"oauth2"`
 	Secrets param.Field[map[string]string]                 `json:"secrets"`
@@ -367,7 +367,6 @@ type WorkerResponseHTTPSecret struct {
 	Binding  WorkerResponseHTTPSecretBinding `json:"binding"`
 	Editable bool                            `json:"editable"`
 	Exists   bool                            `json:"exists"`
-	Hint     string                          `json:"hint"`
 	Value    string                          `json:"value"`
 	JSON     workerResponseHTTPSecretJSON    `json:"-"`
 }
@@ -378,7 +377,6 @@ type workerResponseHTTPSecretJSON struct {
 	Binding     apijson.Field
 	Editable    apijson.Field
 	Exists      apijson.Field
-	Hint        apijson.Field
 	Value       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -410,26 +408,32 @@ func (r WorkerResponseHTTPSecretBinding) IsKnown() bool {
 }
 
 type WorkerResponseMcp struct {
-	Headers map[string]string                  `json:"headers"`
-	Oauth2  WorkerResponseMcpOauth2            `json:"oauth2"`
-	Retry   int64                              `json:"retry"`
-	Secrets map[string]WorkerResponseMcpSecret `json:"secrets"`
-	Timeout int64                              `json:"timeout"`
-	Uri     string                             `json:"uri"`
-	JSON    workerResponseMcpJSON              `json:"-"`
+	AuthorizedBy string                             `json:"authorized_by"`
+	ExternalID   string                             `json:"external_id"`
+	Headers      map[string]string                  `json:"headers"`
+	Oauth2       WorkerResponseMcpOauth2            `json:"oauth2"`
+	RedirectUri  string                             `json:"redirect_uri"`
+	Retry        int64                              `json:"retry"`
+	Secrets      map[string]WorkerResponseMcpSecret `json:"secrets"`
+	Timeout      int64                              `json:"timeout"`
+	Uri          string                             `json:"uri"`
+	JSON         workerResponseMcpJSON              `json:"-"`
 }
 
 // workerResponseMcpJSON contains the JSON metadata for the struct
 // [WorkerResponseMcp]
 type workerResponseMcpJSON struct {
-	Headers     apijson.Field
-	Oauth2      apijson.Field
-	Retry       apijson.Field
-	Secrets     apijson.Field
-	Timeout     apijson.Field
-	Uri         apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	AuthorizedBy apijson.Field
+	ExternalID   apijson.Field
+	Headers      apijson.Field
+	Oauth2       apijson.Field
+	RedirectUri  apijson.Field
+	Retry        apijson.Field
+	Secrets      apijson.Field
+	Timeout      apijson.Field
+	Uri          apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
 }
 
 func (r *WorkerResponseMcp) UnmarshalJSON(data []byte) (err error) {
@@ -444,7 +448,9 @@ type WorkerResponseMcpOauth2 struct {
 	AuthorizationURL string                              `json:"authorization_url"`
 	ClientID         string                              `json:"client_id"`
 	ClientSecret     WorkerResponseMcpOauth2ClientSecret `json:"client_secret"`
+	ExternalID       string                              `json:"external_id"`
 	RedirectUri      string                              `json:"redirect_uri"`
+	SupportedScopes  []string                            `json:"supported_scopes"`
 	JSON             workerResponseMcpOauth2JSON         `json:"-"`
 }
 
@@ -454,7 +460,9 @@ type workerResponseMcpOauth2JSON struct {
 	AuthorizationURL apijson.Field
 	ClientID         apijson.Field
 	ClientSecret     apijson.Field
+	ExternalID       apijson.Field
 	RedirectUri      apijson.Field
+	SupportedScopes  apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -471,7 +479,6 @@ type WorkerResponseMcpOauth2ClientSecret struct {
 	Binding  WorkerResponseMcpOauth2ClientSecretBinding `json:"binding"`
 	Editable bool                                       `json:"editable"`
 	Exists   bool                                       `json:"exists"`
-	Hint     string                                     `json:"hint"`
 	Value    string                                     `json:"value"`
 	JSON     workerResponseMcpOauth2ClientSecretJSON    `json:"-"`
 }
@@ -482,7 +489,6 @@ type workerResponseMcpOauth2ClientSecretJSON struct {
 	Binding     apijson.Field
 	Editable    apijson.Field
 	Exists      apijson.Field
-	Hint        apijson.Field
 	Value       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -517,7 +523,6 @@ type WorkerResponseMcpSecret struct {
 	Binding  WorkerResponseMcpSecretsBinding `json:"binding"`
 	Editable bool                            `json:"editable"`
 	Exists   bool                            `json:"exists"`
-	Hint     string                          `json:"hint"`
 	Value    string                          `json:"value"`
 	JSON     workerResponseMcpSecretJSON     `json:"-"`
 }
@@ -528,7 +533,6 @@ type workerResponseMcpSecretJSON struct {
 	Binding     apijson.Field
 	Editable    apijson.Field
 	Exists      apijson.Field
-	Hint        apijson.Field
 	Value       apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
@@ -643,7 +647,7 @@ func (r WorkerResponseType) IsKnown() bool {
 }
 
 type WorkerNewParams struct {
-	CreateWorkerRequest CreateWorkerRequestParam `json:"create_worker_request,required"`
+	CreateWorkerRequest CreateWorkerRequestParam `json:"create_worker_request" api:"required"`
 }
 
 func (r WorkerNewParams) MarshalJSON() (data []byte, err error) {
@@ -651,7 +655,7 @@ func (r WorkerNewParams) MarshalJSON() (data []byte, err error) {
 }
 
 type WorkerUpdateParams struct {
-	UpdateWorkerRequest UpdateWorkerRequestParam `json:"update_worker_request,required"`
+	UpdateWorkerRequest UpdateWorkerRequestParam `json:"update_worker_request" api:"required"`
 }
 
 func (r WorkerUpdateParams) MarshalJSON() (data []byte, err error) {

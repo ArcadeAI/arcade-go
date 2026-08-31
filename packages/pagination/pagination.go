@@ -46,7 +46,9 @@ func (r *OffsetPage[T]) GetNextPage() (res *OffsetPage[T], err error) {
 	}
 	cfg := r.cfg.Clone(r.cfg.Context)
 
-	next := r.Offset
+	offset := r.Offset
+	length := int64(len(r.Items))
+	next := offset + length
 
 	if next < r.TotalCount && next != 0 {
 		err = cfg.Apply(option.WithQuery("offset", strconv.FormatInt(next, 10)))

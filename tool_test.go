@@ -26,11 +26,14 @@ func TestToolListWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Tools.List(context.TODO(), arcadego.ToolListParams{
-		IncludeFormat: arcadego.F([]arcadego.ToolListParamsIncludeFormat{arcadego.ToolListParamsIncludeFormatArcade}),
-		Limit:         arcadego.F(int64(0)),
-		Offset:        arcadego.F(int64(0)),
-		Toolkit:       arcadego.F("toolkit"),
-		UserID:        arcadego.F("user_id"),
+		Filter:             arcadego.F("filter"),
+		IncludeAllVersions: arcadego.F(true),
+		IncludeFormat:      arcadego.F([]arcadego.ToolListParamsIncludeFormat{arcadego.ToolListParamsIncludeFormatArcade}),
+		Limit:              arcadego.F(int64(0)),
+		Offset:             arcadego.F(int64(0)),
+		Search:             arcadego.F("search"),
+		Toolkit:            arcadego.F("toolkit"),
+		UserID:             arcadego.F("user_id"),
 	})
 	if err != nil {
 		var apierr *arcadego.Error
@@ -89,6 +92,7 @@ func TestToolExecuteWithOptionalParams(t *testing.T) {
 			Input: arcadego.F(map[string]interface{}{
 				"foo": "bar",
 			}),
+			QueryID:     arcadego.F("query_id"),
 			RunAt:       arcadego.F("run_at"),
 			ToolVersion: arcadego.F("tool_version"),
 			UserID:      arcadego.F("user_id"),

@@ -252,6 +252,24 @@ func TestAdminAuthProviderPatchWithOptionalParams(t *testing.T) {
 						}),
 					}),
 					ScopeDelimiter: arcadego.F(arcadego.AuthProviderUpdateRequestOauth2ScopeDelimiterUnknown1),
+					TokenIntrospectionRequest: arcadego.F(arcadego.AuthProviderUpdateRequestOauth2TokenIntrospectionRequestParam{
+						AuthHeaderValueFormat: arcadego.F("auth_header_value_format"),
+						AuthMethod:            arcadego.F("auth_method"),
+						Endpoint:              arcadego.F("endpoint"),
+						Method:                arcadego.F("method"),
+						Params: arcadego.F(map[string]string{
+							"foo": "string",
+						}),
+						RequestContentType:  arcadego.F(arcadego.AuthProviderUpdateRequestOauth2TokenIntrospectionRequestRequestContentTypeApplicationXWwwFormUrlencoded),
+						ResponseContentType: arcadego.F(arcadego.AuthProviderUpdateRequestOauth2TokenIntrospectionRequestResponseContentTypeApplicationXWwwFormUrlencoded),
+						ResponseMap: arcadego.F(map[string]string{
+							"foo": "string",
+						}),
+						Triggers: arcadego.F(arcadego.AuthProviderUpdateRequestOauth2TokenIntrospectionRequestTriggersParam{
+							OnTokenGrant:   arcadego.F(true),
+							OnTokenRefresh: arcadego.F(true),
+						}),
+					}),
 					TokenRequest: arcadego.F(arcadego.AuthProviderUpdateRequestOauth2TokenRequestParam{
 						AuthHeaderValueFormat: arcadego.F("auth_header_value_format"),
 						AuthMethod:            arcadego.F("auth_method"),

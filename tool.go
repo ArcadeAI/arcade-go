@@ -27,7 +27,6 @@ import (
 // the [NewToolService] method instead.
 type ToolService struct {
 	Options   []option.RequestOption
-	Scheduled *ToolScheduledService
 	Formatted *ToolFormattedService
 }
 
@@ -37,13 +36,12 @@ type ToolService struct {
 func NewToolService(opts ...option.RequestOption) (r *ToolService) {
 	r = &ToolService{}
 	r.Options = opts
-	r.Scheduled = NewToolScheduledService(opts...)
 	r.Formatted = NewToolFormattedService(opts...)
 	return
 }
 
 // Returns a page of tools from the engine configuration, optionally filtered by
-// toolkit
+// toolkit and/or metadata
 func (r *ToolService) List(ctx context.Context, query ToolListParams, opts ...option.RequestOption) (res *pagination.OffsetPage[ToolDefinition], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
@@ -62,7 +60,7 @@ func (r *ToolService) List(ctx context.Context, query ToolListParams, opts ...op
 }
 
 // Returns a page of tools from the engine configuration, optionally filtered by
-// toolkit
+// toolkit and/or metadata
 func (r *ToolService) ListAutoPaging(ctx context.Context, query ToolListParams, opts ...option.RequestOption) *pagination.OffsetPageAutoPager[ToolDefinition] {
 	return pagination.NewOffsetPageAutoPager(r.List(ctx, query, opts...))
 }
@@ -72,7 +70,7 @@ func (r *ToolService) Authorize(ctx context.Context, body ToolAuthorizeParams, o
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/tools/authorize"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Executes a tool by name and arguments
@@ -80,7 +78,7 @@ func (r *ToolService) Execute(ctx context.Context, body ToolExecuteParams, opts 
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/tools/execute"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Returns the arcade tool specification for a specific tool
@@ -88,15 +86,15 @@ func (r *ToolService) Get(ctx context.Context, name string, query ToolGetParams,
 	opts = slices.Concat(r.Options, opts)
 	if name == "" {
 		err = errors.New("missing required name parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("v1/tools/%s", name)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	return res, err
 }
 
 type AuthorizeToolRequestParam struct {
-	ToolName param.Field[string] `json:"tool_name,required"`
+	ToolName param.Field[string] `json:"tool_name" api:"required"`
 	// Optional: if provided, the user will be redirected to this URI after
 	// authorization
 	NextUri param.Field[string] `json:"next_uri"`
@@ -111,12 +109,16 @@ func (r AuthorizeToolRequestParam) MarshalJSON() (data []byte, err error) {
 }
 
 type ExecuteToolRequestParam struct {
-	ToolName param.Field[string] `json:"tool_name,required"`
+	ToolName param.Field[string] `json:"tool_name" api:"required"`
 	// Whether to include the error stacktrace in the response. If not provided, the
 	// error stacktrace is not included.
 	IncludeErrorStacktrace param.Field[bool] `json:"include_error_stacktrace"`
 	// JSON input to the tool, if any
 	Input param.Field[map[string]interface{}] `json:"input"`
+	// Optional Condex selection query_id that surfaced this tool. When set, the
+	// execution is correlated to the selection query as training data. Ignored if
+	// empty.
+	QueryID param.Field[string] `json:"query_id"`
 	// The time at which the tool should be run (optional). If not provided, the tool
 	// is run immediately. Format ISO 8601: YYYY-MM-DDTHH:MM:SS
 	RunAt param.Field[string] `json:"run_at"`
@@ -197,9 +199,9 @@ func (r executeToolResponseOutputJSON) RawJSON() string {
 }
 
 type ExecuteToolResponseOutputError struct {
-	CanRetry                bool                               `json:"can_retry,required"`
-	Kind                    ExecuteToolResponseOutputErrorKind `json:"kind,required"`
-	Message                 string                             `json:"message,required"`
+	CanRetry                bool                               `json:"can_retry" api:"required"`
+	Kind                    ExecuteToolResponseOutputErrorKind `json:"kind" api:"required"`
+	Message                 string                             `json:"message" api:"required"`
 	AdditionalPromptContent string                             `json:"additional_prompt_content"`
 	DeveloperMessage        string                             `json:"developer_message"`
 	Extra                   map[string]interface{}             `json:"extra"`
@@ -236,37 +238,42 @@ func (r executeToolResponseOutputErrorJSON) RawJSON() string {
 type ExecuteToolResponseOutputErrorKind string
 
 const (
-	ExecuteToolResponseOutputErrorKindToolkitLoadFailed              ExecuteToolResponseOutputErrorKind = "TOOLKIT_LOAD_FAILED"
-	ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition    ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_DEFINITION"
-	ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema   ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_INPUT_SCHEMA"
-	ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema  ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_OUTPUT_SCHEMA"
-	ExecuteToolResponseOutputErrorKindToolRequirementsNotMet         ExecuteToolResponseOutputErrorKind = "TOOL_REQUIREMENTS_NOT_MET"
-	ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue       ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_BAD_INPUT_VALUE"
-	ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue      ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_BAD_OUTPUT_VALUE"
-	ExecuteToolResponseOutputErrorKindToolRuntimeRetry               ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_RETRY"
-	ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired     ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_CONTEXT_REQUIRED"
-	ExecuteToolResponseOutputErrorKindToolRuntimeFatal               ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_FATAL"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest      ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_BAD_REQUEST"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError       ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_AUTH_ERROR"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound        ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_NOT_FOUND"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_VALIDATION_ERROR"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit       ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_RATE_LIMIT"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError     ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_SERVER_ERROR"
-	ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped        ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_UNMAPPED"
-	ExecuteToolResponseOutputErrorKindUnknown                        ExecuteToolResponseOutputErrorKind = "UNKNOWN"
+	ExecuteToolResponseOutputErrorKindToolkitLoadFailed                  ExecuteToolResponseOutputErrorKind = "TOOLKIT_LOAD_FAILED"
+	ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition        ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_DEFINITION"
+	ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema       ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_INPUT_SCHEMA"
+	ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema      ExecuteToolResponseOutputErrorKind = "TOOL_DEFINITION_BAD_OUTPUT_SCHEMA"
+	ExecuteToolResponseOutputErrorKindToolRequirementsNotMet             ExecuteToolResponseOutputErrorKind = "TOOL_REQUIREMENTS_NOT_MET"
+	ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue           ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_BAD_INPUT_VALUE"
+	ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue          ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_BAD_OUTPUT_VALUE"
+	ExecuteToolResponseOutputErrorKindToolRuntimeRetry                   ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_RETRY"
+	ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired         ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_CONTEXT_REQUIRED"
+	ExecuteToolResponseOutputErrorKindToolRuntimeFatal                   ExecuteToolResponseOutputErrorKind = "TOOL_RUNTIME_FATAL"
+	ExecuteToolResponseOutputErrorKindContextCheckFailed                 ExecuteToolResponseOutputErrorKind = "CONTEXT_CHECK_FAILED"
+	ExecuteToolResponseOutputErrorKindContextDenied                      ExecuteToolResponseOutputErrorKind = "CONTEXT_DENIED"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest          ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_BAD_REQUEST"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError           ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_AUTH_ERROR"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound            ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_NOT_FOUND"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError     ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_VALIDATION_ERROR"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit           ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_RATE_LIMIT"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError         ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_SERVER_ERROR"
+	ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped            ExecuteToolResponseOutputErrorKind = "UPSTREAM_RUNTIME_UNMAPPED"
+	ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeTimeout     ExecuteToolResponseOutputErrorKind = "NETWORK_TRANSPORT_RUNTIME_TIMEOUT"
+	ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeUnreachable ExecuteToolResponseOutputErrorKind = "NETWORK_TRANSPORT_RUNTIME_UNREACHABLE"
+	ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeUnmapped    ExecuteToolResponseOutputErrorKind = "NETWORK_TRANSPORT_RUNTIME_UNMAPPED"
+	ExecuteToolResponseOutputErrorKindUnknown                            ExecuteToolResponseOutputErrorKind = "UNKNOWN"
 )
 
 func (r ExecuteToolResponseOutputErrorKind) IsKnown() bool {
 	switch r {
-	case ExecuteToolResponseOutputErrorKindToolkitLoadFailed, ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition, ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema, ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema, ExecuteToolResponseOutputErrorKindToolRequirementsNotMet, ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue, ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue, ExecuteToolResponseOutputErrorKindToolRuntimeRetry, ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired, ExecuteToolResponseOutputErrorKindToolRuntimeFatal, ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest, ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound, ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit, ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped, ExecuteToolResponseOutputErrorKindUnknown:
+	case ExecuteToolResponseOutputErrorKindToolkitLoadFailed, ExecuteToolResponseOutputErrorKindToolDefinitionBadDefinition, ExecuteToolResponseOutputErrorKindToolDefinitionBadInputSchema, ExecuteToolResponseOutputErrorKindToolDefinitionBadOutputSchema, ExecuteToolResponseOutputErrorKindToolRequirementsNotMet, ExecuteToolResponseOutputErrorKindToolRuntimeBadInputValue, ExecuteToolResponseOutputErrorKindToolRuntimeBadOutputValue, ExecuteToolResponseOutputErrorKindToolRuntimeRetry, ExecuteToolResponseOutputErrorKindToolRuntimeContextRequired, ExecuteToolResponseOutputErrorKindToolRuntimeFatal, ExecuteToolResponseOutputErrorKindContextCheckFailed, ExecuteToolResponseOutputErrorKindContextDenied, ExecuteToolResponseOutputErrorKindUpstreamRuntimeBadRequest, ExecuteToolResponseOutputErrorKindUpstreamRuntimeAuthError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeNotFound, ExecuteToolResponseOutputErrorKindUpstreamRuntimeValidationError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeRateLimit, ExecuteToolResponseOutputErrorKindUpstreamRuntimeServerError, ExecuteToolResponseOutputErrorKindUpstreamRuntimeUnmapped, ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeTimeout, ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeUnreachable, ExecuteToolResponseOutputErrorKindNetworkTransportRuntimeUnmapped, ExecuteToolResponseOutputErrorKindUnknown:
 		return true
 	}
 	return false
 }
 
 type ExecuteToolResponseOutputLog struct {
-	Level   string                           `json:"level,required"`
-	Message string                           `json:"message,required"`
+	Level   string                           `json:"level" api:"required"`
+	Message string                           `json:"message" api:"required"`
 	Subtype string                           `json:"subtype"`
 	JSON    executeToolResponseOutputLogJSON `json:"-"`
 }
@@ -290,16 +297,26 @@ func (r executeToolResponseOutputLogJSON) RawJSON() string {
 }
 
 type ToolDefinition struct {
-	FullyQualifiedName string                     `json:"fully_qualified_name,required"`
-	Input              ToolDefinitionInput        `json:"input,required"`
-	Name               string                     `json:"name,required"`
-	QualifiedName      string                     `json:"qualified_name,required"`
-	Toolkit            ToolDefinitionToolkit      `json:"toolkit,required"`
-	Description        string                     `json:"description"`
-	FormattedSchema    map[string]interface{}     `json:"formatted_schema"`
-	Output             ToolDefinitionOutput       `json:"output"`
-	Requirements       ToolDefinitionRequirements `json:"requirements"`
-	JSON               toolDefinitionJSON         `json:"-"`
+	FullyQualifiedName string                 `json:"fully_qualified_name" api:"required"`
+	Input              ToolDefinitionInput    `json:"input" api:"required"`
+	Name               string                 `json:"name" api:"required"`
+	QualifiedName      string                 `json:"qualified_name" api:"required"`
+	Toolkit            ToolDefinitionToolkit  `json:"toolkit" api:"required"`
+	Description        string                 `json:"description"`
+	FormattedSchema    map[string]interface{} `json:"formatted_schema"`
+	// IndexState reports whether this tool is available through tool search yet
+	// ("indexed" or "pending"). Populated only when tool search is active for the org
+	// and Condex is reachable; otherwise omitted, so existing callers are unaffected.
+	// The handler derives and injects this value — see the tool-listing enrichment
+	// path.
+	IndexState string `json:"index_state"`
+	// LastIndexedAt is the tool's last successful index-write time, set only when
+	// IndexState is "indexed" and Condex reported a timestamp.
+	LastIndexedAt string                     `json:"last_indexed_at"`
+	Metadata      ToolDefinitionMetadata     `json:"metadata"`
+	Output        ToolDefinitionOutput       `json:"output"`
+	Requirements  ToolDefinitionRequirements `json:"requirements"`
+	JSON          toolDefinitionJSON         `json:"-"`
 }
 
 // toolDefinitionJSON contains the JSON metadata for the struct [ToolDefinition]
@@ -311,6 +328,9 @@ type toolDefinitionJSON struct {
 	Toolkit            apijson.Field
 	Description        apijson.Field
 	FormattedSchema    apijson.Field
+	IndexState         apijson.Field
+	LastIndexedAt      apijson.Field
+	Metadata           apijson.Field
 	Output             apijson.Field
 	Requirements       apijson.Field
 	raw                string
@@ -347,8 +367,8 @@ func (r toolDefinitionInputJSON) RawJSON() string {
 }
 
 type ToolDefinitionInputParameter struct {
-	Name        string                           `json:"name,required"`
-	ValueSchema ValueSchema                      `json:"value_schema,required"`
+	Name        string                           `json:"name" api:"required"`
+	ValueSchema ValueSchema                      `json:"value_schema" api:"required"`
 	Description string                           `json:"description"`
 	Inferrable  bool                             `json:"inferrable"`
 	Required    bool                             `json:"required"`
@@ -376,7 +396,7 @@ func (r toolDefinitionInputParameterJSON) RawJSON() string {
 }
 
 type ToolDefinitionToolkit struct {
-	Name        string                    `json:"name,required"`
+	Name        string                    `json:"name" api:"required"`
 	Description string                    `json:"description"`
 	Version     string                    `json:"version"`
 	JSON        toolDefinitionToolkitJSON `json:"-"`
@@ -397,6 +417,81 @@ func (r *ToolDefinitionToolkit) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r toolDefinitionToolkitJSON) RawJSON() string {
+	return r.raw
+}
+
+type ToolDefinitionMetadata struct {
+	Behavior       ToolDefinitionMetadataBehavior       `json:"behavior"`
+	Classification ToolDefinitionMetadataClassification `json:"classification"`
+	Extras         map[string]interface{}               `json:"extras"`
+	JSON           toolDefinitionMetadataJSON           `json:"-"`
+}
+
+// toolDefinitionMetadataJSON contains the JSON metadata for the struct
+// [ToolDefinitionMetadata]
+type toolDefinitionMetadataJSON struct {
+	Behavior       apijson.Field
+	Classification apijson.Field
+	Extras         apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *ToolDefinitionMetadata) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionMetadataJSON) RawJSON() string {
+	return r.raw
+}
+
+type ToolDefinitionMetadataBehavior struct {
+	Destructive bool                               `json:"destructive"`
+	Idempotent  bool                               `json:"idempotent"`
+	OpenWorld   bool                               `json:"open_world"`
+	Operations  []string                           `json:"operations"`
+	ReadOnly    bool                               `json:"read_only"`
+	JSON        toolDefinitionMetadataBehaviorJSON `json:"-"`
+}
+
+// toolDefinitionMetadataBehaviorJSON contains the JSON metadata for the struct
+// [ToolDefinitionMetadataBehavior]
+type toolDefinitionMetadataBehaviorJSON struct {
+	Destructive apijson.Field
+	Idempotent  apijson.Field
+	OpenWorld   apijson.Field
+	Operations  apijson.Field
+	ReadOnly    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ToolDefinitionMetadataBehavior) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionMetadataBehaviorJSON) RawJSON() string {
+	return r.raw
+}
+
+type ToolDefinitionMetadataClassification struct {
+	ServiceDomains []string                                 `json:"service_domains"`
+	JSON           toolDefinitionMetadataClassificationJSON `json:"-"`
+}
+
+// toolDefinitionMetadataClassificationJSON contains the JSON metadata for the
+// struct [ToolDefinitionMetadataClassification]
+type toolDefinitionMetadataClassificationJSON struct {
+	ServiceDomains apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *ToolDefinitionMetadataClassification) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r toolDefinitionMetadataClassificationJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -537,7 +632,7 @@ func (r ToolDefinitionRequirementsAuthorizationTokenStatus) IsKnown() bool {
 }
 
 type ToolDefinitionRequirementsSecret struct {
-	Key          string                               `json:"key,required"`
+	Key          string                               `json:"key" api:"required"`
 	Met          bool                                 `json:"met"`
 	StatusReason string                               `json:"status_reason"`
 	JSON         toolDefinitionRequirementsSecretJSON `json:"-"`
@@ -561,213 +656,34 @@ func (r toolDefinitionRequirementsSecretJSON) RawJSON() string {
 	return r.raw
 }
 
-type ToolExecution struct {
-	ID              string            `json:"id"`
-	CreatedAt       string            `json:"created_at"`
-	ExecutionStatus string            `json:"execution_status"`
-	ExecutionType   string            `json:"execution_type"`
-	FinishedAt      string            `json:"finished_at"`
-	RunAt           string            `json:"run_at"`
-	StartedAt       string            `json:"started_at"`
-	ToolName        string            `json:"tool_name"`
-	ToolkitName     string            `json:"toolkit_name"`
-	ToolkitVersion  string            `json:"toolkit_version"`
-	UpdatedAt       string            `json:"updated_at"`
-	UserID          string            `json:"user_id"`
-	JSON            toolExecutionJSON `json:"-"`
-}
-
-// toolExecutionJSON contains the JSON metadata for the struct [ToolExecution]
-type toolExecutionJSON struct {
-	ID              apijson.Field
-	CreatedAt       apijson.Field
-	ExecutionStatus apijson.Field
-	ExecutionType   apijson.Field
-	FinishedAt      apijson.Field
-	RunAt           apijson.Field
-	StartedAt       apijson.Field
-	ToolName        apijson.Field
-	ToolkitName     apijson.Field
-	ToolkitVersion  apijson.Field
-	UpdatedAt       apijson.Field
-	UserID          apijson.Field
-	raw             string
-	ExtraFields     map[string]apijson.Field
-}
-
-func (r *ToolExecution) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r toolExecutionJSON) RawJSON() string {
-	return r.raw
-}
-
-type ToolExecutionAttempt struct {
-	ID                 string                     `json:"id"`
-	FinishedAt         string                     `json:"finished_at"`
-	Output             ToolExecutionAttemptOutput `json:"output"`
-	StartedAt          string                     `json:"started_at"`
-	Success            bool                       `json:"success"`
-	SystemErrorMessage string                     `json:"system_error_message"`
-	JSON               toolExecutionAttemptJSON   `json:"-"`
-}
-
-// toolExecutionAttemptJSON contains the JSON metadata for the struct
-// [ToolExecutionAttempt]
-type toolExecutionAttemptJSON struct {
-	ID                 apijson.Field
-	FinishedAt         apijson.Field
-	Output             apijson.Field
-	StartedAt          apijson.Field
-	Success            apijson.Field
-	SystemErrorMessage apijson.Field
-	raw                string
-	ExtraFields        map[string]apijson.Field
-}
-
-func (r *ToolExecutionAttempt) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r toolExecutionAttemptJSON) RawJSON() string {
-	return r.raw
-}
-
-type ToolExecutionAttemptOutput struct {
-	Authorization shared.AuthorizationResponse    `json:"authorization"`
-	Error         ToolExecutionAttemptOutputError `json:"error"`
-	Logs          []ToolExecutionAttemptOutputLog `json:"logs"`
-	Value         interface{}                     `json:"value"`
-	JSON          toolExecutionAttemptOutputJSON  `json:"-"`
-}
-
-// toolExecutionAttemptOutputJSON contains the JSON metadata for the struct
-// [ToolExecutionAttemptOutput]
-type toolExecutionAttemptOutputJSON struct {
-	Authorization apijson.Field
-	Error         apijson.Field
-	Logs          apijson.Field
-	Value         apijson.Field
-	raw           string
-	ExtraFields   map[string]apijson.Field
-}
-
-func (r *ToolExecutionAttemptOutput) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r toolExecutionAttemptOutputJSON) RawJSON() string {
-	return r.raw
-}
-
-type ToolExecutionAttemptOutputError struct {
-	CanRetry                bool                                `json:"can_retry,required"`
-	Kind                    ToolExecutionAttemptOutputErrorKind `json:"kind,required"`
-	Message                 string                              `json:"message,required"`
-	AdditionalPromptContent string                              `json:"additional_prompt_content"`
-	DeveloperMessage        string                              `json:"developer_message"`
-	Extra                   map[string]interface{}              `json:"extra"`
-	RetryAfterMs            int64                               `json:"retry_after_ms"`
-	Stacktrace              string                              `json:"stacktrace"`
-	StatusCode              int64                               `json:"status_code"`
-	JSON                    toolExecutionAttemptOutputErrorJSON `json:"-"`
-}
-
-// toolExecutionAttemptOutputErrorJSON contains the JSON metadata for the struct
-// [ToolExecutionAttemptOutputError]
-type toolExecutionAttemptOutputErrorJSON struct {
-	CanRetry                apijson.Field
-	Kind                    apijson.Field
-	Message                 apijson.Field
-	AdditionalPromptContent apijson.Field
-	DeveloperMessage        apijson.Field
-	Extra                   apijson.Field
-	RetryAfterMs            apijson.Field
-	Stacktrace              apijson.Field
-	StatusCode              apijson.Field
-	raw                     string
-	ExtraFields             map[string]apijson.Field
-}
-
-func (r *ToolExecutionAttemptOutputError) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r toolExecutionAttemptOutputErrorJSON) RawJSON() string {
-	return r.raw
-}
-
-type ToolExecutionAttemptOutputErrorKind string
-
-const (
-	ToolExecutionAttemptOutputErrorKindToolkitLoadFailed              ToolExecutionAttemptOutputErrorKind = "TOOLKIT_LOAD_FAILED"
-	ToolExecutionAttemptOutputErrorKindToolDefinitionBadDefinition    ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_DEFINITION"
-	ToolExecutionAttemptOutputErrorKindToolDefinitionBadInputSchema   ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_INPUT_SCHEMA"
-	ToolExecutionAttemptOutputErrorKindToolDefinitionBadOutputSchema  ToolExecutionAttemptOutputErrorKind = "TOOL_DEFINITION_BAD_OUTPUT_SCHEMA"
-	ToolExecutionAttemptOutputErrorKindToolRequirementsNotMet         ToolExecutionAttemptOutputErrorKind = "TOOL_REQUIREMENTS_NOT_MET"
-	ToolExecutionAttemptOutputErrorKindToolRuntimeBadInputValue       ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_BAD_INPUT_VALUE"
-	ToolExecutionAttemptOutputErrorKindToolRuntimeBadOutputValue      ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_BAD_OUTPUT_VALUE"
-	ToolExecutionAttemptOutputErrorKindToolRuntimeRetry               ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_RETRY"
-	ToolExecutionAttemptOutputErrorKindToolRuntimeContextRequired     ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_CONTEXT_REQUIRED"
-	ToolExecutionAttemptOutputErrorKindToolRuntimeFatal               ToolExecutionAttemptOutputErrorKind = "TOOL_RUNTIME_FATAL"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeBadRequest      ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_BAD_REQUEST"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeAuthError       ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_AUTH_ERROR"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeNotFound        ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_NOT_FOUND"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeValidationError ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_VALIDATION_ERROR"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeRateLimit       ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_RATE_LIMIT"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeServerError     ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_SERVER_ERROR"
-	ToolExecutionAttemptOutputErrorKindUpstreamRuntimeUnmapped        ToolExecutionAttemptOutputErrorKind = "UPSTREAM_RUNTIME_UNMAPPED"
-	ToolExecutionAttemptOutputErrorKindUnknown                        ToolExecutionAttemptOutputErrorKind = "UNKNOWN"
-)
-
-func (r ToolExecutionAttemptOutputErrorKind) IsKnown() bool {
-	switch r {
-	case ToolExecutionAttemptOutputErrorKindToolkitLoadFailed, ToolExecutionAttemptOutputErrorKindToolDefinitionBadDefinition, ToolExecutionAttemptOutputErrorKindToolDefinitionBadInputSchema, ToolExecutionAttemptOutputErrorKindToolDefinitionBadOutputSchema, ToolExecutionAttemptOutputErrorKindToolRequirementsNotMet, ToolExecutionAttemptOutputErrorKindToolRuntimeBadInputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeBadOutputValue, ToolExecutionAttemptOutputErrorKindToolRuntimeRetry, ToolExecutionAttemptOutputErrorKindToolRuntimeContextRequired, ToolExecutionAttemptOutputErrorKindToolRuntimeFatal, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeBadRequest, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeAuthError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeNotFound, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeValidationError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeRateLimit, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeServerError, ToolExecutionAttemptOutputErrorKindUpstreamRuntimeUnmapped, ToolExecutionAttemptOutputErrorKindUnknown:
-		return true
-	}
-	return false
-}
-
-type ToolExecutionAttemptOutputLog struct {
-	Level   string                            `json:"level,required"`
-	Message string                            `json:"message,required"`
-	Subtype string                            `json:"subtype"`
-	JSON    toolExecutionAttemptOutputLogJSON `json:"-"`
-}
-
-// toolExecutionAttemptOutputLogJSON contains the JSON metadata for the struct
-// [ToolExecutionAttemptOutputLog]
-type toolExecutionAttemptOutputLogJSON struct {
-	Level       apijson.Field
-	Message     apijson.Field
-	Subtype     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *ToolExecutionAttemptOutputLog) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r toolExecutionAttemptOutputLogJSON) RawJSON() string {
-	return r.raw
-}
-
 type ValueSchema struct {
-	ValType      string          `json:"val_type,required"`
-	Enum         []string        `json:"enum"`
-	InnerValType string          `json:"inner_val_type"`
-	JSON         valueSchemaJSON `json:"-"`
+	ValType           string          `json:"val_type" api:"required"`
+	Description       string          `json:"description"`
+	Enum              []string        `json:"enum"`
+	InnerProperties   interface{}     `json:"inner_properties"`
+	InnerRequiredKeys []string        `json:"inner_required_keys"`
+	InnerValType      string          `json:"inner_val_type"`
+	Items             *ValueSchema    `json:"items"`
+	Nullable          bool            `json:"nullable"`
+	Properties        interface{}     `json:"properties"`
+	RequiredKeys      []string        `json:"required_keys"`
+	JSON              valueSchemaJSON `json:"-"`
 }
 
 // valueSchemaJSON contains the JSON metadata for the struct [ValueSchema]
 type valueSchemaJSON struct {
-	ValType      apijson.Field
-	Enum         apijson.Field
-	InnerValType apijson.Field
-	raw          string
-	ExtraFields  map[string]apijson.Field
+	ValType           apijson.Field
+	Description       apijson.Field
+	Enum              apijson.Field
+	InnerProperties   apijson.Field
+	InnerRequiredKeys apijson.Field
+	InnerValType      apijson.Field
+	Items             apijson.Field
+	Nullable          apijson.Field
+	Properties        apijson.Field
+	RequiredKeys      apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
 }
 
 func (r *ValueSchema) UnmarshalJSON(data []byte) (err error) {
@@ -779,12 +695,23 @@ func (r valueSchemaJSON) RawJSON() string {
 }
 
 type ToolListParams struct {
+	// JSON metadata filter. Array fields (service_domains, operations): shorthand
+	// array or object with any_of/all_of/none_of operators (case-insensitive). Boolean
+	// fields: read_only, destructive, idempotent, open_world. Extras: case-sensitive
+	// key-value subset match.
+	Filter param.Field[string] `query:"filter"`
+	// Include all versions of each tool
+	IncludeAllVersions param.Field[bool] `query:"include_all_versions"`
 	// Comma separated tool formats that will be included in the response.
 	IncludeFormat param.Field[[]ToolListParamsIncludeFormat] `query:"include_format"`
 	// Number of items to return (default: 25, max: 100)
 	Limit param.Field[int64] `query:"limit"`
 	// Offset from the start of the list (default: 0)
 	Offset param.Field[int64] `query:"offset"`
+	// Case-insensitive literal substring matched against each tool's name, MCP server
+	// name, qualified name, and description; multiple whitespace-separated terms must
+	// all match. Max 2000 characters.
+	Search param.Field[string] `query:"search"`
 	// Toolkit name
 	Toolkit param.Field[string] `query:"toolkit"`
 	// User ID
@@ -805,18 +732,19 @@ const (
 	ToolListParamsIncludeFormatArcade    ToolListParamsIncludeFormat = "arcade"
 	ToolListParamsIncludeFormatOpenAI    ToolListParamsIncludeFormat = "openai"
 	ToolListParamsIncludeFormatAnthropic ToolListParamsIncludeFormat = "anthropic"
+	ToolListParamsIncludeFormatMcp       ToolListParamsIncludeFormat = "mcp"
 )
 
 func (r ToolListParamsIncludeFormat) IsKnown() bool {
 	switch r {
-	case ToolListParamsIncludeFormatArcade, ToolListParamsIncludeFormatOpenAI, ToolListParamsIncludeFormatAnthropic:
+	case ToolListParamsIncludeFormatArcade, ToolListParamsIncludeFormatOpenAI, ToolListParamsIncludeFormatAnthropic, ToolListParamsIncludeFormatMcp:
 		return true
 	}
 	return false
 }
 
 type ToolAuthorizeParams struct {
-	AuthorizeToolRequest AuthorizeToolRequestParam `json:"authorize_tool_request,required"`
+	AuthorizeToolRequest AuthorizeToolRequestParam `json:"authorize_tool_request" api:"required"`
 }
 
 func (r ToolAuthorizeParams) MarshalJSON() (data []byte, err error) {
@@ -824,7 +752,7 @@ func (r ToolAuthorizeParams) MarshalJSON() (data []byte, err error) {
 }
 
 type ToolExecuteParams struct {
-	ExecuteToolRequest ExecuteToolRequestParam `json:"execute_tool_request,required"`
+	ExecuteToolRequest ExecuteToolRequestParam `json:"execute_tool_request" api:"required"`
 }
 
 func (r ToolExecuteParams) MarshalJSON() (data []byte, err error) {
@@ -852,11 +780,12 @@ const (
 	ToolGetParamsIncludeFormatArcade    ToolGetParamsIncludeFormat = "arcade"
 	ToolGetParamsIncludeFormatOpenAI    ToolGetParamsIncludeFormat = "openai"
 	ToolGetParamsIncludeFormatAnthropic ToolGetParamsIncludeFormat = "anthropic"
+	ToolGetParamsIncludeFormatMcp       ToolGetParamsIncludeFormat = "mcp"
 )
 
 func (r ToolGetParamsIncludeFormat) IsKnown() bool {
 	switch r {
-	case ToolGetParamsIncludeFormatArcade, ToolGetParamsIncludeFormatOpenAI, ToolGetParamsIncludeFormatAnthropic:
+	case ToolGetParamsIncludeFormatArcade, ToolGetParamsIncludeFormatOpenAI, ToolGetParamsIncludeFormatAnthropic, ToolGetParamsIncludeFormatMcp:
 		return true
 	}
 	return false
