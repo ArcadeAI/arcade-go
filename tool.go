@@ -27,7 +27,6 @@ import (
 // the [NewToolService] method instead.
 type ToolService struct {
 	Options   []option.RequestOption
-	Scheduled *ToolScheduledService
 	Formatted *ToolFormattedService
 }
 
@@ -37,7 +36,6 @@ type ToolService struct {
 func NewToolService(opts ...option.RequestOption) (r *ToolService) {
 	r = &ToolService{}
 	r.Options = opts
-	r.Scheduled = NewToolScheduledService(opts...)
 	r.Formatted = NewToolFormattedService(opts...)
 	return
 }

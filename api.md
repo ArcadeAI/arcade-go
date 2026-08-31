@@ -116,8 +116,6 @@ Methods:
 - <code title="post /v1/tools/execute">client.Tools.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolService.Execute">Execute</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolExecuteParams">ToolExecuteParams</a>) (\*<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ExecuteToolResponse">ExecuteToolResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="get /v1/tools/{name}">client.Tools.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, name <a href="https://pkg.go.dev/builtin#string">string</a>, query <a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolGetParams">ToolGetParams</a>) (\*<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go">arcadego</a>.<a href="https://pkg.go.dev/github.com/ArcadeAI/arcade-go#ToolDefinition">ToolDefinition</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
-## Scheduled
-
 ## Formatted
 
 Response Types:
